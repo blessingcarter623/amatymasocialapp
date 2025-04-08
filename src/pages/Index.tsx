@@ -54,9 +54,9 @@ const Index = () => {
               />
             ) : (
               <img 
-                src="/lovable-uploads/69238652-423e-4efe-9ad4-405b5760b70f.png" 
-                alt="Amatyma Logo" 
-                className="w-full aspect-square object-contain"
+                src="/lovable-uploads/a39c4b35-e5d9-4c98-aa8b-29bc1ad0f74b.png" 
+                alt="Amatyma Brotherhood Circle - Light Mode" 
+                className="w-full aspect-square object-contain rounded-xl transition-all duration-300"
               />
             )}
           </div>
