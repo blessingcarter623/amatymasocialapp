@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Navbar() {
   const { user, logout } = useApp();
@@ -57,6 +58,7 @@ export function Navbar() {
           
           {!user ? (
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <Button variant="ghost" onClick={() => navigate("/login")}>
                 Login
               </Button>
@@ -69,6 +71,7 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <span className="text-sm text-muted-foreground">
                 Hello, {user.name}
               </span>
@@ -84,14 +87,16 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
