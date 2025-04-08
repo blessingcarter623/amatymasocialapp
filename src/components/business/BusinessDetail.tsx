@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, Globe, Phone, Mail, MapPin, Send, ExternalLink } from "lucide-react";
 import { WhatsappIcon } from "../icons/WhatsappIcon";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
 
 interface BusinessDetailProps {
   business: Business;
@@ -126,6 +127,24 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
         </div>
       </div>
       
+      {/* Display business images if available */}
+      {business.images && business.images.length > 0 && (
+        <div className="neumorphic p-6 space-y-4">
+          <h3 className="text-lg font-medium">Business Gallery</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {business.images.map((image, index) => (
+              <div key={index} className="aspect-square">
+                <img 
+                  src={image} 
+                  alt={`${business.name} image ${index + 1}`} 
+                  className="w-full h-full object-cover rounded-md"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="neumorphic p-6 space-y-4">
           <h3 className="text-lg font-medium">Contact Information</h3>
@@ -176,7 +195,9 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
             </div>
           </div>
           
-          <div className="border-t border-amatyma-red/10 pt-4 mt-4">
+          <Separator color="red" className="my-4" />
+          
+          <div>
             <p className="text-sm text-muted-foreground mb-4">
               Contact {business.contactPerson} directly
             </p>

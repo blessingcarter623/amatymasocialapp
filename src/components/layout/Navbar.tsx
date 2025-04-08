@@ -19,6 +19,7 @@ export function Navbar() {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Businesses", path: "/businesses" },
+    { name: "About Us", path: "/about" },
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
 

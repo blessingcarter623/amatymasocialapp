@@ -67,6 +67,7 @@ const BusinessDetail = () => {
     try {
       setLoading(true);
       
+      // Use the Supabase client to fetch the business data with social links
       const { data, error } = await supabase
         .from('businesses')
         .select(`
@@ -82,8 +83,17 @@ const BusinessDetail = () => {
         return;
       }
       
+      // Log the returned data to debug images array
+      console.log("Fetched business data:", data);
+      
       // Map Supabase data to our application's Business type
       const businessData = mapSupabaseBusinessToBusiness(data as BusinessWithSocialLinks);
+      
+      if (businessData) {
+        console.log("Mapped business data:", businessData);
+        console.log("Business images:", businessData.images);
+      }
+      
       setBusiness(businessData);
     } catch (error) {
       console.error("Error in fetchBusinessById:", error);
