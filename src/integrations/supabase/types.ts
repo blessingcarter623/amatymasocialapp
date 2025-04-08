@@ -41,6 +41,7 @@ export type Database = {
       businesses: {
         Row: {
           category: string | null
+          city: string | null
           contact_person: string | null
           created_at: string
           department: string | null
@@ -52,12 +53,14 @@ export type Database = {
           logo: string | null
           name: string
           phone: string | null
+          province: string | null
           subcategory: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           category?: string | null
+          city?: string | null
           contact_person?: string | null
           created_at?: string
           department?: string | null
@@ -69,12 +72,14 @@ export type Database = {
           logo?: string | null
           name: string
           phone?: string | null
+          province?: string | null
           subcategory?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           category?: string | null
+          city?: string | null
           contact_person?: string | null
           created_at?: string
           department?: string | null
@@ -86,6 +91,7 @@ export type Database = {
           logo?: string | null
           name?: string
           phone?: string | null
+          province?: string | null
           subcategory?: string | null
           updated_at?: string
           user_id?: string

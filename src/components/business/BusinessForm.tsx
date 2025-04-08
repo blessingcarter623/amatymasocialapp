@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -160,13 +161,21 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         user_id: user.id,
       };
       
+      console.log("Saving business data:", businessData);
+      
       if (businessId) {
-        const { error: businessError } = await supabase
+        const { data, error: businessError } = await supabase
           .from('businesses')
           .update(businessData)
-          .eq('id', businessId);
+          .eq('id', businessId)
+          .select();
           
-        if (businessError) throw businessError;
+        if (businessError) {
+          console.error("Error updating business:", businessError);
+          throw businessError;
+        }
+        
+        console.log("Business updated successfully:", data);
         
         const { error: socialLinksError } = await supabase
           .from('social_links')
