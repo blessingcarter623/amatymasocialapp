@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Business, User, Department } from "@/types";
+import { Business, User, Department, EmploymentStatus } from "@/types";
 import { toast } from "sonner";
 
 type AppContextType = {
@@ -8,7 +8,7 @@ type AppContextType = {
   businesses: Business[];
   departments: Department[];
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (email: string, password: string, name: string, employmentStatus?: EmploymentStatus) => Promise<void>;
   logout: () => void;
   addBusiness: (business: Omit<Business, "id" | "createdAt" | "updatedAt">) => Promise<void>;
   updateBusiness: (id: string, business: Partial<Business>) => Promise<void>;
@@ -28,6 +28,8 @@ const mockBusinesses: Business[] = [
     contactPerson: "John Khumalo",
     phone: "+27 82 123 4567",
     email: "info@techsolutionssa.co.za",
+    logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    images: [],
     socialLinks: {
       facebook: "https://facebook.com/techsolutionssa",
       whatsapp: "https://wa.me/27821234567",
@@ -49,6 +51,8 @@ const mockBusinesses: Business[] = [
     contactPerson: "Sarah van der Merwe",
     phone: "+27 83 987 6543",
     email: "contact@greenearthfarming.co.za",
+    logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    images: [],
     socialLinks: {
       facebook: "https://facebook.com/greenearthfarming",
       whatsapp: "https://wa.me/27839876543",
@@ -70,6 +74,8 @@ const mockBusinesses: Business[] = [
     contactPerson: "Michael Naidoo",
     phone: "+27 84 111 2222",
     email: "projects@buildright.co.za",
+    logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    images: [],
     socialLinks: {
       facebook: "https://facebook.com/buildrightconstruction",
       whatsapp: "https://wa.me/27841112222",
@@ -230,6 +236,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: "user1",
           email,
           name: "Demo User",
+          employmentStatus: "employed",
           isLoggedIn: true,
         };
         setUser(newUser);
@@ -246,7 +253,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, employmentStatus: EmploymentStatus = "employed") => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -256,6 +263,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         id: `user${Math.floor(Math.random() * 1000)}`,
         email,
         name,
+        employmentStatus,
         isLoggedIn: true,
       };
       

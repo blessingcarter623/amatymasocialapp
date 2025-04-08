@@ -13,6 +13,8 @@ export type Department = {
 
 export type UserType = "business" | "individual";
 
+export type EmploymentStatus = "employed" | "unemployed" | "self-employed";
+
 export type BusinessCategory = {
   name: string;
   subcategories?: string[];
@@ -29,6 +31,7 @@ export type Business = {
   phone: string;
   email: string;
   logo?: string;
+  images?: string[];
   socialLinks: SocialLinks;
   department?: string;
   userType: UserType;
@@ -40,6 +43,7 @@ export type User = {
   id: string;
   email: string;
   name: string;
+  employmentStatus?: EmploymentStatus;
   business?: Business;
   isLoggedIn: boolean;
 };

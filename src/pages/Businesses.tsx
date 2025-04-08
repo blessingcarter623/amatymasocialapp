@@ -1,7 +1,7 @@
 
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,13 +13,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Business } from "@/types";
+import { Business, Department } from "@/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Businesses = () => {
   const { businesses, departments } = useApp();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>(businesses);
+  const [departmentSearchTerm, setDepartmentSearchTerm] = useState("");
+  const [filteredDepartments, setFilteredDepartments] = useState<Department[]>(departments);
+
+  // Filter departments based on search term
+  useEffect(() => {
+    if (departmentSearchTerm) {
+      const filtered = departments.filter(dept => 
+        dept.name.toLowerCase().includes(departmentSearchTerm.toLowerCase())
+      );
+      setFilteredDepartments(filtered);
+    } else {
+      setFilteredDepartments(departments);
+    }
+  }, [departmentSearchTerm, departments]);
 
   const handleSearch = () => {
     let filtered = businesses;
@@ -33,7 +48,7 @@ const Businesses = () => {
       );
     }
     
-    if (selectedDepartment) {
+    if (selectedDepartment && selectedDepartment !== "all") {
       filtered = filtered.filter(
         (business) => business.department === selectedDepartment
       );
@@ -45,6 +60,7 @@ const Businesses = () => {
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedDepartment(null);
+    setDepartmentSearchTerm("");
     setFilteredBusinesses(businesses);
   };
 
@@ -52,7 +68,14 @@ const Businesses = () => {
     <MainLayout>
       <div className="space-y-8 py-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-          <h1 className="text-3xl font-bold">Business Directory</h1>
+          <div className="flex items-center">
+            <img 
+              src="/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png" 
+              alt="Amatyma Brotherhood Circle" 
+              className="h-10 w-10 mr-3"
+            />
+            <h1 className="text-3xl font-bold">Business Directory</h1>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -73,12 +96,22 @@ const Businesses = () => {
                 <SelectValue placeholder="Department" />
               </SelectTrigger>
               <SelectContent>
+                <div className="p-2">
+                  <Input
+                    placeholder="Search departments..."
+                    value={departmentSearchTerm}
+                    onChange={(e) => setDepartmentSearchTerm(e.target.value)}
+                    className="mb-2 bg-secondary border-amatyma-red/20"
+                  />
+                </div>
                 <SelectItem value="all">All Departments</SelectItem>
-                {departments.map((dept) => (
-                  <SelectItem key={dept.name} value={dept.name}>
-                    {dept.name}
-                  </SelectItem>
-                ))}
+                <ScrollArea className="h-[200px]">
+                  {filteredDepartments.map((dept) => (
+                    <SelectItem key={dept.name} value={dept.name}>
+                      {dept.name}
+                    </SelectItem>
+                  ))}
+                </ScrollArea>
               </SelectContent>
             </Select>
             

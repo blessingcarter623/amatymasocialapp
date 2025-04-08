@@ -12,7 +12,9 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { UserType } from "@/types";
+import { UserType, EmploymentStatus } from "@/types";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export function RegisterForm() {
   const [name, setName] = useState("");
@@ -20,6 +22,7 @@ export function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<UserType>("business");
+  const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>("employed");
   const { register, isLoading } = useApp();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -38,7 +41,7 @@ export function RegisterForm() {
       return;
     }
     
-    await register(email, password, name);
+    await register(email, password, name, employmentStatus);
     navigate("/dashboard");
   };
 
@@ -46,6 +49,11 @@ export function RegisterForm() {
     <div className="w-full max-w-md mx-auto">
       <div className="neumorphic p-8 space-y-6">
         <div className="text-center space-y-2">
+          <img 
+            src="/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png" 
+            alt="Amatyma Brotherhood Circle" 
+            className="mx-auto h-16 w-16"
+          />
           <h2 className="text-2xl font-bold text-foreground">Create Account</h2>
           <p className="text-muted-foreground text-sm">
             Join the Amatyma business platform
@@ -134,6 +142,31 @@ export function RegisterForm() {
                 <SelectItem value="individual">Individual</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">
+              Employment Status
+            </label>
+            <RadioGroup 
+              defaultValue="employed" 
+              value={employmentStatus}
+              onValueChange={(value) => setEmploymentStatus(value as EmploymentStatus)}
+              className="flex flex-col space-y-2 mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="employed" id="employed" />
+                <Label htmlFor="employed">Employed</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="unemployed" id="unemployed" />
+                <Label htmlFor="unemployed">Unemployed</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="self-employed" id="self-employed" />
+                <Label htmlFor="self-employed">Self-Employed</Label>
+              </div>
+            </RadioGroup>
           </div>
 
           <Button
