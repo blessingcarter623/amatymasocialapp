@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
 import { Business, Department } from "@/types";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -71,11 +71,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchBusinesses();
-  }, []);
-
-  const fetchBusinesses = async () => {
+  const fetchBusinesses = useCallback(async () => {
     try {
       setIsLoading(true);
       
@@ -92,6 +88,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return;
       }
       
+      console.log("Fetched business data:", data);
+      
       // Map Supabase data to our application's Business type
       const businessData = (data as BusinessWithSocialLinks[]).map(item => 
         mapSupabaseBusinessToBusiness(item)
@@ -104,7 +102,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchBusinesses();
+  }, [fetchBusinesses]);
 
   return (
     <AppContext.Provider

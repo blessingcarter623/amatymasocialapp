@@ -17,12 +17,17 @@ import { Business, Department } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Businesses = () => {
-  const { businesses, departments, isLoading } = useApp();
+  const { businesses, departments, isLoading, fetchBusinesses } = useApp();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [departmentSearchTerm, setDepartmentSearchTerm] = useState("");
   const [filteredDepartments, setFilteredDepartments] = useState<Department[]>(departments);
+
+  // Refetch businesses when component mounts
+  useEffect(() => {
+    fetchBusinesses();
+  }, [fetchBusinesses]);
 
   // Initialize filtered businesses when businesses load
   useEffect(() => {
@@ -42,13 +47,16 @@ const Businesses = () => {
   }, [departmentSearchTerm, departments]);
 
   const handleSearch = () => {
-    let filtered = businesses;
+    console.log("Filtering with:", { searchTerm, selectedDepartment });
+    console.log("Total businesses before filter:", businesses.length);
+    
+    let filtered = [...businesses];
     
     if (searchTerm) {
       filtered = filtered.filter(
         (business) => 
-          business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (business.name && business.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (business.description && business.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
           (business.category && business.category.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
@@ -59,6 +67,7 @@ const Businesses = () => {
       );
     }
     
+    console.log("Filtered businesses count:", filtered.length);
     setFilteredBusinesses(filtered);
   };
 
@@ -89,13 +98,14 @@ const Businesses = () => {
                 placeholder="Search businesses..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 className="pl-9 bg-secondary border-amatyma-red/20"
               />
             </div>
             
             <Select
               value={selectedDepartment || ""}
-              onValueChange={(value) => setSelectedDepartment(value || null)}
+              onValueChange={(value) => setSelectedDepartment(value === "all" ? null : value)}
             >
               <SelectTrigger className="w-full sm:w-[200px] bg-secondary border-amatyma-red/20">
                 <SelectValue placeholder="Department" />
