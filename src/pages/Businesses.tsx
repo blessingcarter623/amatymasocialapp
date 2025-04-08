@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, X, Loader } from "lucide-react";
+import { Search, Filter, X, Loader, MapPin } from "lucide-react";
 import { 
   Select,
   SelectContent,
@@ -15,11 +15,15 @@ import {
 } from "@/components/ui/select";
 import { Business, Department } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { southAfricanProvinces, getCitiesForProvince } from "@/utils/locationData";
 
 const Businesses = () => {
   const { businesses, departments, isLoading, fetchBusinesses } = useApp();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [departmentSearchTerm, setDepartmentSearchTerm] = useState("");
   const [filteredDepartments, setFilteredDepartments] = useState<Department[]>(departments);
@@ -34,6 +38,15 @@ const Businesses = () => {
     setFilteredBusinesses(businesses);
   }, [businesses]);
 
+  // Update available cities when province changes
+  useEffect(() => {
+    setAvailableCities(getCitiesForProvince(selectedProvince));
+    // Reset city if province changes
+    if (selectedCity) {
+      setSelectedCity(null);
+    }
+  }, [selectedProvince]);
+
   // Filter departments based on search term
   useEffect(() => {
     if (departmentSearchTerm) {
@@ -47,7 +60,7 @@ const Businesses = () => {
   }, [departmentSearchTerm, departments]);
 
   const handleSearch = () => {
-    console.log("Filtering with:", { searchTerm, selectedDepartment });
+    console.log("Filtering with:", { searchTerm, selectedDepartment, selectedProvince, selectedCity });
     console.log("Total businesses before filter:", businesses.length);
     
     let filtered = [...businesses];
@@ -67,6 +80,18 @@ const Businesses = () => {
       );
     }
     
+    if (selectedProvince) {
+      filtered = filtered.filter(
+        (business) => business.province === selectedProvince
+      );
+      
+      if (selectedCity) {
+        filtered = filtered.filter(
+          (business) => business.city === selectedCity
+        );
+      }
+    }
+    
     console.log("Filtered businesses count:", filtered.length);
     setFilteredBusinesses(filtered);
   };
@@ -74,6 +99,8 @@ const Businesses = () => {
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedDepartment(null);
+    setSelectedProvince(null);
+    setSelectedCity(null);
     setDepartmentSearchTerm("");
     setFilteredBusinesses(businesses);
   };
@@ -107,7 +134,7 @@ const Businesses = () => {
               value={selectedDepartment || ""}
               onValueChange={(value) => setSelectedDepartment(value === "all" ? null : value)}
             >
-              <SelectTrigger className="w-full sm:w-[200px] bg-secondary border-amatyma-red/20">
+              <SelectTrigger className="w-full sm:w-[180px] bg-secondary border-amatyma-red/20">
                 <SelectValue placeholder="Department" />
               </SelectTrigger>
               <SelectContent>
@@ -129,6 +156,48 @@ const Businesses = () => {
                 </ScrollArea>
               </SelectContent>
             </Select>
+            
+            <Select
+              value={selectedProvince || ""}
+              onValueChange={(value) => setSelectedProvince(value === "all" ? null : value)}
+            >
+              <SelectTrigger className="w-full sm:w-[180px] bg-secondary border-amatyma-red/20">
+                <div className="flex items-center">
+                  <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+                  <SelectValue placeholder="Province" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Provinces</SelectItem>
+                <ScrollArea className="h-[200px]">
+                  {southAfricanProvinces.map((province) => (
+                    <SelectItem key={province.name} value={province.name}>
+                      {province.name}
+                    </SelectItem>
+                  ))}
+                </ScrollArea>
+              </SelectContent>
+            </Select>
+            
+            {selectedProvince && (
+              <Select
+                value={selectedCity || ""}
+                onValueChange={(value) => setSelectedCity(value === "all" ? null : value)}
+                disabled={!selectedProvince}
+              >
+                <SelectTrigger className="w-full sm:w-[180px] bg-secondary border-amatyma-red/20">
+                  <SelectValue placeholder="City" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Cities</SelectItem>
+                  {availableCities.map((city) => (
+                    <SelectItem key={city} value={city}>
+                      {city}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
             
             <div className="flex gap-2">
               <Button 

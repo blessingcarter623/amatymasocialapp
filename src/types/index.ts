@@ -27,6 +27,8 @@ export type Business = {
   category: string;
   subcategory?: string;
   location: string;
+  province?: string;
+  city?: string;
   contactPerson: string;
   phone: string;
   email: string;

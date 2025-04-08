@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +15,7 @@ import { Business, SocialLinks } from "@/types";
 import { Loader2, Save, Upload, X, Image } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { southAfricanProvinces, getCitiesForProvince } from "@/utils/locationData";
 
 interface BusinessFormProps {
   business?: Business | null;
@@ -25,6 +26,7 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   const { departments } = useApp();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
   
   const [formData, setFormData] = useState<{
     name: string;
@@ -32,6 +34,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     category: string;
     subcategory?: string;
     location: string;
+    province?: string;
+    city?: string;
     contactPerson: string;
     phone: string;
     email: string;
@@ -45,6 +49,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     category: business?.category || "",
     subcategory: business?.subcategory || "",
     location: business?.location || "",
+    province: business?.province || "",
+    city: business?.city || "",
     contactPerson: business?.contactPerson || "",
     phone: business?.phone || "",
     email: business?.email || "",
@@ -58,6 +64,14 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     logo: business?.logo || "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
     images: business?.images || [],
   });
+
+  useEffect(() => {
+    setAvailableCities(getCitiesForProvince(formData.province));
+    
+    if (formData.city && !getCitiesForProvince(formData.province).includes(formData.city)) {
+      setFormData(prev => ({ ...prev, city: undefined }));
+    }
+  }, [formData.province]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,8 +93,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // In a real app, you would upload the file to a server
-      // For now, we'll simulate this by creating a local URL
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result) {
@@ -94,10 +106,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      // Convert FileList to Array to process multiple files
       const fileArray = Array.from(files);
       
-      // Process each file
       fileArray.forEach(file => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -133,13 +143,14 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     try {
       let businessId = business?.id;
       
-      // Prepare data for Supabase
       const businessData = {
         name: formData.name,
         description: formData.description,
         category: formData.category,
         subcategory: formData.subcategory || null,
         location: formData.location,
+        province: formData.province || null,
+        city: formData.city || null,
         contact_person: formData.contactPerson,
         phone: formData.phone,
         email: formData.email,
@@ -150,7 +161,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
       };
       
       if (businessId) {
-        // Update existing business
         const { error: businessError } = await supabase
           .from('businesses')
           .update(businessData)
@@ -158,7 +168,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
           
         if (businessError) throw businessError;
         
-        // Update social links
         const { error: socialLinksError } = await supabase
           .from('social_links')
           .upsert({
@@ -173,7 +182,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         if (socialLinksError) throw socialLinksError;
         
       } else {
-        // Create new business
         const { data: newBusiness, error: businessError } = await supabase
           .from('businesses')
           .insert(businessData)
@@ -184,7 +192,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         
         businessId = newBusiness.id;
         
-        // Create social links
         const { error: socialLinksError } = await supabase
           .from('social_links')
           .insert({
@@ -289,7 +296,7 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
             
             <div className="space-y-2">
               <label htmlFor="location" className="text-sm font-medium">
-                Location
+                Location (Address/Area)
               </label>
               <Input
                 id="location"
@@ -299,6 +306,49 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
                 required
                 className="bg-background border-amatyma-red/20"
               />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="province" className="text-sm font-medium">
+                Province
+              </label>
+              <Select
+                value={formData.province}
+                onValueChange={(value) => setFormData({ ...formData, province: value })}
+              >
+                <SelectTrigger className="bg-background border-amatyma-red/20">
+                  <SelectValue placeholder="Select a province" />
+                </SelectTrigger>
+                <SelectContent>
+                  {southAfricanProvinces.map((province) => (
+                    <SelectItem key={province.name} value={province.name}>
+                      {province.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="city" className="text-sm font-medium">
+                City
+              </label>
+              <Select
+                value={formData.city}
+                onValueChange={(value) => setFormData({ ...formData, city: value })}
+                disabled={!formData.province}
+              >
+                <SelectTrigger className="bg-background border-amatyma-red/20">
+                  <SelectValue placeholder={formData.province ? "Select a city" : "Select province first"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCities.map((city) => (
+                    <SelectItem key={city} value={city}>
+                      {city}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="space-y-2 md:col-span-2">

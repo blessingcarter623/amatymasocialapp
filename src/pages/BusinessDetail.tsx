@@ -33,6 +33,8 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Bu
     category: data.category || "",
     subcategory: data.subcategory || undefined,
     location: data.location || "",
+    province: data.province || undefined,
+    city: data.city || undefined,
     contactPerson: data.contact_person || "",
     phone: data.phone || "",
     email: data.email || "",
