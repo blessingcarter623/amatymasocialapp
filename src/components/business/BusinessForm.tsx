@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,14 +13,18 @@ import {
 } from "@/components/ui/select";
 import { Business, SocialLinks } from "@/types";
 import { Loader2, Save, Upload, X, Image } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 interface BusinessFormProps {
-  business?: Business;
+  business?: Business | null;
   onSuccess?: () => void;
 }
 
 export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
-  const { addBusiness, updateBusiness, isLoading, departments } = useApp();
+  const { departments } = useApp();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState<{
     name: string;
@@ -120,20 +123,89 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user) {
+      toast.error("You must be logged in to save business information");
+      return;
+    }
+    
+    setIsLoading(true);
+    
     try {
-      if (business?.id) {
-        await updateBusiness(business.id, formData);
+      let businessId = business?.id;
+      
+      // Prepare data for Supabase
+      const businessData = {
+        name: formData.name,
+        description: formData.description,
+        category: formData.category,
+        subcategory: formData.subcategory || null,
+        location: formData.location,
+        contact_person: formData.contactPerson,
+        phone: formData.phone,
+        email: formData.email,
+        department: formData.department || null,
+        logo: formData.logo,
+        images: formData.images,
+        user_id: user.id,
+      };
+      
+      if (businessId) {
+        // Update existing business
+        const { error: businessError } = await supabase
+          .from('businesses')
+          .update(businessData)
+          .eq('id', businessId);
+          
+        if (businessError) throw businessError;
+        
+        // Update social links
+        const { error: socialLinksError } = await supabase
+          .from('social_links')
+          .upsert({
+            business_id: businessId,
+            facebook: formData.socialLinks.facebook || null,
+            instagram: formData.socialLinks.instagram || null,
+            whatsapp: formData.socialLinks.whatsapp || null,
+            website: formData.socialLinks.website || null,
+          })
+          .eq('business_id', businessId);
+          
+        if (socialLinksError) throw socialLinksError;
+        
       } else {
-        await addBusiness({
-          ...formData,
-          userType: "business",
-        });
+        // Create new business
+        const { data: newBusiness, error: businessError } = await supabase
+          .from('businesses')
+          .insert(businessData)
+          .select('id')
+          .single();
+          
+        if (businessError) throw businessError;
+        
+        businessId = newBusiness.id;
+        
+        // Create social links
+        const { error: socialLinksError } = await supabase
+          .from('social_links')
+          .insert({
+            business_id: businessId,
+            facebook: formData.socialLinks.facebook || null,
+            instagram: formData.socialLinks.instagram || null,
+            whatsapp: formData.socialLinks.whatsapp || null,
+            website: formData.socialLinks.website || null,
+          });
+          
+        if (socialLinksError) throw socialLinksError;
       }
       
-      onSuccess?.();
+      toast.success(businessId ? "Business updated successfully!" : "Business created successfully!");
+      if (onSuccess) onSuccess();
+      
     } catch (error) {
+      console.error("Error saving business:", error);
       toast.error("Failed to save business information");
-      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

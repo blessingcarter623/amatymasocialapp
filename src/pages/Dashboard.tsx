@@ -66,6 +66,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       fetchUserBusiness();
+    } else {
+      setLoading(false);
     }
   }, [user]);
   
