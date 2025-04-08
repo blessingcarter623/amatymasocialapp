@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useApp } from "@/context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { 
   Select,
@@ -15,6 +14,8 @@ import { ArrowRight, Loader2 } from "lucide-react";
 import { UserType, EmploymentStatus } from "@/types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 export function RegisterForm() {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<UserType>("business");
   const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>("employed");
-  const { register, isLoading } = useApp();
+  const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -41,8 +42,18 @@ export function RegisterForm() {
       return;
     }
     
-    await register(email, password, name, employmentStatus);
-    navigate("/dashboard");
+    try {
+      await signUp(email, password, name, employmentStatus);
+      toast.success("Registration successful! Please check your email for confirmation.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An error occurred during registration");
+      }
+    }
   };
 
   return (
