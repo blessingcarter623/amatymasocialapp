@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { YouTube, Instagram, Facebook, Mail, Calendar, Users, Award, Tv, Play, FileText } from "lucide-react";
+import { Youtube, Instagram, Facebook, Mail, Calendar, Users, Award, Tv, Play, FileText } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
 const AboutUs = () => {
@@ -140,7 +140,7 @@ const AboutUs = () => {
             
             <div className="flex justify-center mt-8">
               <Button variant="outline" className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white">
-                <YouTube className="mr-2 h-4 w-4" />
+                <Youtube className="mr-2 h-4 w-4" />
                 Follow Our Channel
               </Button>
             </div>
@@ -313,7 +313,7 @@ const AboutUs = () => {
           </a>
           
           <a href="#" className="neumorphic p-6 text-center hover:scale-105 transition-transform">
-            <YouTube className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
+            <Youtube className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
             <p className="font-medium">Amatyma Brotherhood</p>
             <p className="text-sm text-muted-foreground">2.94K subscribers</p>
           </a>
