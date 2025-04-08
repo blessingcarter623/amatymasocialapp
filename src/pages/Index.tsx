@@ -4,12 +4,14 @@ import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
+import { useTheme } from "@/context/ThemeContext";
 import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
 
 const Index = () => {
   const navigate = useNavigate();
   const { businesses } = useApp();
+  const { theme } = useTheme();
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
@@ -44,11 +46,19 @@ const Index = () => {
           </div>
           
           <div className="neumorphic p-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <img 
-              src="/lovable-uploads/69238652-423e-4efe-9ad4-405b5760b70f.png" 
-              alt="Amatyma Logo" 
-              className="w-full aspect-square object-contain"
-            />
+            {theme === 'dark' ? (
+              <img 
+                src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png" 
+                alt="Amatyma Brotherhood Circle" 
+                className="w-full aspect-square object-cover rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+              />
+            ) : (
+              <img 
+                src="/lovable-uploads/69238652-423e-4efe-9ad4-405b5760b70f.png" 
+                alt="Amatyma Logo" 
+                className="w-full aspect-square object-contain"
+              />
+            )}
           </div>
         </div>
       </section>
