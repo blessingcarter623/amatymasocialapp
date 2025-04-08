@@ -95,7 +95,18 @@ const AboutUs = () => {
             <TabsTrigger value="outreach" className="text-sm md:text-base">Outreach Programs</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="media" className="space-y-6">
+          <TabsContent value="media" className="space-y-8">
+            {/* Featured Show with New Image */}
+            <Card className="overflow-hidden border-amatyma-red/20">
+              <CardContent className="p-0">
+                <img 
+                  src="/lovable-uploads/a4ab9402-736a-4564-9718-34395efbe9fd.png" 
+                  alt="Like Tyma Like Ntwana SABC 2 Show" 
+                  className="w-full object-contain"
+                />
+              </CardContent>
+            </Card>
+            
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="overflow-hidden">
                 <div className="aspect-video bg-black relative">
