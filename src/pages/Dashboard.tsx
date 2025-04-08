@@ -12,11 +12,16 @@ import {
 import { Building, User, Loader } from "lucide-react";
 import { Banner } from "@/components/ui/banner";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
+
+type BusinessWithSocialLinks = Database['public']['Tables']['businesses']['Row'] & {
+  social_links: Database['public']['Tables']['social_links']['Row'] | null;
+};
 
 const Dashboard = () => {
   const { user, profile } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
-  const [business, setBusiness] = useState(null);
+  const [business, setBusiness] = useState<BusinessWithSocialLinks | null>(null);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
@@ -29,19 +34,19 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from("businesses")
+        .from('businesses')
         .select(`
           *,
           social_links(*)
         `)
-        .eq("user_id", user.id)
+        .eq("user_id", user?.id || '')
         .single();
       
       if (error && error.code !== "PGRST116") {
         console.error("Error fetching business:", error);
       }
       
-      setBusiness(data || null);
+      setBusiness(data as BusinessWithSocialLinks || null);
     } catch (error) {
       console.error("Error in fetchUserBusiness:", error);
     } finally {
