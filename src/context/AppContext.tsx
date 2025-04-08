@@ -12,6 +12,8 @@ type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
 // Custom type combining business with its social links
 type BusinessWithSocialLinks = SupabaseBusiness & {
   social_links: SupabaseSocialLink[] | null;
+  province?: string | null;
+  city?: string | null;
 };
 
 // Helper function to convert Supabase data to our application's Business type
