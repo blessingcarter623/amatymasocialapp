@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, Loader } from "lucide-react";
 import { 
   Select,
   SelectContent,
@@ -17,12 +17,17 @@ import { Business, Department } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Businesses = () => {
-  const { businesses, departments } = useApp();
+  const { businesses, departments, isLoading } = useApp();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
-  const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>(businesses);
+  const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [departmentSearchTerm, setDepartmentSearchTerm] = useState("");
   const [filteredDepartments, setFilteredDepartments] = useState<Department[]>(departments);
+
+  // Initialize filtered businesses when businesses load
+  useEffect(() => {
+    setFilteredBusinesses(businesses);
+  }, [businesses]);
 
   // Filter departments based on search term
   useEffect(() => {
@@ -44,7 +49,7 @@ const Businesses = () => {
         (business) => 
           business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.category.toLowerCase().includes(searchTerm.toLowerCase())
+          (business.category && business.category.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
     
@@ -136,7 +141,13 @@ const Businesses = () => {
           </div>
         </div>
         
-        <BusinessList businesses={filteredBusinesses} />
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[200px]">
+            <Loader className="h-8 w-8 animate-spin text-amatyma-red" />
+          </div>
+        ) : (
+          <BusinessList businesses={filteredBusinesses} />
+        )}
       </div>
     </MainLayout>
   );
