@@ -55,6 +55,7 @@ const departmentsList: Department[] = [
   { name: "Agribusiness", subcategories: ["Farming", "Distribution", "Processing"] },
   { name: "Construction", subcategories: ["Residential", "Commercial", "Industrial"] },
   { name: "Education", subcategories: ["Primary", "Secondary", "Tertiary"] },
+  { name: "Employment and Labour", subcategories: ["Recruitment", "HR Services", "Professional Training"] },
   { name: "Finance", subcategories: ["Banking", "Insurance", "Investment"] },
   { name: "Healthcare", subcategories: ["Medical", "Dental", "Pharmacy"] },
   { name: "Hospitality", subcategories: ["Hotels", "Restaurants", "Events"] },

@@ -3,12 +3,28 @@ import { Business } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, Globe, Phone, Mail, MapPin, Send, ExternalLink } from "lucide-react";
 import { WhatsappIcon } from "../icons/WhatsappIcon";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface BusinessDetailProps {
   business: Business;
 }
 
 export function BusinessDetail({ business }: BusinessDetailProps) {
+  // Function to format WhatsApp URL correctly
+  const formatWhatsAppUrl = (url: string) => {
+    if (url.startsWith("https://") || url.startsWith("http://")) {
+      return url;
+    }
+    
+    // If it's just a number, format it as a WhatsApp link
+    if (/^\d+$/.test(url.replace(/\s+/g, ''))) {
+      const cleanNumber = url.replace(/\s+/g, '');
+      return `https://wa.me/${cleanNumber}`;
+    }
+    
+    return url;
+  };
+
   return (
     <div className="space-y-8">
       <div className="neumorphic p-8 space-y-6">
@@ -24,49 +40,83 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
           </div>
           
           <div className="flex items-center space-x-2">
-            {business.socialLinks.facebook && (
-              <a 
-                href={business.socialLinks.facebook} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon bg-secondary/50"
-              >
-                <Facebook size={20} />
-              </a>
-            )}
-            
-            {business.socialLinks.instagram && (
-              <a 
-                href={business.socialLinks.instagram} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon bg-secondary/50"
-              >
-                <Instagram size={20} />
-              </a>
-            )}
-            
-            {business.socialLinks.whatsapp && (
-              <a 
-                href={business.socialLinks.whatsapp} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon bg-secondary/50"
-              >
-                <WhatsappIcon size={20} />
-              </a>
-            )}
-            
-            {business.socialLinks.website && (
-              <a 
-                href={business.socialLinks.website} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon bg-secondary/50"
-              >
-                <Globe size={20} />
-              </a>
-            )}
+            <TooltipProvider>
+              {business.socialLinks.facebook && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a 
+                      href={business.socialLinks.facebook} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="social-icon bg-secondary/50"
+                      aria-label="Facebook"
+                    >
+                      <Facebook size={20} />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Visit Facebook Page</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              
+              {business.socialLinks.instagram && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a 
+                      href={business.socialLinks.instagram} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="social-icon bg-secondary/50"
+                      aria-label="Instagram"
+                    >
+                      <Instagram size={20} />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Visit Instagram Profile</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              
+              {business.socialLinks.whatsapp && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a 
+                      href={formatWhatsAppUrl(business.socialLinks.whatsapp)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="social-icon bg-secondary/50"
+                      aria-label="WhatsApp"
+                    >
+                      <WhatsappIcon size={20} />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Chat on WhatsApp</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              
+              {business.socialLinks.website && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a 
+                      href={business.socialLinks.website.startsWith('http') ? business.socialLinks.website : `https://${business.socialLinks.website}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="social-icon bg-secondary/50"
+                      aria-label="Website"
+                    >
+                      <Globe size={20} />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Visit Website</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </TooltipProvider>
           </div>
         </div>
         
