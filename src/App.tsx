@@ -24,7 +24,7 @@ const App = () => (
       <ThemeProvider>
         <AppProvider>
           <Toaster />
-          <Sonner theme="dark" />
+          <Sonner />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
