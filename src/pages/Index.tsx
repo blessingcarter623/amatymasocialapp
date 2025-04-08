@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck } from "lucide-react";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
 
 const Index = () => {
@@ -38,9 +38,10 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white text-lg px-6 py-6"
-                onClick={() => navigate("/businesses")}
+                onClick={() => navigate("/about")}
               >
-                Explore Businesses
+                About Us
+                <Info className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
