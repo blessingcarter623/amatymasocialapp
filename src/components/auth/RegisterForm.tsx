@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue 
 } from "@/components/ui/select";
-import { ArrowRight, Loader2, Male, Female } from "lucide-react";
+import { ArrowRight, Loader2, UserRound } from "lucide-react";
 import { UserType, EmploymentStatus } from "@/types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -149,14 +148,14 @@ export function RegisterForm() {
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="male" id="male" />
                 <Label htmlFor="male" className="flex items-center">
-                  <Male className="h-4 w-4 mr-2 text-blue-500" />
+                  <UserRound className="h-4 w-4 mr-2 text-blue-500" />
                   Male
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="female" id="female" />
                 <Label htmlFor="female" className="flex items-center">
-                  <Female className="h-4 w-4 mr-2 text-pink-500" />
+                  <UserRound className="h-4 w-4 mr-2 text-pink-500" />
                   Female
                 </Label>
               </div>
