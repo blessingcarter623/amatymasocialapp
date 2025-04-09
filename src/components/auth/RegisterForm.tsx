@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue 
 } from "@/components/ui/select";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, Male, Female } from "lucide-react";
 import { UserType, EmploymentStatus } from "@/types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<UserType>("business");
   const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>("employed");
+  const [gender, setGender] = useState<string>("male");
   const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -42,7 +44,7 @@ export function RegisterForm() {
     }
     
     try {
-      await signUp(email, password, name, employmentStatus);
+      await signUp(email, password, name, gender, employmentStatus);
     } catch (error) {
       console.error("Registration error:", error);
       if (error instanceof Error) {
@@ -132,6 +134,33 @@ export function RegisterForm() {
               required
               className="bg-background border-amatyma-red/20"
             />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">
+              Gender
+            </label>
+            <RadioGroup 
+              defaultValue="male" 
+              value={gender}
+              onValueChange={(value) => setGender(value)}
+              className="flex flex-col space-y-2 mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male" className="flex items-center">
+                  <Male className="h-4 w-4 mr-2 text-blue-500" />
+                  Male
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female" className="flex items-center">
+                  <Female className="h-4 w-4 mr-2 text-pink-500" />
+                  Female
+                </Label>
+              </div>
+            </RadioGroup>
           </div>
 
           <div className="space-y-2">

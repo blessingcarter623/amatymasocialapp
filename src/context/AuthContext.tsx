@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Session, User } from "@supabase/supabase-js";
@@ -14,7 +13,7 @@ type AuthContextType = {
   profile: ProfileType | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, name: string, employmentStatus?: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, gender: string, employmentStatus?: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 };
@@ -111,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (email: string, password: string, name: string, employmentStatus = "employed") => {
+  const signUp = async (email: string, password: string, name: string, gender: string, employmentStatus = "employed") => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -120,6 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         options: {
           data: {
             name,
+            gender,
             employment_status: employmentStatus,
           },
         },
