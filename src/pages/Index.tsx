@@ -1,13 +1,11 @@
-
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download } from "lucide-react";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
-import { toast } from "sonner";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -17,14 +15,8 @@ const Index = () => {
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
   
-  const handleDownloadProfile = () => {
-    const link = document.createElement('a');
-    link.href = '/amatyma-profile.pdf';
-    link.download = 'Amatyma-Brotherhood-Circle-Profile.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success("Downloading Amatyma Profile...");
+  const handleProfileClick = () => {
+    window.open("https://jmp.sh/IZGXZwjE", "_blank");
   };
   
   return (
@@ -60,8 +52,8 @@ const Index = () => {
           <div 
             className="neumorphic p-6 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity" 
             style={{ animationDelay: "0.3s" }}
-            onClick={handleDownloadProfile}
-            title="Click to download Amatyma Profile"
+            onClick={handleProfileClick}
+            title="Click to view Amatyma Profile"
           >
             {theme === 'dark' ? (
               <div className="relative">
@@ -70,9 +62,6 @@ const Index = () => {
                   alt="Amatyma Brotherhood Circle" 
                   className="w-full aspect-square object-cover rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
                 />
-                <div className="absolute right-4 bottom-4 bg-amatyma-red rounded-full p-2 text-white shadow-lg animate-pulse">
-                  <Download className="h-6 w-6" />
-                </div>
               </div>
             ) : (
               <div className="relative">
@@ -81,9 +70,6 @@ const Index = () => {
                   alt="Amatyma Brotherhood Circle - Light Mode" 
                   className="w-full aspect-square object-cover rounded-xl transition-all duration-300"
                 />
-                <div className="absolute right-4 bottom-4 bg-amatyma-red rounded-full p-2 text-white shadow-lg animate-pulse">
-                  <Download className="h-6 w-6" />
-                </div>
               </div>
             )}
           </div>
