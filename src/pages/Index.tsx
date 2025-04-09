@@ -6,6 +6,7 @@ import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
 import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
+import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -17,6 +18,10 @@ const Index = () => {
   
   const handleProfileClick = () => {
     window.open("https://jmp.sh/IZGXZwjE", "_blank");
+  };
+
+  const handleWhatsAppClick = () => {
+    window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
   };
   
   return (
@@ -47,6 +52,25 @@ const Index = () => {
                 <Info className="ml-2 h-5 w-5" />
               </Button>
             </div>
+
+            {/* WhatsApp Join Button */}
+            <button 
+              onClick={handleWhatsAppClick}
+              className="group flex items-center gap-3 px-6 py-4 text-lg font-medium text-white bg-green-500 rounded-xl shadow-lg 
+                         hover:bg-green-600 transition-all duration-300 animate-[pulse_3s_infinite] 
+                         relative overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:animate-pulse"></span>
+              <span className="relative z-10 flex items-center">
+                <WhatsappIcon size={28} className="mr-2" />
+                Join Our WhatsApp Group
+              </span>
+              <span className="absolute -right-1 -top-1 flex h-4 w-4">
+                <span className="animate-[ping_1s_infinite] absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-white"></span>
+              </span>
+            </button>
           </div>
           
           <div 
@@ -75,6 +99,25 @@ const Index = () => {
           </div>
         </div>
       </section>
+      
+      {/* WhatsApp floating button */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <button 
+          onClick={handleWhatsAppClick}
+          className="group flex items-center justify-center p-4 bg-green-500 rounded-full shadow-xl 
+                    hover:bg-green-600 transition-all duration-300 
+                    relative animate-[pulse_3s_infinite]"
+          aria-label="Join WhatsApp Group"
+        >
+          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          <span className="absolute -inset-1 rounded-full blur-md bg-green-400/50 opacity-70 group-hover:opacity-100 animate-pulse"></span>
+          <WhatsappIcon size={36} className="relative z-10 text-white" />
+          <span className="absolute -right-1 -top-1 flex h-3 w-3">
+            <span className="animate-[ping_1s_infinite] absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+          </span>
+        </button>
+      </div>
       
       <section className="py-12">
         <Banner
