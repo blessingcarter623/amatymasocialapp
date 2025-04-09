@@ -130,8 +130,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw error;
       }
 
-      toast.success("Registered successfully! Please check your email for confirmation.");
-      navigate("/login");
+      // After successful registration, attempt to sign in automatically
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        toast.error(signInError.message);
+        navigate("/login");
+      } else {
+        toast.success("Registered successfully! Welcome to Amatyma.");
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error("Error signing up:", error);
       throw error;
