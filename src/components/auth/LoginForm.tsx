@@ -2,34 +2,20 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useApp } from "@/context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
-import { toast } from "sonner";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, isLoading } = useAuth();
+  const { login, isLoading } = useApp();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    
-    try {
-      await signIn(email, password);
-      toast.success("Logged in successfully!");
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Login error:", error);
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Invalid email or password");
-      }
-    }
+    await login(email, password);
+    navigate("/dashboard");
   };
 
   return (
@@ -43,12 +29,6 @@ export function LoginForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 text-sm text-red-500 bg-red-500/10 rounded-md">
-              {error}
-            </div>
-          )}
-          
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium">
               Email

@@ -13,22 +13,6 @@ export function BusinessCard({ business }: BusinessCardProps) {
   
   return (
     <div className="neumorphic overflow-hidden transition-all duration-300 hover:translate-y-[-5px]">
-      <div className="relative aspect-video overflow-hidden">
-        {business.logo || business.images?.length > 0 ? (
-          <img
-            src={business.logo || business.images?.[0]}
-            alt={business.name}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <img
-            src="/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png"
-            alt="Amatyma Logo"
-            className="w-full h-full object-contain p-4 opacity-30"
-          />
-        )}
-      </div>
-      
       <div className="p-6 space-y-4">
         <div className="space-y-2">
           <h3 className="text-xl font-medium text-foreground line-clamp-1">

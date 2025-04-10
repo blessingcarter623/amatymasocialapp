@@ -7,11 +7,10 @@ interface BusinessListProps {
 }
 
 export function BusinessList({ businesses }: BusinessListProps) {
-  if (!businesses || businesses.length === 0) {
+  if (businesses.length === 0) {
     return (
       <div className="neumorphic-inset p-8 text-center">
         <p className="text-muted-foreground">No businesses found</p>
-        <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filter criteria</p>
       </div>
     );
   }

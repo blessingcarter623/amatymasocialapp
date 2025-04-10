@@ -1,125 +1,359 @@
 
-import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
-import { Business, Department } from "@/types";
-import { supabase } from "@/integrations/supabase/client";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { Business, User, Department } from "@/types";
 import { toast } from "sonner";
-import { Database } from "@/integrations/supabase/types";
-
-// Type for the data returned directly from Supabase
-type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
-type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
-
-// Custom type combining business with its social links
-type BusinessWithSocialLinks = SupabaseBusiness & {
-  social_links: SupabaseSocialLink[] | null;
-  province?: string | null;
-  city?: string | null;
-};
-
-// Helper function to convert Supabase data to our application's Business type
-const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks): Business => {
-  // Extract the first social link (if any)
-  const socialLink = data.social_links && data.social_links.length > 0 ? data.social_links[0] : null;
-  
-  return {
-    id: data.id,
-    name: data.name,
-    description: data.description || "",
-    category: data.category || "",
-    subcategory: data.subcategory || undefined,
-    location: data.location || "",
-    province: data.province || undefined,
-    city: data.city || undefined,
-    contactPerson: data.contact_person || "",
-    phone: data.phone || "",
-    email: data.email || "",
-    logo: data.logo || undefined,
-    images: data.images || [],
-    socialLinks: {
-      facebook: socialLink?.facebook || undefined,
-      whatsapp: socialLink?.whatsapp || undefined,
-      instagram: socialLink?.instagram || undefined,
-      website: socialLink?.website || undefined,
-    },
-    department: data.department || undefined,
-    userType: "business", // Default value since this isn't in the database
-    createdAt: data.created_at,
-    updatedAt: data.updated_at,
-  };
-};
 
 type AppContextType = {
+  user: User | null;
   businesses: Business[];
-  isLoading: boolean;
   departments: Department[];
-  fetchBusinesses: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
+  logout: () => void;
+  addBusiness: (business: Omit<Business, "id" | "createdAt" | "updatedAt">) => Promise<void>;
+  updateBusiness: (id: string, business: Partial<Business>) => Promise<void>;
+  isLoading: boolean;
 };
-
-const departmentsList: Department[] = [
-  { name: "Agribusiness", subcategories: ["Farming", "Distribution", "Processing"] },
-  { name: "Construction", subcategories: ["Residential", "Commercial", "Industrial"] },
-  { name: "Education", subcategories: ["Primary", "Secondary", "Tertiary"] },
-  { name: "Employment and Labour", subcategories: ["Recruitment", "HR Services", "Professional Training"] },
-  { name: "Finance", subcategories: ["Banking", "Insurance", "Investment"] },
-  { name: "Healthcare", subcategories: ["Medical", "Dental", "Pharmacy"] },
-  { name: "Hospitality", subcategories: ["Hotels", "Restaurants", "Events"] },
-  { name: "Information Technology", subcategories: ["Software", "Hardware", "Services"] },
-  { name: "Legal Services", subcategories: ["Corporate", "Criminal", "Civil"] },
-  { name: "Manufacturing", subcategories: ["Textiles", "Electronics", "Food"] },
-  { name: "Retail", subcategories: ["Clothing", "Electronics", "Groceries"] },
-  { name: "Transportation", subcategories: ["Logistics", "Public Transport", "Shipping"] },
-];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const mockBusinesses: Business[] = [
+  {
+    id: "1",
+    name: "TechSolutions SA",
+    description: "IT solutions provider specializing in government systems",
+    category: "Technology",
+    subcategory: "IT Services",
+    location: "Pretoria, Gauteng",
+    contactPerson: "John Khumalo",
+    phone: "+27 82 123 4567",
+    email: "info@techsolutionssa.co.za",
+    socialLinks: {
+      facebook: "https://facebook.com/techsolutionssa",
+      whatsapp: "https://wa.me/27821234567",
+      instagram: "https://instagram.com/techsolutionssa",
+      website: "https://techsolutionssa.co.za",
+    },
+    department: "Communications and Digital Technologies",
+    userType: "business",
+    createdAt: "2023-01-15",
+    updatedAt: "2023-12-20",
+  },
+  {
+    id: "2",
+    name: "Green Earth Farming",
+    description: "Sustainable agricultural solutions for modern farming",
+    category: "Agriculture",
+    subcategory: "Sustainable Farming",
+    location: "Stellenbosch, Western Cape",
+    contactPerson: "Sarah van der Merwe",
+    phone: "+27 83 987 6543",
+    email: "contact@greenearthfarming.co.za",
+    socialLinks: {
+      facebook: "https://facebook.com/greenearthfarming",
+      whatsapp: "https://wa.me/27839876543",
+      instagram: "https://instagram.com/greenearthfarming",
+      website: "https://greenearthfarming.co.za",
+    },
+    department: "Agriculture",
+    userType: "business",
+    createdAt: "2022-06-10",
+    updatedAt: "2023-11-05",
+  },
+  {
+    id: "3",
+    name: "BuildRight Construction",
+    description: "Government infrastructure and construction specialists",
+    category: "Construction",
+    subcategory: "Government Infrastructure",
+    location: "Johannesburg, Gauteng",
+    contactPerson: "Michael Naidoo",
+    phone: "+27 84 111 2222",
+    email: "projects@buildright.co.za",
+    socialLinks: {
+      facebook: "https://facebook.com/buildrightconstruction",
+      whatsapp: "https://wa.me/27841112222",
+      instagram: "https://instagram.com/buildrightconstruction",
+      website: "https://buildright.co.za",
+    },
+    department: "Public Works and Infrastructure",
+    userType: "business",
+    createdAt: "2021-08-22",
+    updatedAt: "2023-10-15",
+  },
+];
 
-  const fetchBusinesses = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      
-      const { data, error } = await supabase
-        .from('businesses')
-        .select(`
-          *,
-          social_links(*)
-        `);
-      
-      if (error) {
-        console.error("Error fetching businesses:", error);
-        toast.error("Failed to load businesses");
-        return;
-      }
-      
-      console.log("Fetched business data:", data);
-      
-      // Map Supabase data to our application's Business type
-      const businessData = (data as BusinessWithSocialLinks[]).map(item => 
-        mapSupabaseBusinessToBusiness(item)
-      );
-      
-      setBusinesses(businessData);
-    } catch (error) {
-      console.error("Error in fetchBusinesses:", error);
-      toast.error("An error occurred while loading businesses");
-    } finally {
-      setIsLoading(false);
+export const departmentsList: Department[] = [
+  {
+    name: "Economic Services and Infrastructure Development",
+    subcategories: [
+      "Agriculture",
+      "Land Reform and Rural Development",
+      "Trade, Industry and Competition",
+    ],
+  },
+  {
+    name: "Justice and Protection Services",
+    subcategories: ["Correctional Services", "Defence", "Police"],
+  },
+  {
+    name: "Social Services",
+    subcategories: ["Basic Education", "Health", "Social Development"],
+  },
+  {
+    name: "Financial and Administration Services",
+    subcategories: [
+      "National Treasury",
+      "Public Service and Administration",
+      "Public Works and Infrastructure",
+    ],
+  },
+  {
+    name: "Central Government Administration",
+    subcategories: [
+      "Cooperative Governance and Traditional Affairs",
+      "International Relations and Cooperation",
+    ],
+  },
+  {
+    name: "Communications and Digital Technologies",
+    subcategories: [],
+  },
+  {
+    name: "Correctional Services",
+    subcategories: [],
+  },
+  {
+    name: "Defence",
+    subcategories: [],
+  },
+  {
+    name: "Employment and Labour",
+    subcategories: [],
+  },
+  {
+    name: "Forestry, Fisheries and the Environment",
+    subcategories: [],
+  },
+  {
+    name: "Health",
+    subcategories: [],
+  },
+  {
+    name: "Higher Education and Training",
+    subcategories: [],
+  },
+  {
+    name: "Home Affairs",
+    subcategories: [],
+  },
+  {
+    name: "Human Settlements",
+    subcategories: [],
+  },
+  {
+    name: "Independent Police Investigative Directorate",
+    subcategories: [],
+  },
+  {
+    name: "International Relations and Cooperation",
+    subcategories: [],
+  },
+  {
+    name: "Justice and Constitutional Development",
+    subcategories: [],
+  },
+  {
+    name: "Military Veterans",
+    subcategories: [],
+  },
+  {
+    name: "Mineral Resources and Energy",
+    subcategories: [],
+  },
+  {
+    name: "National School of Government",
+    subcategories: [],
+  },
+  {
+    name: "National Treasury",
+    subcategories: [],
+  },
+  {
+    name: "Small Business Development",
+    subcategories: [],
+  },
+  {
+    name: "Sport, Arts and Culture",
+    subcategories: [],
+  },
+  {
+    name: "State Security Agency",
+    subcategories: [],
+  },
+  {
+    name: "Transport",
+    subcategories: [],
+  },
+  {
+    name: "Water and Sanitation",
+    subcategories: [],
+  },
+  {
+    name: "Women, Youth and Persons with Disabilities",
+    subcategories: [],
+  },
+];
+
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [businesses, setBusinesses] = useState<Business[]>(mockBusinesses);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Simulate loading user from local storage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("amatyma_user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  useEffect(() => {
-    fetchBusinesses();
-  }, [fetchBusinesses]);
+  const login = async (email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      // Simple validation for demo purposes
+      if (email === "demo@amatyma.com" && password === "password") {
+        const newUser: User = {
+          id: "user1",
+          email,
+          name: "Demo User",
+          isLoggedIn: true,
+        };
+        setUser(newUser);
+        localStorage.setItem("amatyma_user", JSON.stringify(newUser));
+        toast.success("Login successful!");
+      } else {
+        toast.error("Invalid credentials. Try 'demo@amatyma.com / password'");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const register = async (email: string, password: string, name: string) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      const newUser: User = {
+        id: `user${Math.floor(Math.random() * 1000)}`,
+        email,
+        name,
+        isLoggedIn: true,
+      };
+      
+      setUser(newUser);
+      localStorage.setItem("amatyma_user", JSON.stringify(newUser));
+      toast.success("Registration successful!");
+    } catch (error) {
+      toast.error("An error occurred during registration");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("amatyma_user");
+    toast.success("Logged out successfully");
+  };
+
+  const addBusiness = async (businessData: Omit<Business, "id" | "createdAt" | "updatedAt">) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      const newBusiness: Business = {
+        ...businessData,
+        id: `business${Math.floor(Math.random() * 10000)}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      
+      setBusinesses((prevBusinesses) => [...prevBusinesses, newBusiness]);
+      
+      // Update user with business info
+      if (user) {
+        const updatedUser = { ...user, business: newBusiness };
+        setUser(updatedUser);
+        localStorage.setItem("amatyma_user", JSON.stringify(updatedUser));
+      }
+      
+      toast.success("Business added successfully!");
+      return Promise.resolve();
+    } catch (error) {
+      toast.error("Failed to add business");
+      console.error(error);
+      return Promise.reject(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateBusiness = async (id: string, businessUpdate: Partial<Business>) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      setBusinesses((prevBusinesses) =>
+        prevBusinesses.map((business) =>
+          business.id === id
+            ? { ...business, ...businessUpdate, updatedAt: new Date().toISOString() }
+            : business
+        )
+      );
+      
+      // Update user business if it's the user's business
+      if (user && user.business && user.business.id === id) {
+        const updatedBusiness = { ...user.business, ...businessUpdate, updatedAt: new Date().toISOString() };
+        const updatedUser = { ...user, business: updatedBusiness };
+        setUser(updatedUser);
+        localStorage.setItem("amatyma_user", JSON.stringify(updatedUser));
+      }
+      
+      toast.success("Business updated successfully!");
+      return Promise.resolve();
+    } catch (error) {
+      toast.error("Failed to update business");
+      console.error(error);
+      return Promise.reject(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <AppContext.Provider
       value={{
+        user,
         businesses,
-        isLoading,
         departments: departmentsList,
-        fetchBusinesses,
+        login,
+        register,
+        logout,
+        addBusiness,
+        updateBusiness,
+        isLoading,
       }}
     >
       {children}
