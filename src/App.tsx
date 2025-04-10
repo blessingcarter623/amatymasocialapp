@@ -14,8 +14,6 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import Businesses from "./pages/Businesses";
-import BusinessDetail from "./pages/BusinessDetail";
 import AboutUs from "./pages/AboutUs";
 import NotFound from "./pages/NotFound";
 
@@ -41,8 +39,6 @@ const App = () => (
                   <Route path="/dashboard" element={<Dashboard />} />
                 </Route>
                 
-                <Route path="/businesses" element={<Businesses />} />
-                <Route path="/businesses/:id" element={<BusinessDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
