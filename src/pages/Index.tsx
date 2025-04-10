@@ -1,18 +1,29 @@
-
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
+import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 
 const Index = () => {
   const navigate = useNavigate();
   const { businesses } = useApp();
+  const { theme } = useTheme();
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
+  
+  const handleProfileClick = () => {
+    window.open("https://jmp.sh/IZGXZwjE", "_blank");
+  };
+  
+  const handleWhatsAppClick = () => {
+    window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
+  };
   
   return (
     <MainLayout>
@@ -36,22 +47,67 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white text-lg px-6 py-6"
-                onClick={() => navigate("/businesses")}
+                onClick={() => navigate("/about")}
               >
-                Explore Businesses
+                About Us
+                <Info className="ml-2 h-5 w-5" />
               </Button>
             </div>
+
+            {/* WhatsApp Join Button */}
+            <button 
+              onClick={handleWhatsAppClick}
+              className="group flex items-center gap-3 px-6 py-4 text-lg font-medium text-white bg-green-500 rounded-xl shadow-lg 
+                         hover:bg-green-600 transition-all duration-300 
+                         relative overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="relative z-10 flex items-center">
+                <WhatsappIcon size={28} className="mr-2" />
+                Join Our WhatsApp Group
+              </span>
+            </button>
           </div>
           
-          <div className="neumorphic p-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <img 
-              src="/lovable-uploads/69238652-423e-4efe-9ad4-405b5760b70f.png" 
-              alt="Amatyma Logo" 
-              className="w-full aspect-square object-contain"
-            />
+          <div 
+            className="neumorphic p-6 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity" 
+            style={{ animationDelay: "0.3s" }}
+            onClick={handleProfileClick}
+            title="Click to view Amatyma Profile"
+          >
+            {theme === 'dark' ? (
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png" 
+                  alt="Amatyma Brotherhood Circle" 
+                  className="w-full aspect-square object-cover rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+                />
+              </div>
+            ) : (
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/5809bcfb-e855-4eef-8ddb-86825cf1f329.png" 
+                  alt="Amatyma Brotherhood Circle - Light Mode" 
+                  className="w-full aspect-square object-cover rounded-xl transition-all duration-300"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
+      
+      {/* WhatsApp floating button */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <button 
+          onClick={handleWhatsAppClick}
+          className="group flex items-center justify-center p-4 bg-green-500 rounded-full shadow-xl 
+                    hover:bg-green-600 transition-all duration-300 
+                    relative"
+          aria-label="Join WhatsApp Group"
+        >
+          <WhatsappIcon size={36} className="text-white" />
+        </button>
+      </div>
       
       <section className="py-12">
         <Banner

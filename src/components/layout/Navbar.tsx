@@ -1,24 +1,25 @@
 
 import { Button } from "@/components/ui/button";
-import { useApp } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Navbar() {
-  const { user, logout } = useApp();
+  const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    signOut();
   };
 
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Businesses", path: "/businesses" },
+    { name: "About Us", path: "/about" },
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
 
@@ -57,6 +58,7 @@ export function Navbar() {
           
           {!user ? (
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <Button variant="ghost" onClick={() => navigate("/login")}>
                 Login
               </Button>
@@ -69,8 +71,9 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <span className="text-sm text-muted-foreground">
-                Hello, {user.name}
+                Hello, {profile?.name || user.email}
               </span>
               <Button 
                 variant="ghost" 
@@ -84,14 +87,16 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -140,7 +145,7 @@ export function Navbar() {
           ) : (
             <div className="flex items-center justify-between pt-2">
               <span className="text-sm text-muted-foreground">
-                Hello, {user.name}
+                Hello, {profile?.name || user.email}
               </span>
               <Button 
                 variant="ghost" 

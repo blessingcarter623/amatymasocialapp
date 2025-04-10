@@ -1,8 +1,6 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useApp } from "@/context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { 
   Select,
@@ -11,8 +9,12 @@ import {
   SelectTrigger,
   SelectValue 
 } from "@/components/ui/select";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { UserType } from "@/types";
+import { ArrowRight, Loader2, UserRound } from "lucide-react";
+import { UserType, EmploymentStatus } from "@/types";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 export function RegisterForm() {
   const [name, setName] = useState("");
@@ -20,7 +22,9 @@ export function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<UserType>("business");
-  const { register, isLoading } = useApp();
+  const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>("employed");
+  const [gender, setGender] = useState<string>("male");
+  const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -38,14 +42,27 @@ export function RegisterForm() {
       return;
     }
     
-    await register(email, password, name);
-    navigate("/dashboard");
+    try {
+      await signUp(email, password, name, gender, employmentStatus);
+    } catch (error) {
+      console.error("Registration error:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An error occurred during registration");
+      }
+    }
   };
 
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="neumorphic p-8 space-y-6">
         <div className="text-center space-y-2">
+          <img 
+            src="/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png" 
+            alt="Amatyma Brotherhood Circle" 
+            className="mx-auto h-16 w-16"
+          />
           <h2 className="text-2xl font-bold text-foreground">Create Account</h2>
           <p className="text-muted-foreground text-sm">
             Join the Amatyma business platform
@@ -119,6 +136,33 @@ export function RegisterForm() {
           </div>
 
           <div className="space-y-2">
+            <label className="text-sm font-medium">
+              Gender
+            </label>
+            <RadioGroup 
+              defaultValue="male" 
+              value={gender}
+              onValueChange={(value) => setGender(value)}
+              className="flex flex-col space-y-2 mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male" className="flex items-center">
+                  <UserRound className="h-4 w-4 mr-2 text-blue-500" />
+                  Male
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female" className="flex items-center">
+                  <UserRound className="h-4 w-4 mr-2 text-pink-500" />
+                  Female
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
             <label htmlFor="userType" className="text-sm font-medium">
               Account Type
             </label>
@@ -134,6 +178,31 @@ export function RegisterForm() {
                 <SelectItem value="individual">Individual</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">
+              Employment Status
+            </label>
+            <RadioGroup 
+              defaultValue="employed" 
+              value={employmentStatus}
+              onValueChange={(value) => setEmploymentStatus(value as EmploymentStatus)}
+              className="flex flex-col space-y-2 mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="employed" id="employed" />
+                <Label htmlFor="employed">Employed</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="unemployed" id="unemployed" />
+                <Label htmlFor="unemployed">Unemployed</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="self-employed" id="self-employed" />
+                <Label htmlFor="self-employed">Self-Employed</Label>
+              </div>
+            </RadioGroup>
           </div>
 
           <Button

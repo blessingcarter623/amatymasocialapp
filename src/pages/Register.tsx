@@ -1,19 +1,23 @@
 
 import { MainLayout } from "@/components/layout/MainLayout";
 import { RegisterForm } from "@/components/auth/RegisterForm";
-import { useApp } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const { user } = useApp();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   
   useEffect(() => {
-    if (user?.isLoggedIn) {
+    if (user) {
       navigate("/dashboard");
     }
   }, [user, navigate]);
+  
+  if (isLoading) {
+    return null;
+  }
   
   return (
     <MainLayout>
