@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -34,7 +35,7 @@ const Index = () => {
               <span className="text-amatyma-red">Amatyma</span> Brotherhood Circle
             </h1>
             <p className="text-xl text-muted-foreground">
-              Where government departments and businesses connect, collaborate, and grow together.
+              A community-focused organization dedicated to empowering men and addressing critical social issues in South Africa.
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
               <Button 
@@ -70,25 +71,30 @@ const Index = () => {
           </div>
           
           <div 
-            className="neumorphic p-6 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity" 
-            style={{ animationDelay: "0.3s" }}
+            className="neumorphic p-8 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
+            style={{ animationDelay: "0.3s", minHeight: "260px" }}
             onClick={handleProfileClick}
             title="Click to view Amatyma Profile"
           >
             {theme === 'dark' ? (
-              <div className="relative">
+              <div className="relative flex items-center justify-center">
                 <img 
-                  src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png" 
-                  alt="Amatyma Brotherhood Circle" 
-                  className="w-full aspect-square object-cover rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+                  src="/lovable-uploads/4b673cf6-c8be-42f7-8bcf-d3d6f576a638.png" 
+                  alt="Amatyma Brotherhood Circle Logo"
+                  className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl"
+                  style={{
+                    background: "#000", 
+                    padding: "1.5rem",
+                    boxShadow: "0 4px 32px 0 rgba(0,0,0,0.8)"
+                  }}
                 />
               </div>
             ) : (
-              <div className="relative">
+              <div className="relative flex items-center justify-center">
                 <img 
                   src="/lovable-uploads/5809bcfb-e855-4eef-8ddb-86825cf1f329.png" 
                   alt="Amatyma Brotherhood Circle - Light Mode" 
-                  className="w-full aspect-square object-cover rounded-xl transition-all duration-300"
+                  className="w-40 h-40 md:w-52 md:h-52 object-cover rounded-xl transition-all duration-300"
                 />
               </div>
             )}
