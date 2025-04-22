@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -76,28 +75,13 @@ const Index = () => {
             onClick={handleProfileClick}
             title="Click to view Amatyma Profile"
           >
-            {theme === 'dark' ? (
-              <div className="relative flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/4b673cf6-c8be-42f7-8bcf-d3d6f576a638.png" 
-                  alt="Amatyma Brotherhood Circle Logo"
-                  className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl"
-                  style={{
-                    background: "#000", 
-                    padding: "1.5rem",
-                    boxShadow: "0 4px 32px 0 rgba(0,0,0,0.8)"
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="relative flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/5809bcfb-e855-4eef-8ddb-86825cf1f329.png" 
-                  alt="Amatyma Brotherhood Circle - Light Mode" 
-                  className="w-40 h-40 md:w-52 md:h-52 object-cover rounded-xl transition-all duration-300"
-                />
-              </div>
-            )}
+            <div className="relative flex items-center justify-center w-full h-full">
+              <img 
+                src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png"
+                alt="Amatyma Brotherhood Circle"
+                className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+              />
+            </div>
           </div>
         </div>
       </section>

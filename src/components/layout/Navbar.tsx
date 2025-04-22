@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -6,11 +5,13 @@ import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { useTheme } from "@/context/ThemeContext";
 
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   const handleLogout = () => {
     signOut();
@@ -27,11 +28,24 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-amatyma-red/10 bg-background backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <img 
-            src="/lovable-uploads/d190220b-b318-44c6-9b9d-f0d7afa01a26.png" 
-            alt="Amatyma Logo" 
-            className="h-10 w-10"
-          />
+          {theme === "dark" ? (
+            <img
+              src="/lovable-uploads/f04758a9-6f0e-4a14-8f56-13ab0dcea901.png"
+              alt="Amatyma Logo"
+              className="h-12 w-12 object-contain"
+              style={{
+                background: "#000",
+                padding: ".20rem",
+                borderRadius: "0.75rem",
+              }}
+            />
+          ) : (
+            <img 
+              src="/lovable-uploads/d190220b-b318-44c6-9b9d-f0d7afa01a26.png" 
+              alt="Amatyma Logo" 
+              className="h-10 w-10"
+            />
+          )}
           <span 
             className="hidden font-bold text-lg text-amatyma-red sm:inline-block"
             onClick={() => navigate("/")}
