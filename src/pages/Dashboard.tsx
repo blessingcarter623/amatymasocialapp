@@ -114,6 +114,11 @@ const Dashboard = () => {
     );
   }
   
+  // Use a clientside tab change without causing a page refresh
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
+  
   return (
     <MainLayout>
       <div className="space-y-6 py-6">
@@ -130,7 +135,7 @@ const Dashboard = () => {
           />
         )}
         
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="neumorphic w-full justify-start">
             <TabsTrigger value="profile" className="data-[state=active]:text-amatyma-red">
               <User className="mr-2 h-4 w-4" />
