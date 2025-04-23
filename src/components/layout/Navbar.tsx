@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -30,11 +31,11 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           {theme === "dark" ? (
             <img
-              src="/lovable-uploads/f04758a9-6f0e-4a14-8f56-13ab0dcea901.png"
+              src="/lovable-uploads/68d1115e-2772-4423-97a7-0314869d7169.png"
               alt="Amatyma Logo"
               className="h-12 w-12 object-contain"
               style={{
-                background: "#000",
+                background: "transparent",
                 padding: ".20rem",
                 borderRadius: "0.75rem",
               }}
