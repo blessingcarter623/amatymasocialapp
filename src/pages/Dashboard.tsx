@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
@@ -67,11 +68,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // First check if there's any saved form data
-    const savedData = localStorage.getItem('temp_business_form');
-    
     if (user) {
-      // If user exists, fetch from database
       fetchUserBusiness();
     } else {
       setLoading(false);
@@ -100,12 +97,6 @@ const Dashboard = () => {
       
       // Map to our application's Business type
       setBusiness(mapSupabaseBusinessToBusiness(businessData));
-      
-      // If business data exists in database, remove any temporary form data
-      if (businessData) {
-        localStorage.removeItem('temp_business_form');
-      }
-      
     } catch (error) {
       console.error("Error in fetchUserBusiness:", error);
     } finally {
@@ -123,11 +114,6 @@ const Dashboard = () => {
     );
   }
   
-  // Use a clientside tab change without causing a page refresh
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-  };
-  
   return (
     <MainLayout>
       <div className="space-y-6 py-6">
@@ -144,7 +130,7 @@ const Dashboard = () => {
           />
         )}
         
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="neumorphic w-full justify-start">
             <TabsTrigger value="profile" className="data-[state=active]:text-amatyma-red">
               <User className="mr-2 h-4 w-4" />
