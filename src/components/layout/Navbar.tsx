@@ -42,9 +42,14 @@ export function Navbar() {
             />
           ) : (
             <img 
-              src="/lovable-uploads/d190220b-b318-44c6-9b9d-f0d7afa01a26.png" 
+              src="/lovable-uploads/f74a0cf6-4b5a-440b-8f7d-6143716f4c8a.png" 
               alt="Amatyma Logo" 
-              className="h-10 w-10"
+              className="h-12 w-12 object-contain"
+              style={{
+                background: "transparent",
+                padding: ".20rem",
+                borderRadius: "0.75rem",
+              }}
             />
           )}
           <span 
