@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
@@ -68,7 +67,11 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
+    // First check if there's any saved form data
+    const savedData = localStorage.getItem('temp_business_form');
+    
     if (user) {
+      // If user exists, fetch from database
       fetchUserBusiness();
     } else {
       setLoading(false);
@@ -97,6 +100,12 @@ const Dashboard = () => {
       
       // Map to our application's Business type
       setBusiness(mapSupabaseBusinessToBusiness(businessData));
+      
+      // If business data exists in database, remove any temporary form data
+      if (businessData) {
+        localStorage.removeItem('temp_business_form');
+      }
+      
     } catch (error) {
       console.error("Error in fetchUserBusiness:", error);
     } finally {
