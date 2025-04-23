@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +16,8 @@ import { Loader2, Save, Upload, X, Image } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { southAfricanProvinces, getCitiesForProvince } from "@/utils/locationData";
+
+const TEMP_FORM_DATA_KEY = 'temp_business_form';
 
 interface BusinessFormProps {
   business?: Business | null;
@@ -44,29 +45,68 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     socialLinks: SocialLinks;
     logo?: string;
     images: string[];
-  }>({
-    name: business?.name || "",
-    description: business?.description || "",
-    category: business?.category || "",
-    subcategory: business?.subcategory || "",
-    location: business?.location || "",
-    province: business?.province || "",
-    city: business?.city || "",
-    contactPerson: business?.contactPerson || "",
-    phone: business?.phone || "",
-    email: business?.email || "",
-    department: business?.department || "",
-    socialLinks: business?.socialLinks || {
-      facebook: "",
-      whatsapp: "",
-      instagram: "",
-      website: "",
-    },
-    logo: business?.logo || "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
-    images: business?.images || [],
+  }>(() => {
+    if (business) {
+      return {
+        name: business.name || "",
+        description: business.description || "",
+        category: business.category || "",
+        subcategory: business.subcategory || "",
+        location: business.location || "",
+        province: business.province || "",
+        city: business.city || "",
+        contactPerson: business.contactPerson || "",
+        phone: business.phone || "",
+        email: business.email || "",
+        department: business.department || "",
+        socialLinks: business.socialLinks || {
+          facebook: "",
+          whatsapp: "",
+          instagram: "",
+          website: "",
+        },
+        logo: business.logo || "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+        images: business.images || [],
+      };
+    }
+    
+    const savedData = localStorage.getItem(TEMP_FORM_DATA_KEY);
+    if (savedData) {
+      try {
+        return JSON.parse(savedData);
+      } catch (e) {
+        console.error('Error parsing saved form data:', e);
+      }
+    }
+    
+    return {
+      name: "",
+      description: "",
+      category: "",
+      subcategory: "",
+      location: "",
+      province: "",
+      city: "",
+      contactPerson: "",
+      phone: "",
+      email: "",
+      department: "",
+      socialLinks: {
+        facebook: "",
+        whatsapp: "",
+        instagram: "",
+        website: "",
+      },
+      logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+      images: [],
+    };
   });
 
   useEffect(() => {
+    if (!business) {
+      localStorage.setItem(TEMP_FORM_DATA_KEY, JSON.stringify(formData));
+    }
+    
     setAvailableCities(getCitiesForProvince(formData.province));
     
     if (formData.city && !getCitiesForProvince(formData.province).includes(formData.city)) {
