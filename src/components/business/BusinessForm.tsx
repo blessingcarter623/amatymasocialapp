@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,7 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [formInitialized, setFormInitialized] = useState(false);
   
   const [formData, setFormData] = useState<{
     name: string;
@@ -45,9 +47,36 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     socialLinks: SocialLinks;
     logo?: string;
     images: string[];
-  }>(() => {
+  }>({
+    name: "",
+    description: "",
+    category: "",
+    subcategory: "",
+    location: "",
+    province: "",
+    city: "",
+    contactPerson: "",
+    phone: "",
+    email: "",
+    department: "",
+    socialLinks: {
+      facebook: "",
+      whatsapp: "",
+      instagram: "",
+      website: "",
+    },
+    logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    images: [],
+  });
+
+  // Initialize form data from business or localStorage
+  useEffect(() => {
+    // Only run this effect once
+    if (formInitialized) return;
+    
     if (business) {
-      return {
+      // If business data is provided, use it
+      setFormData({
         name: business.name || "",
         description: business.description || "",
         category: business.category || "",
@@ -67,52 +96,39 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         },
         logo: business.logo || "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
         images: business.images || [],
-      };
-    }
-    
-    const savedData = localStorage.getItem(TEMP_FORM_DATA_KEY);
-    if (savedData) {
-      try {
-        return JSON.parse(savedData);
-      } catch (e) {
-        console.error('Error parsing saved form data:', e);
+      });
+      // Remove any saved form data since we're editing an existing business
+      localStorage.removeItem(TEMP_FORM_DATA_KEY);
+    } else {
+      // If no business data, try to load from localStorage
+      const savedData = localStorage.getItem(TEMP_FORM_DATA_KEY);
+      if (savedData) {
+        try {
+          setFormData(JSON.parse(savedData));
+        } catch (e) {
+          console.error('Error parsing saved form data:', e);
+        }
       }
     }
     
-    return {
-      name: "",
-      description: "",
-      category: "",
-      subcategory: "",
-      location: "",
-      province: "",
-      city: "",
-      contactPerson: "",
-      phone: "",
-      email: "",
-      department: "",
-      socialLinks: {
-        facebook: "",
-        whatsapp: "",
-        instagram: "",
-        website: "",
-      },
-      logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
-      images: [],
-    };
-  });
+    setFormInitialized(true);
+  }, [business, formInitialized]);
 
+  // Update cities when province changes and save form data to localStorage
   useEffect(() => {
-    if (!business) {
+    // Only save to localStorage if this is a new business (not editing an existing one)
+    if (formInitialized && !business) {
       localStorage.setItem(TEMP_FORM_DATA_KEY, JSON.stringify(formData));
     }
     
+    // Update available cities based on selected province
     setAvailableCities(getCitiesForProvince(formData.province));
     
+    // Reset city if it's not available in the selected province
     if (formData.city && !getCitiesForProvince(formData.province).includes(formData.city)) {
       setFormData(prev => ({ ...prev, city: undefined }));
     }
-  }, [formData.province]);
+  }, [formData, formInitialized, business]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -252,6 +268,9 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
           });
           
         if (socialLinksError) throw socialLinksError;
+        
+        // Clear local storage once submission is successful for new business
+        localStorage.removeItem(TEMP_FORM_DATA_KEY);
       }
       
       toast.success(businessId ? "Business updated successfully!" : "Business created successfully!");
