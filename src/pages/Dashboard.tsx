@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
@@ -156,12 +155,11 @@ const Dashboard = () => {
                 <p className="font-medium">{user?.email}</p>
               </div>
               
-              {profile?.employment_status && (
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Employment Status</p>
-                  <p className="font-medium capitalize">{profile.employment_status}</p>
-                </div>
-              )}
+              {/* Gender options are hidden but not removed */}
+              <div className="space-y-1 hidden">
+                <p className="text-sm text-muted-foreground">Employment Status</p>
+                <p className="font-medium capitalize">{profile?.employment_status}</p>
+              </div>
             </div>
           </TabsContent>
           

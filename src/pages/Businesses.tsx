@@ -205,7 +205,7 @@ const Businesses = () => {
                 className="bg-amatyma-red hover:bg-amatyma-red/80"
               >
                 <Filter className="mr-2 h-4 w-4" />
-                Filter
+                Search
               </Button>
               
               <Button 

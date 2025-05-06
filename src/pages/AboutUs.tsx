@@ -1,4 +1,3 @@
-
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -317,25 +316,45 @@ const AboutUs = () => {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <a href="#" className="neumorphic p-6 text-center hover:scale-105 transition-transform">
+          <a 
+            href="https://www.instagram.com/amatyma_sa?igsh=eXhjeXplbms2dGoz" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="neumorphic p-6 text-center hover:scale-105 transition-transform"
+          >
             <Instagram className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
             <p className="font-medium">@amatyma_sa</p>
             <p className="text-sm text-muted-foreground">30.5K followers</p>
           </a>
           
-          <a href="#" className="neumorphic p-6 text-center hover:scale-105 transition-transform">
+          <a 
+            href="https://www.youtube.com/@AMATYMA" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="neumorphic p-6 text-center hover:scale-105 transition-transform"
+          >
             <Youtube className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
             <p className="font-medium">Amatyma Brotherhood</p>
             <p className="text-sm text-muted-foreground">2.94K subscribers</p>
           </a>
           
-          <a href="#" className="neumorphic p-6 text-center hover:scale-105 transition-transform">
+          <a 
+            href="https://www.facebook.com/share/1BZnjhQXFm/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="neumorphic p-6 text-center hover:scale-105 transition-transform"
+          >
             <Facebook className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
             <p className="font-medium">Amatyma</p>
             <p className="text-sm text-muted-foreground">21K followers</p>
           </a>
           
-          <a href="#" className="neumorphic p-6 text-center hover:scale-105 transition-transform">
+          <a 
+            href="https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="neumorphic p-6 text-center hover:scale-105 transition-transform"
+          >
             <WhatsappIcon className="h-8 w-8 mx-auto mb-3 text-amatyma-red" />
             <p className="font-medium">WhatsApp Group</p>
             <p className="text-sm text-muted-foreground">796 members</p>
