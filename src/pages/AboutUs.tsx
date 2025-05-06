@@ -149,7 +149,11 @@ const AboutUs = () => {
             </div>
             
             <div className="flex justify-center mt-8">
-              <Button variant="outline" className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white">
+              <Button 
+                variant="outline" 
+                className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
+                onClick={() => window.open("https://www.youtube.com/@AMATYMA", "_blank")}
+              >
                 <Youtube className="mr-2 h-4 w-4" />
                 Follow Our Channel
               </Button>

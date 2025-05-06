@@ -2,6 +2,8 @@
 import { Facebook, Instagram, Globe, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
+import { Youtube } from "lucide-react";
 
 export function Footer() {
   return (
@@ -22,14 +24,37 @@ export function Footer() {
               with trusted business partners.
             </p>
             <div className="flex items-center space-x-3">
-              <a href="#" className="social-icon">
+              <a 
+                href="https://www.facebook.com/share/1BZnjhQXFm/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon hover:text-amatyma-red"
+              >
                 <Facebook size={18} />
               </a>
-              <a href="#" className="social-icon">
+              <a 
+                href="https://www.instagram.com/amatyma_sa?igsh=eXhjeXplbms2dGoz" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon hover:text-amatyma-red"
+              >
                 <Instagram size={18} />
               </a>
-              <a href="#" className="social-icon">
-                <Globe size={18} />
+              <a 
+                href="https://www.youtube.com/@AMATYMA" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon hover:text-amatyma-red"
+              >
+                <Youtube size={18} />
+              </a>
+              <a 
+                href="https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="social-icon hover:text-amatyma-red"
+              >
+                <WhatsappIcon className="h-[18px] w-[18px]" />
               </a>
             </div>
           </div>
