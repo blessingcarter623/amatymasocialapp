@@ -4,19 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { Youtube } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 export function Footer() {
+  const { theme } = useTheme();
+  
   return (
     <footer className="mt-auto w-full border-t border-amatyma-red/10 bg-background/95 backdrop-blur-lg">
       <div className="container py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img 
-                src="/lovable-uploads/d190220b-b318-44c6-9b9d-f0d7afa01a26.png" 
-                alt="Amatyma Logo" 
-                className="h-8 w-8"
-              />
+              {theme === "dark" ? (
+                <img 
+                  src="/lovable-uploads/46ff43b0-ae6b-4a2b-a9fd-85a3bdf49bc0.png" 
+                  alt="Amatyma Brotherhood Circle Logo" 
+                  className="h-16 w-16"
+                />
+              ) : (
+                <img 
+                  src="/lovable-uploads/3ba3b51f-411a-4b8c-885a-70f4e70b028b.png" 
+                  alt="Amatyma Logo" 
+                  className="h-12 w-12"
+                />
+              )}
               <span className="font-bold text-lg text-amatyma-red">AMATYMA</span>
             </div>
             <p className="text-sm text-muted-foreground">
