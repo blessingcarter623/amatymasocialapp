@@ -49,3 +49,31 @@ export type User = {
   business?: Business;
   isLoggedIn: boolean;
 };
+
+export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL";
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  availableSizes: ProductSize[];
+  inStock: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CartItem = {
+  productId: string;
+  quantity: number;
+  size: ProductSize;
+  product: Product;
+};
+
+export type Cart = {
+  items: CartItem[];
+  totalItems: number;
+  totalPrice: number;
+};

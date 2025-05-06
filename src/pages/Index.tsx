@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -5,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info } from "lucide-react";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 
@@ -69,18 +70,24 @@ const Index = () => {
             </button>
           </div>
           
-          <div 
-            className="neumorphic p-8 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
-            style={{ animationDelay: "0.3s", minHeight: "260px" }}
-            onClick={handleProfileClick}
-            title="Click to view Amatyma Profile"
-          >
-            <div className="relative flex items-center justify-center w-full h-full">
-              <img 
-                src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png"
-                alt="Amatyma Brotherhood Circle"
-                className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
-              />
+          <div className="relative">
+            <div 
+              className="neumorphic p-8 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
+              style={{ animationDelay: "0.3s", minHeight: "260px" }}
+              onClick={handleProfileClick}
+              title="Download Amatyma Profile"
+            >
+              <div className="relative flex items-center justify-center w-full h-full">
+                <img 
+                  src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png"
+                  alt="Amatyma Brotherhood Circle"
+                  className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+                />
+              </div>
+            </div>
+            <div className="text-center mt-2 text-sm text-muted-foreground flex items-center justify-center">
+              <Download size={16} className="mr-1" />
+              Click to download our profile
             </div>
           </div>
         </div>
@@ -125,8 +132,8 @@ const Index = () => {
             },
             {
               icon: <ListChecks />,
-              title: "Department Connections",
-              description: "Connect directly with the government departments relevant to your business",
+              title: "Department Liaison",
+              description: "Access skilled intermediaries who connect your business with relevant government departments",
             },
             {
               icon: <UserCircle />,
@@ -169,6 +176,45 @@ const Index = () => {
         </div>
         
         <BusinessList businesses={featuredBusinesses} />
+
+        {/* Merchandise Section */}
+        <div className="mt-16">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Featured Merchandise</h2>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/merchandise")}
+              className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
+            >
+              Shop Now
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div className="h-48 bg-muted flex items-center justify-center">
+                  <img src={`/lovable-uploads/2b1b2f71-b5bc-4ead-a07b-810597474e21.png`} alt={`Merchandise ${item}`} className="h-full object-cover" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-medium text-lg mb-1">Amatyma T-Shirt</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Limited Edition Brotherhood Circle Merchandise</p>
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold">R349.00</span>
+                    <Button 
+                      size="sm" 
+                      onClick={() => navigate(`/merchandise/${item}`)}
+                      className="bg-amatyma-red hover:bg-amatyma-red/80"
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </MainLayout>
   );
