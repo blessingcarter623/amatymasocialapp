@@ -2,17 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Menu } from "lucide-react";
+import { LogOut, Menu, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
+import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme } = useTheme();
+  const { cart } = useCart();
 
   const handleLogout = () => {
     signOut();
@@ -21,6 +23,7 @@ export function Navbar() {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Businesses", path: "/businesses" },
+    { name: "Merchandise", path: "/merchandise" },
     { name: "About Us", path: "/about" },
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
@@ -76,6 +79,19 @@ export function Navbar() {
             )
           )}
           
+          <Button
+            variant="ghost"
+            className="relative"
+            onClick={() => navigate('/cart')}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {cart.totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-amatyma-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {cart.totalItems}
+              </span>
+            )}
+          </Button>
+          
           {!user ? (
             <div className="flex items-center gap-2">
               <ThemeToggle />
@@ -107,7 +123,20 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-4 md:hidden">
+          <Button
+            variant="ghost"
+            className="relative"
+            onClick={() => navigate('/cart')}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {cart.totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-amatyma-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {cart.totalItems}
+              </span>
+            )}
+          </Button>
+          
           <ThemeToggle />
           <Button 
             variant="ghost" 
