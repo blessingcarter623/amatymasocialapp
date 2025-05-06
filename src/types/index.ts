@@ -1,4 +1,3 @@
-
 export type SocialLinks = {
   facebook?: string;
   whatsapp?: string;
@@ -50,7 +49,7 @@ export type User = {
   isLoggedIn: boolean;
 };
 
-export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL";
+export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
 
 export type Product = {
   id: string;
