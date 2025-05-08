@@ -33,6 +33,8 @@ export const getProducts = async (): Promise<Product[]> => {
       throw error;
     }
     
+    if (!data) return [];
+    
     // Map the database records to our Product type
     return data.map((item: any) => ({
       id: item.id,
@@ -65,16 +67,16 @@ export const getProductById = async (id: string): Promise<Product | null> => {
     if (!data) return null;
     
     return {
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      image: data.image,
-      category: data.category,
-      availableSizes: data.available_sizes as ProductSize[],
-      inStock: data.in_stock,
-      createdAt: data.created_at,
-      updatedAt: data.updated_at
+      id: data.id || '',
+      name: data.name || '',
+      description: data.description || '',
+      price: data.price || 0,
+      image: data.image || '',
+      category: data.category || '',
+      availableSizes: data.available_sizes as ProductSize[] || [],
+      inStock: data.in_stock || false,
+      createdAt: data.created_at || '',
+      updatedAt: data.updated_at || ''
     };
   } catch (error) {
     console.error("Error in getProductById:", error);
@@ -103,17 +105,21 @@ export const createProduct = async (productData: CreateMerchandiseItem): Promise
       throw error;
     }
     
+    if (!data) {
+      throw new Error("No data returned from create_merchandise");
+    }
+    
     return {
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      image: data.image,
-      category: data.category,
-      availableSizes: data.available_sizes as ProductSize[],
-      inStock: data.in_stock,
-      createdAt: data.created_at,
-      updatedAt: data.updated_at
+      id: data.id || '',
+      name: data.name || '',
+      description: data.description || '',
+      price: data.price || 0,
+      image: data.image || '',
+      category: data.category || '',
+      availableSizes: data.available_sizes as ProductSize[] || [],
+      inStock: data.in_stock || false,
+      createdAt: data.created_at || '',
+      updatedAt: data.updated_at || ''
     };
   } catch (error) {
     console.error("Error in createProduct:", error);
@@ -122,12 +128,12 @@ export const createProduct = async (productData: CreateMerchandiseItem): Promise
 };
 
 // Update product
-export const updateProduct = async (id: string, productData: UpdateMerchandiseItem): Promise<Product> => {
+export const updateProduct = async (productData: UpdateMerchandiseItem & { id: string }): Promise<Product> => {
   try {
     const { data, error } = await supabase.rpc(
       'update_merchandise',
       {
-        item_id: id,
+        item_id: productData.id,
         item_name: productData.name,
         item_description: productData.description,
         item_price: productData.price,
@@ -143,17 +149,21 @@ export const updateProduct = async (id: string, productData: UpdateMerchandiseIt
       throw error;
     }
     
+    if (!data) {
+      throw new Error("No data returned from update_merchandise");
+    }
+    
     return {
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      image: data.image,
-      category: data.category,
-      availableSizes: data.available_sizes as ProductSize[],
-      inStock: data.in_stock,
-      createdAt: data.created_at,
-      updatedAt: data.updated_at
+      id: data.id || '',
+      name: data.name || '',
+      description: data.description || '',
+      price: data.price || 0,
+      image: data.image || '',
+      category: data.category || '',
+      availableSizes: data.available_sizes as ProductSize[] || [],
+      inStock: data.in_stock || false,
+      createdAt: data.created_at || '',
+      updatedAt: data.updated_at || ''
     };
   } catch (error) {
     console.error("Error in updateProduct:", error);
@@ -186,9 +196,43 @@ export const isUserAdmin = async (userId: string): Promise<boolean> => {
       throw error;
     }
     
-    return data ? data.is_admin : false;
+    return data ? !!data : false;
   } catch (error) {
     console.error("Error in isUserAdmin:", error);
     return false;
+  }
+};
+
+// Add the missing uploadProductImage function
+export const uploadProductImage = async (file: File): Promise<string> => {
+  try {
+    const fileName = `merchandise/${Date.now()}-${file.name}`;
+    
+    // Upload the file to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('public')
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
+    
+    if (uploadError) {
+      console.error("Error uploading image:", uploadError);
+      throw uploadError;
+    }
+    
+    if (!uploadData) {
+      throw new Error("No data returned from upload");
+    }
+
+    // Get the public URL for the uploaded file
+    const { data: publicUrlData } = supabase.storage
+      .from('public')
+      .getPublicUrl(uploadData.path);
+
+    return publicUrlData.publicUrl;
+  } catch (error) {
+    console.error("Error in uploadProductImage:", error);
+    throw error;
   }
 };
