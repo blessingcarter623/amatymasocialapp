@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,9 @@ export function LoginForm() {
     setError("");
     
     try {
-      await signIn(email, password, () => navigate("/dashboard"));
+      await signIn(email, password);
+      toast.success("Logged in successfully!");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       if (error instanceof Error) {

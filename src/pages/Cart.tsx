@@ -63,7 +63,7 @@ const Cart = () => {
               <Separator />
               <div className="p-4">
                 {cart.items.map((item) => (
-                  <CartItem key={`${item.product.id}-${item.size}`} item={item} />
+                  <CartItem key={`${item.productId}-${item.size}`} item={item} />
                 ))}
               </div>
             </div>

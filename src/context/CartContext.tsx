@@ -54,7 +54,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart(prevCart => {
       // Check if product with the same size already exists in the cart
       const existingItemIndex = prevCart.items.findIndex(
-        item => item.product.id === product.id && item.size === size
+        item => item.productId === product.id && item.size === size
       );
 
       let newItems;
@@ -71,9 +71,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         newItems = [
           ...prevCart.items,
           {
-            product,
+            productId: product.id,
             quantity,
-            size
+            size,
+            product
           }
         ];
       }
@@ -88,7 +89,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const removeFromCart = (productId: string, size: ProductSize) => {
     setCart(prevCart => {
       const newItems = prevCart.items.filter(
-        item => !(item.product.id === productId && item.size === size)
+        item => !(item.productId === productId && item.size === size)
       );
       
       toast.info("Item removed from cart");
@@ -100,7 +101,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateQuantity = (productId: string, size: ProductSize, quantity: number) => {
     setCart(prevCart => {
       const newItems = prevCart.items.map(item => {
-        if (item.product.id === productId && item.size === size) {
+        if (item.productId === productId && item.size === size) {
           return { ...item, quantity };
         }
         return item;

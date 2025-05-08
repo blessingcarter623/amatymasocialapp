@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardContent className="p-4">
         <h3 className="text-lg font-bold">{product.name}</h3>
         <div className="mt-1 flex items-center justify-between">
-          <span className="text-sm font-medium text-amatyma-red">Coming Soon</span>
+          <span className="text-lg font-bold">R{product.price.toFixed(2)}</span>
           <div className="flex gap-1">
             {product.availableSizes.slice(0, 3).map((size) => (
               <span key={size} className="inline-block px-2 py-1 text-xs bg-muted rounded">

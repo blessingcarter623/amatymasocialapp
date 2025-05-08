@@ -1,88 +1,25 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download, Loader } from "lucide-react";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
-import { ProductCard } from "@/components/merchandise/ProductCard";
-import { Product, ProductSize } from '@/types';
-import { getProducts } from '@/services/merchandiseService';
-
-// Sample products for the featured merchandise section
-const FEATURED_PRODUCTS = [
-  {
-    id: "1",
-    name: "Amatyma MANCAVE T-Shirt",
-    description: "Official Amatyma MANCAVE T-shirt with logo on front",
-    price: 349,
-    image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
-    category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"] as ProductSize[],
-    inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: "3",
-    name: "Amatyma Hoodie",
-    description: "Stay warm with our comfortable Amatyma Brotherhood hoodie",
-    price: 599,
-    image: "/lovable-uploads/a4a6aec3-9199-4694-8d4c-b9805ff69def.png",
-    category: "Clothing",
-    availableSizes: ["M", "L", "XL", "XXL"] as ProductSize[],
-    inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: "8",
-    name: "Amatyma Blazer",
-    description: "Elegant black blazer with Amatyma MANCAVE logo on the pocket",
-    price: 1299,
-    image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
-    category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"] as ProductSize[],
-    inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
 
 const Index = () => {
   const navigate = useNavigate();
   const { businesses } = useApp();
   const { theme } = useTheme();
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(true);
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
   
-  // Fetch featured products from the database
-  useEffect(() => {
-    const fetchFeaturedProducts = async () => {
-      try {
-        setLoadingProducts(true);
-        const products = await getProducts();
-        // Show the 3 most recent products
-        setFeaturedProducts(products.slice(0, 3));
-      } catch (error) {
-        console.error("Error fetching featured products:", error);
-      } finally {
-        setLoadingProducts(false);
-      }
-    };
-    
-    fetchFeaturedProducts();
-  }, []);
-  
   const handleProfileClick = () => {
-    window.open("https://jmp.sh/s/thV9I2sT3HHS9IURDVvP", "_blank");
+    window.open("https://jmp.sh/IZGXZwjE", "_blank");
   };
   
   const handleWhatsAppClick = () => {
@@ -254,21 +191,29 @@ const Index = () => {
             </Button>
           </div>
           
-          {loadingProducts ? (
-            <div className="flex justify-center py-12">
-              <Loader className="h-8 w-8 animate-spin text-amatyma-red" />
-            </div>
-          ) : featuredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No featured products available.</p>
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div className="h-48 bg-muted flex items-center justify-center">
+                  <img src={`/lovable-uploads/2b1b2f71-b5bc-4ead-a07b-810597474e21.png`} alt={`Merchandise ${item}`} className="h-full object-cover" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-medium text-lg mb-1">Amatyma T-Shirt</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Limited Edition Brotherhood Circle Merchandise</p>
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold">R349.00</span>
+                    <Button 
+                      size="sm" 
+                      onClick={() => navigate(`/merchandise/${item}`)}
+                      className="bg-amatyma-red hover:bg-amatyma-red/80"
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </MainLayout>

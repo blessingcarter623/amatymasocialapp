@@ -1,5 +1,5 @@
-
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -12,9 +12,9 @@ type AuthContextType = {
   user: User | null;
   profile: ProfileType | null;
   isLoading: boolean;
-  signIn: (email: string, password: string, callback?: () => void) => Promise<void>;
-  signUp: (email: string, password: string, name: string, gender: string, employmentStatus?: string, callback?: () => void) => Promise<void>;
-  signOut: (callback?: () => void) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, gender: string, employmentStatus?: string) => Promise<void>;
+  signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 };
 
@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set up the auth state listener
@@ -86,7 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signIn = async (email: string, password: string, callback?: () => void) => {
+  const signIn = async (email: string, password: string) => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -100,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       toast.success("Logged in successfully!");
-      if (callback) callback();
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error signing in:", error);
       throw error;
@@ -109,14 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (
-    email: string, 
-    password: string, 
-    name: string, 
-    gender: string, 
-    employmentStatus = "employed", 
-    callback?: () => void
-  ) => {
+  const signUp = async (email: string, password: string, name: string, gender: string, employmentStatus = "employed") => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -144,9 +138,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (signInError) {
         toast.error(signInError.message);
+        navigate("/login");
       } else {
         toast.success("Registered successfully! Welcome to Amatyma.");
-        if (callback) callback();
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error signing up:", error);
@@ -156,7 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signOut = async (callback?: () => void) => {
+  const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
@@ -165,7 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       toast.success("Logged out successfully");
-      if (callback) callback();
+      navigate("/");
     } catch (error) {
       console.error("Error signing out:", error);
     }

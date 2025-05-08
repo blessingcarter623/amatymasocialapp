@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,7 +43,7 @@ export function RegisterForm() {
     }
     
     try {
-      await signUp(email, password, name, gender, employmentStatus, () => navigate("/dashboard"));
+      await signUp(email, password, name, gender, employmentStatus);
     } catch (error) {
       console.error("Registration error:", error);
       if (error instanceof Error) {

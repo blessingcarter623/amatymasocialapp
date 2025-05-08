@@ -1,34 +1,57 @@
+export type SocialLinks = {
+  facebook?: string;
+  whatsapp?: string;
+  instagram?: string;
+  website?: string;
+};
+
+export type Department = {
+  name: string;
+  subcategories?: string[];
+};
 
 export type UserType = "business" | "individual";
+
 export type EmploymentStatus = "employed" | "unemployed" | "self-employed";
 
-export interface Business {
+export type BusinessCategory = {
+  name: string;
+  subcategories?: string[];
+};
+
+export type Business = {
   id: string;
-  createdAt: string;
-  updatedAt: string;
   name: string;
   description: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  province: string;
-  country: string;
-  website: string;
-  logo: string;
-  userId: string;
-  category?: string;
+  category: string;
   subcategory?: string;
-  location?: string;
-  contactPerson?: string;
-  department?: string;
+  location: string;
+  province?: string;
+  city?: string;
+  contactPerson: string;
+  phone: string;
+  email: string;
+  logo?: string;
   images?: string[];
-  socialLinks?: SocialLinks;
-  userType?: UserType;
-}
+  socialLinks: SocialLinks;
+  department?: string;
+  userType: UserType;
+  createdAt: string;
+  updatedAt: string;
+};
 
-// E-commerce related types - separate from Business
-export interface Product {
+export type User = {
+  id: string;
+  email: string;
+  name: string;
+  employmentStatus?: EmploymentStatus;
+  business?: Business;
+  isLoggedIn: boolean;
+};
+
+export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
+
+export type Product = {
   id: string;
   name: string;
   description: string;
@@ -39,32 +62,17 @@ export interface Product {
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
-}
+};
 
-export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
-
-export interface SocialLinks {
-  facebook?: string;
-  instagram?: string;
-  whatsapp?: string;
-  website?: string;
-}
-
-export interface CartItem {
-  product: Product;
+export type CartItem = {
+  productId: string;
   quantity: number;
   size: ProductSize;
-}
+  product: Product;
+};
 
-export interface Cart {
+export type Cart = {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
-}
-
-export interface Department {
-  id?: string;
-  name: string;
-  description?: string;
-  subcategories?: string[];
-}
+};

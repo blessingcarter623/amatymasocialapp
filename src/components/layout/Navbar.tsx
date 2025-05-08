@@ -17,7 +17,7 @@ export function Navbar() {
   const { cart } = useCart();
 
   const handleLogout = () => {
-    signOut(() => navigate("/"));
+    signOut();
   };
 
   const navItems = [
