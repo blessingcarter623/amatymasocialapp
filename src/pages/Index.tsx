@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -9,6 +10,7 @@ import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Downlo
 import { BusinessList } from "@/components/business/BusinessList";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { ProductCard } from "@/components/merchandise/ProductCard";
+import { ProductSize } from '@/types';
 
 // Sample products for the featured merchandise section
 const FEATURED_PRODUCTS = [
@@ -19,7 +21,7 @@ const FEATURED_PRODUCTS = [
     price: 349,
     image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
     category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    availableSizes: ["S", "M", "L", "XL", "XXL"] as ProductSize[],
     inStock: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -31,7 +33,7 @@ const FEATURED_PRODUCTS = [
     price: 599,
     image: "/lovable-uploads/a4a6aec3-9199-4694-8d4c-b9805ff69def.png",
     category: "Clothing",
-    availableSizes: ["M", "L", "XL", "XXL"],
+    availableSizes: ["M", "L", "XL", "XXL"] as ProductSize[],
     inStock: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -43,7 +45,7 @@ const FEATURED_PRODUCTS = [
     price: 1299,
     image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
     category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    availableSizes: ["S", "M", "L", "XL", "XXL"] as ProductSize[],
     inStock: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
