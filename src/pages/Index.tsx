@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -9,7 +10,7 @@ import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Downlo
 import { BusinessList } from "@/components/business/BusinessList";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { ProductCard } from "@/components/merchandise/ProductCard";
-import { Product } from '@/types';
+import { Product, ProductSize } from '@/types';
 import { getProducts } from '@/services/merchandiseService';
 
 // Sample products for the featured merchandise section
