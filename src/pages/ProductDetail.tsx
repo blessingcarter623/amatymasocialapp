@@ -235,8 +235,8 @@ const ProductDetail = () => {
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
-            <p className="text-2xl font-bold text-amatyma-red mt-2">
-              R{product.price.toFixed(2)}
+            <p className="text-xl font-medium text-amatyma-red mt-2">
+              Coming Soon
             </p>
           </div>
           
