@@ -17,7 +17,6 @@ export interface Business {
   website: string;
   logo: string;
   userId: string;
-  // Added missing properties that were causing TypeScript errors
   category?: string;
   subcategory?: string;
   location?: string;
@@ -28,6 +27,7 @@ export interface Business {
   userType?: UserType;
 }
 
+// E-commerce related types - separate from Business
 export interface Product {
   id: string;
   name: string;
@@ -41,10 +41,8 @@ export interface Product {
   updatedAt: string;
 }
 
-// Updated ProductSize type to include all sizes used
 export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
 
-// Add SocialLinks interface
 export interface SocialLinks {
   facebook?: string;
   instagram?: string;
@@ -52,21 +50,18 @@ export interface SocialLinks {
   website?: string;
 }
 
-// Add CartItem interface
 export interface CartItem {
   product: Product;
   quantity: number;
   size: ProductSize;
 }
 
-// Add Cart interface
 export interface Cart {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
 }
 
-// Add Department interface with subcategories property
 export interface Department {
   id?: string;
   name: string;

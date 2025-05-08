@@ -26,7 +26,7 @@ export interface UpdateMerchandiseItem {
 // Get all products
 export const getProducts = async (): Promise<Product[]> => {
   try {
-    // Use RPC call instead of direct table access
+    // Use RPC call to avoid type issues
     const { data, error } = await supabase.rpc('get_all_merchandise');
     
     if (error) {
@@ -58,8 +58,10 @@ export const getProducts = async (): Promise<Product[]> => {
 // Get product by ID
 export const getProductById = async (id: string): Promise<Product | null> => {
   try {
-    // Use RPC call instead of direct table access
-    const { data, error } = await supabase.rpc('get_merchandise_by_id', { item_id: id });
+    // Use RPC call to avoid type issues
+    const { data, error } = await supabase.rpc('get_merchandise_by_id', { 
+      item_id: id 
+    });
     
     if (error) {
       console.error("Error fetching product:", error);
@@ -89,7 +91,7 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 // Create new product
 export const createProduct = async (productData: CreateMerchandiseItem): Promise<Product> => {
   try {
-    // Use RPC call instead of direct table access
+    // Use RPC call to avoid type issues
     const { data, error } = await supabase.rpc(
       'create_merchandise',
       {
@@ -133,7 +135,7 @@ export const createProduct = async (productData: CreateMerchandiseItem): Promise
 // Update product
 export const updateProduct = async (productData: UpdateMerchandiseItem & { id: string }): Promise<Product> => {
   try {
-    // Use RPC call instead of direct table access
+    // Use RPC call to avoid type issues
     const { data, error } = await supabase.rpc(
       'update_merchandise',
       {
@@ -178,8 +180,10 @@ export const updateProduct = async (productData: UpdateMerchandiseItem & { id: s
 // Delete product
 export const deleteProduct = async (id: string): Promise<void> => {
   try {
-    // Use RPC call instead of direct table access
-    const { error } = await supabase.rpc('delete_merchandise', { item_id: id });
+    // Use RPC call to avoid type issues
+    const { error } = await supabase.rpc('delete_merchandise', { 
+      item_id: id 
+    });
     
     if (error) {
       console.error("Error deleting product:", error);
@@ -194,8 +198,10 @@ export const deleteProduct = async (id: string): Promise<void> => {
 // Check if user is admin
 export const isUserAdmin = async (userId: string): Promise<boolean> => {
   try {
-    // Use RPC call instead of direct table access
-    const { data, error } = await supabase.rpc('check_user_admin_status', { user_id: userId });
+    // Use RPC call to avoid type issues
+    const { data, error } = await supabase.rpc('check_user_admin_status', { 
+      user_id: userId 
+    });
     
     if (error) {
       console.error("Error checking admin status:", error);
@@ -209,7 +215,7 @@ export const isUserAdmin = async (userId: string): Promise<boolean> => {
   }
 };
 
-// Add the missing uploadProductImage function
+// Add the uploadProductImage function
 export const uploadProductImage = async (file: File): Promise<string> => {
   try {
     const fileName = `merchandise/${Date.now()}-${file.name}`;

@@ -1,154 +1,116 @@
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { BusinessDetail as BusinessDetailComponent } from "@/components/business/BusinessDetail";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader } from "lucide-react";
+import { useApp } from "@/context/AppContext";
 import { Business } from "@/types";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { Database } from "@/integrations/supabase/types";
-
-// Type for the data returned directly from Supabase
-type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
-type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
-
-// Custom type combining business with its social links
-type BusinessWithSocialLinks = SupabaseBusiness & {
-  social_links: SupabaseSocialLink[] | null;
-  province?: string | null;
-  city?: string | null;
-};
-
-// Helper function to convert Supabase data to our application's Business type
-const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Business | null => {
-  if (!data) return null;
-  
-  // Extract the first social link (if any)
-  const socialLink = data.social_links && data.social_links.length > 0 ? data.social_links[0] : null;
-  
-  return {
-    id: data.id,
-    name: data.name,
-    description: data.description || "",
-    category: data.category || "",
-    subcategory: data.subcategory || undefined,
-    location: data.location || "",
-    province: data.province || undefined,
-    city: data.city || undefined,
-    contactPerson: data.contact_person || "",
-    phone: data.phone || "",
-    email: data.email || "",
-    logo: data.logo || undefined,
-    images: data.images || [],
-    socialLinks: {
-      facebook: socialLink?.facebook || undefined,
-      whatsapp: socialLink?.whatsapp || undefined,
-      instagram: socialLink?.instagram || undefined,
-      website: socialLink?.website || undefined,
-    },
-    department: data.department || undefined,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at,
-  };
-};
+import { Loader } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const BusinessDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const { businesses } = useApp();
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    if (id) {
-      fetchBusinessById(id);
+    // Find the business with the matching ID
+    const foundBusiness = businesses.find((b) => b.id === id);
+
+    if (foundBusiness) {
+      setBusiness(foundBusiness);
     }
-  }, [id]);
-  
-  const fetchBusinessById = async (businessId: string) => {
-    try {
-      setLoading(true);
-      
-      // Use the Supabase client to fetch the business data with social links
-      const { data, error } = await supabase
-        .from('businesses')
-        .select(`
-          *,
-          social_links(*)
-        `)
-        .eq('id', businessId)
-        .single();
-      
-      if (error) {
-        console.error("Error fetching business:", error);
-        toast.error("Failed to load business details");
-        return;
-      }
-      
-      // Log the returned data to debug images array
-      console.log("Fetched business data:", data);
-      
-      // Map Supabase data to our application's Business type
-      const businessData = mapSupabaseBusinessToBusiness(data as BusinessWithSocialLinks);
-      
-      if (businessData) {
-        console.log("Mapped business data:", businessData);
-        console.log("Business images:", businessData.images);
-      }
-      
-      setBusiness(businessData);
-    } catch (error) {
-      console.error("Error in fetchBusinessById:", error);
-      toast.error("An error occurred while loading business details");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
+
+    setLoading(false);
+  }, [id, businesses]);
+
+  // For demonstration - in a real app, these would come from the database
+  const similarBusinesses: Business[] = [
+    {
+      id: "similar1",
+      name: "Similar Business 1",
+      description: "Another business in the same category",
+      email: "info@similar1.co.za",
+      phone: "+27 11 222 3333",
+      address: "456 Main Road",
+      city: "Johannesburg",
+      province: "Gauteng",
+      country: "South Africa",
+      website: "https://www.similar1.co.za",
+      logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+      userId: "user2",
+      category: business?.category,
+      createdAt: "2023-02-10T10:25:00Z",
+      updatedAt: "2023-05-15T09:30:00Z",
+      userType: "business",
+    },
+    {
+      id: "similar2",
+      name: "Similar Business 2",
+      description: "A related business offering comparable services",
+      email: "info@similar2.co.za",
+      phone: "+27 12 444 5555",
+      address: "789 Church Street",
+      city: "Pretoria",
+      province: "Gauteng",
+      country: "South Africa",
+      website: "https://www.similar2.co.za",
+      logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+      userId: "user3",
+      category: business?.category,
+      createdAt: "2023-03-01T14:00:00Z",
+      updatedAt: "2023-06-01T11:15:00Z",
+      userType: "business",
+    },
+    {
+      id: "similar3",
+      name: "Similar Business 3",
+      description: "A local business with a similar focus",
+      email: "info@similar3.co.za",
+      phone: "+27 21 666 7777",
+      address: "321 Long Street",
+      city: "Cape Town",
+      province: "Western Cape",
+      country: "South Africa",
+      website: "https://www.similar3.co.za",
+      logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+      userId: "user4",
+      category: business?.category,
+      createdAt: "2023-04-05T16:30:00Z",
+      updatedAt: "2023-07-20T13:45:00Z",
+      userType: "business",
+    },
+  ];
+
   if (loading) {
     return (
       <MainLayout>
-        <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="flex justify-center items-center h-64">
           <Loader className="h-8 w-8 animate-spin text-amatyma-red" />
         </div>
       </MainLayout>
     );
   }
-  
+
   if (!business) {
     return (
       <MainLayout>
-        <div className="py-10 text-center">
-          <h2 className="text-2xl font-bold mb-4">Business Not Found</h2>
-          <p className="text-muted-foreground mb-6">
+        <div className="text-center py-16">
+          <h1 className="text-3xl font-bold mb-4">Business Not Found</h1>
+          <p className="text-muted-foreground mb-8">
             The business you're looking for doesn't exist or has been removed.
           </p>
-          <Button 
-            onClick={() => navigate("/businesses")}
-            className="bg-amatyma-red hover:bg-amatyma-red/80"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Businesses
+          <Button asChild>
+            <Link to="/businesses">View All Businesses</Link>
           </Button>
         </div>
       </MainLayout>
     );
   }
-  
+
   return (
     <MainLayout>
-      <div className="space-y-6 py-6">
-        <Button 
-          variant="ghost" 
-          className="mb-4"
-          onClick={() => navigate("/businesses")}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Businesses
-        </Button>
-        
-        <BusinessDetailComponent business={business} />
-      </div>
+      <BusinessDetailComponent business={business} similarBusinesses={similarBusinesses} />
     </MainLayout>
   );
 };
