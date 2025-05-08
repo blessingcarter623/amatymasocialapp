@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -49,7 +48,6 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Bu
       website: socialLink?.website || undefined,
     },
     department: data.department || undefined,
-    userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

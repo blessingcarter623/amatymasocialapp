@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect, useCallback } from "react";
 import { Business, Department } from "@/types";
 import { supabase } from "@/integrations/supabase/client";
@@ -42,7 +41,6 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks): Business 
       website: socialLink?.website || undefined,
     },
     department: data.department || undefined,
-    userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
@@ -53,7 +54,6 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Bu
       website: socialLink?.website || undefined,
     },
     department: data.department || undefined,
-    userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

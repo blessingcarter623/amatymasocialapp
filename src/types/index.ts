@@ -17,7 +17,7 @@ export interface Business {
   website: string;
   logo: string;
   userId: string;
-  // Added missing properties
+  // Added missing properties that were causing TypeScript errors
   category?: string;
   subcategory?: string;
   location?: string;
@@ -25,6 +25,7 @@ export interface Business {
   department?: string;
   images?: string[];
   socialLinks?: SocialLinks;
+  userType?: UserType;
 }
 
 export interface Product {
@@ -65,9 +66,10 @@ export interface Cart {
   totalPrice: number;
 }
 
-// Add Department interface
+// Add Department interface with subcategories property
 export interface Department {
-  id: string;
+  id?: string;
   name: string;
   description?: string;
+  subcategories?: string[];
 }
