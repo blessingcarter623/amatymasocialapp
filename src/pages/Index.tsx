@@ -1,16 +1,16 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download } from "lucide-react";
+import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download, Loader } from "lucide-react";
 import { BusinessList } from "@/components/business/BusinessList";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { ProductCard } from "@/components/merchandise/ProductCard";
-import { ProductSize } from '@/types';
+import { Product } from '@/types';
+import { getProducts } from '@/services/merchandiseService';
 
 // Sample products for the featured merchandise section
 const FEATURED_PRODUCTS = [
@@ -56,9 +56,29 @@ const Index = () => {
   const navigate = useNavigate();
   const { businesses } = useApp();
   const { theme } = useTheme();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
+  
+  // Fetch featured products from the database
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        setLoadingProducts(true);
+        const products = await getProducts();
+        // Show the 3 most recent products
+        setFeaturedProducts(products.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
+    
+    fetchFeaturedProducts();
+  }, []);
   
   const handleProfileClick = () => {
     window.open("https://jmp.sh/s/thV9I2sT3HHS9IURDVvP", "_blank");
@@ -233,11 +253,21 @@ const Index = () => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FEATURED_PRODUCTS.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loadingProducts ? (
+            <div className="flex justify-center py-12">
+              <Loader className="h-8 w-8 animate-spin text-amatyma-red" />
+            </div>
+          ) : featuredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No featured products available.</p>
+            </div>
+          )}
         </div>
       </section>
     </MainLayout>
