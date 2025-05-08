@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { RouteObject } from 'react-router-dom';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AdminRoute } from '@/components/auth/AdminRoute';
+import { AuthProvider } from '@/context/AuthContext';
 
 // Pages
 import Index from '@/pages/Index';
@@ -18,46 +19,55 @@ import Cart from '@/pages/Cart';
 import AdminMerchandise from '@/pages/admin/AdminMerchandise';
 import NotFound from '@/pages/NotFound';
 
+// Wrap components that need auth with AuthProvider
+const withAuth = (Component: React.ComponentType) => {
+  return (
+    <AuthProvider>
+      <Component />
+    </AuthProvider>
+  );
+};
+
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Index />
+    element: withAuth(Index)
   },
   {
     path: '/login',
-    element: <Login />
+    element: withAuth(Login)
   },
   {
     path: '/register',
-    element: <Register />
+    element: withAuth(Register)
   },
   {
     path: '/about',
-    element: <AboutUs />
+    element: withAuth(AboutUs)
   },
   {
     path: '/businesses',
-    element: <Businesses />
+    element: withAuth(Businesses)
   },
   {
     path: '/businesses/:id',
-    element: <BusinessDetail />
+    element: withAuth(BusinessDetail)
   },
   {
     path: '/merchandise',
-    element: <Merchandise />
+    element: withAuth(Merchandise)
   },
   {
     path: '/merchandise/:id',
-    element: <ProductDetail />
+    element: withAuth(ProductDetail)
   },
   {
     path: '/cart',
-    element: <Cart />
+    element: withAuth(Cart)
   },
   {
     path: '/dashboard',
-    element: <ProtectedRoute><Dashboard /></ProtectedRoute>
+    element: <ProtectedRoute />
   },
   {
     path: '/admin/merchandise',
@@ -65,8 +75,10 @@ const routes: RouteObject[] = [
   },
   {
     path: '*',
-    element: <NotFound />
+    element: withAuth(NotFound)
   }
 ];
+
+export const router = createBrowserRouter(routes);
 
 export default routes;

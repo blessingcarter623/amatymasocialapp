@@ -1,57 +1,24 @@
-export type SocialLinks = {
-  facebook?: string;
-  whatsapp?: string;
-  instagram?: string;
-  website?: string;
-};
-
-export type Department = {
-  name: string;
-  subcategories?: string[];
-};
-
 export type UserType = "business" | "individual";
-
 export type EmploymentStatus = "employed" | "unemployed" | "self-employed";
 
-export type BusinessCategory = {
-  name: string;
-  subcategories?: string[];
-};
-
-export type Business = {
+export interface Business {
   id: string;
-  name: string;
-  description: string;
-  category: string;
-  subcategory?: string;
-  location: string;
-  province?: string;
-  city?: string;
-  contactPerson: string;
-  phone: string;
-  email: string;
-  logo?: string;
-  images?: string[];
-  socialLinks: SocialLinks;
-  department?: string;
-  userType: UserType;
   createdAt: string;
   updatedAt: string;
-};
-
-export type User = {
-  id: string;
-  email: string;
   name: string;
-  employmentStatus?: EmploymentStatus;
-  business?: Business;
-  isLoggedIn: boolean;
-};
+  description: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  province: string;
+  country: string;
+  website: string;
+  logo: string;
+  userId: string;
+}
 
-export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
-
-export type Product = {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -62,17 +29,7 @@ export type Product = {
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type CartItem = {
-  productId: string;
-  quantity: number;
-  size: ProductSize;
-  product: Product;
-};
-
-export type Cart = {
-  items: CartItem[];
-  totalItems: number;
-  totalPrice: number;
-};
+// Add the ProductSize type export
+export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL";

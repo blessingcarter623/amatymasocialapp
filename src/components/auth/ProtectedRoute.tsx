@@ -1,10 +1,22 @@
 
 import { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Loader } from "lucide-react";
+import { AuthProvider } from "@/context/AuthContext";
+import Dashboard from "@/pages/Dashboard";
 
 export const ProtectedRoute = () => {
+  const navigate = useNavigate();
+
+  return (
+    <AuthProvider>
+      <ProtectedRouteContent />
+    </AuthProvider>
+  );
+};
+
+const ProtectedRouteContent = () => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -22,5 +34,9 @@ export const ProtectedRoute = () => {
     );
   }
 
-  return <Outlet />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Dashboard />;
 };

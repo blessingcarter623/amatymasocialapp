@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { isUserAdmin } from '@/services/merchandiseService';
 import { Loader } from 'lucide-react';
@@ -13,6 +13,7 @@ export const AdminRoute = ({ children }: AdminRouteProps) => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAdminStatus = async () => {
