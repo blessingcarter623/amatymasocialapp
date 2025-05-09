@@ -74,8 +74,8 @@ const MERCHANDISE_DATA: Product[] = [
   },
   {
     id: "1",
-    name: "MANCAVE Boxer Shorts",
-    description: "Comfortable boxer shorts with MANCAVE branding",
+    name: "MANCAVE Briefs Underwear",
+    description: "Comfortable briefs underwear with MANCAVE branding",
     price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
     category: "Clothing",
