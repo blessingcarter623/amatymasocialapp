@@ -13,13 +13,13 @@ import { useCart } from '@/context/CartContext';
 import { ShoppingCart, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Updated merchandise data with new images and removed "Amatyma" from product names
+// Updated merchandise data with new images and "Coming Soon" for prices
 const MERCHANDISE_DATA: Product[] = [
   {
     id: "1",
     name: "MANCAVE Boxer Shorts",
     description: "Comfortable boxer shorts with MANCAVE branding. Made from premium quality cotton for maximum comfort and durability. These boxer shorts feature the iconic MANCAVE logo on the waistband. Perfect for everyday comfort and style.",
-    price: 179,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL"],
@@ -31,7 +31,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "2",
     name: "MANCAVE Blazer",
     description: "Elegant black blazer with MANCAVE logo on the pocket. Crafted from high-quality fabric for a sophisticated look, this blazer is perfect for formal and semi-formal occasions. The subtle logo on the pocket adds an exclusive touch to this classic piece.",
-    price: 1299,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -43,7 +43,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "3",
     name: "MANCAVE Tie",
     description: "Classic black tie with MANCAVE logo. Made from premium quality silk for a luxurious feel and appearance. This tie features a subtle logo pattern, making it perfect for formal occasions and business meetings while showcasing your connection.",
-    price: 249,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/6164bfcb-707e-4da7-b662-7a87de855f2c.png",
     category: "Accessories",
     availableSizes: ["One Size"],
@@ -55,7 +55,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "4",
     name: "MANCAVE Notebook",
     description: "Premium hardcover notebook with the MANCAVE logo embossed on the cover. 120 pages of high-quality paper ideal for writing, sketching, or jotting down ideas. The elegant logo on the cover makes this notebook both practical and stylish for professional and personal use.",
-    price: 159,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/6ed76b8d-10f4-4a4b-9805-2ad0391c5da4.png",
     category: "Stationery",
     availableSizes: ["A5", "A4"],
@@ -67,7 +67,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "5",
     name: "MANCAVE Socks",
     description: "Stylish black socks with MANCAVE branding. Made from premium cotton blend for comfort and durability. These socks feature the MANCAVE logo and are perfect for both casual and formal wear. The cushioned sole provides extra comfort for all-day wear.",
-    price: 99,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/7d1f1feb-0d52-45bb-bd4b-5a360c2c8116.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L"],
@@ -79,7 +79,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "6",
     name: "MANCAVE Bucket Hat",
     description: "Stylish black bucket hat with MANCAVE logo. This premium quality bucket hat is perfect for outdoor activities and casual wear. The embroidered logo adds a touch of style, while the durable material ensures protection from the elements.",
-    price: 219,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/3f81020a-c705-496f-af05-53425492fb41.png",
     category: "Accessories",
     availableSizes: ["S", "M", "L"],
@@ -91,8 +91,8 @@ const MERCHANDISE_DATA: Product[] = [
     id: "7",
     name: "MANCAVE Mug",
     description: "Ceramic mug with the MANCAVE logo. This high-quality ceramic mug is perfect for your morning coffee or tea. Dishwasher and microwave safe, featuring the iconic logo that won't fade with use. The perfect gift for members or supporters.",
-    price: 129,
-    image: "/lovable-uploads/24128ffb-5cf2-4301-a9ca-8bb45a98737f.png",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png", // Updated mug image
     category: "Accessories",
     availableSizes: ["One Size"],
     inStock: true,
@@ -102,9 +102,9 @@ const MERCHANDISE_DATA: Product[] = [
   {
     id: "8",
     name: "MANCAVE Hoodie",
-    description: "Stay warm with our comfortable MANCAVE hoodie. Made from premium quality material with a soft inner lining for maximum comfort. Features the MANCAVE logo on the front and a large print on the back. Perfect for casual wear and colder weather.",
-    price: 599,
-    image: "/lovable-uploads/a4a6aec3-9199-4694-8d4c-b9805ff69def.png",
+    description: "Stay warm with our comfortable MANCAVE hoodie. Made from premium quality material with a soft inner lining for maximum comfort. Features the MANCAVE logo on the front. Perfect for casual wear and colder weather.",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png", // Updated hoodie image
     category: "Clothing",
     availableSizes: ["M", "L", "XL", "XXL"],
     inStock: true,
@@ -115,7 +115,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "9",
     name: "MANCAVE Golf Shirt",
     description: "Elegant polo shirt with embroidered MANCAVE logo. Made from premium quality cotton for maximum comfort and breathability. The subtle logo on the chest adds a touch of sophistication to this classic polo. Perfect for casual and semi-formal occasions.",
-    price: 399,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/85015cb9-1247-41a3-b9fe-140d05a3b662.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL"],
@@ -127,7 +127,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "10",
     name: "MANCAVE Cap",
     description: "Premium quality cap featuring the MANCAVE logo embroidered on the front. This adjustable cap ensures a comfortable fit for everyone. The durable materials and quality construction make this cap perfect for outdoor activities and casual wear.",
-    price: 199,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/cdaa9501-0c24-44c0-8698-031ef73331b3.png",
     category: "Accessories",
     availableSizes: ["S", "M", "L"],
@@ -139,7 +139,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "11",
     name: "MANCAVE Winter Jacket",
     description: "Premium winter jacket with MANCAVE branding. This high-quality winter jacket is designed to keep you warm during the coldest days. Featuring the logo on the chest and a full lining for maximum insulation. Water-resistant outer material helps keep you dry in all weather conditions.",
-    price: 1499,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/b8989981-ff7f-4b71-8cd4-5fb7224d0131.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -151,7 +151,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "12",
     name: "MANCAVE T-Shirt",
     description: "Official MANCAVE T-shirt with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
-    price: 349,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -236,7 +236,7 @@ const ProductDetail = () => {
           <div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
             <p className="text-2xl font-bold text-amatyma-red mt-2">
-              R{product.price.toFixed(2)}
+              {product.price > 0 ? `R${product.price.toFixed(2)}` : "Coming Soon"}
             </p>
           </div>
           
@@ -293,10 +293,10 @@ const ProductDetail = () => {
           <Button 
             className="w-full py-6 text-lg bg-amatyma-red hover:bg-amatyma-red/80"
             onClick={handleAddToCart}
-            disabled={!selectedSize}
+            disabled={!selectedSize || product.price === 0}
           >
             <ShoppingCart className="mr-2 h-5 w-5" /> 
-            Add to Cart
+            {product.price > 0 ? "Add to Cart" : "Pre-Order"}
           </Button>
         </div>
       </div>
@@ -320,7 +320,9 @@ const ProductDetail = () => {
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-medium truncate">{relatedProduct.name}</h3>
-                  <p className="font-bold mt-1">R{relatedProduct.price.toFixed(2)}</p>
+                  <p className="font-bold mt-1">
+                    {relatedProduct.price > 0 ? `R${relatedProduct.price.toFixed(2)}` : "Coming Soon"}
+                  </p>
                 </CardContent>
               </Card>
             ))}

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -25,6 +24,28 @@ const Index = () => {
   const handleWhatsAppClick = () => {
     window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
   };
+  
+  // Featured merchandise items - using the newly uploaded images
+  const featuredMerchandise = [
+    {
+      id: "8", // Hoodie
+      name: "MANCAVE Hoodie",
+      price: "Coming Soon",
+      image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png"
+    },
+    {
+      id: "7", // Mug
+      name: "MANCAVE Mug",
+      price: "Coming Soon",
+      image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png"
+    },
+    {
+      id: "12", // T-Shirt
+      name: "MANCAVE T-Shirt",
+      price: "Coming Soon",
+      image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png"
+    }
+  ];
   
   return (
     <MainLayout>
@@ -192,19 +213,19 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+            {featuredMerchandise.map((item) => (
+              <div key={item.id} className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="h-48 bg-muted flex items-center justify-center">
-                  <img src={`/lovable-uploads/2b1b2f71-b5bc-4ead-a07b-810597474e21.png`} alt={`Merchandise ${item}`} className="h-full object-cover" />
+                  <img src={item.image} alt={item.name} className="h-full object-cover" />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-medium text-lg mb-1">Amatyma T-Shirt</h3>
+                  <h3 className="font-medium text-lg mb-1">{item.name}</h3>
                   <p className="text-sm text-muted-foreground mb-2">Limited Edition Brotherhood Circle Merchandise</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-bold">R349.00</span>
+                    <span className="font-bold text-amatyma-red">{item.price}</span>
                     <Button 
                       size="sm" 
-                      onClick={() => navigate(`/merchandise/${item}`)}
+                      onClick={() => navigate(`/merchandise/${item.id}`)}
                       className="bg-amatyma-red hover:bg-amatyma-red/80"
                     >
                       View Details

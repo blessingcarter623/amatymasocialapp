@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { ProductCard } from "@/components/merchandise/ProductCard";
@@ -10,13 +9,13 @@ import { Product, ProductSize } from '@/types';
 import { Search, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-// Updated merchandise data with new images and removed "Amatyma" from product names
+// Updated merchandise data with new images and "Coming Soon" for prices
 const MERCHANDISE_DATA: Product[] = [
   {
     id: "1",
     name: "MANCAVE Boxer Shorts",
     description: "Comfortable boxer shorts with MANCAVE branding",
-    price: 179,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL"],
@@ -28,7 +27,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "2",
     name: "MANCAVE Blazer",
     description: "Elegant black blazer with MANCAVE logo on the pocket",
-    price: 1299,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -40,7 +39,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "3",
     name: "MANCAVE Tie",
     description: "Classic black tie with MANCAVE logo",
-    price: 249,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/6164bfcb-707e-4da7-b662-7a87de855f2c.png",
     category: "Accessories",
     availableSizes: ["One Size"],
@@ -52,7 +51,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "4",
     name: "MANCAVE Notebook",
     description: "Premium hardcover notebook with the MANCAVE logo embossed on the cover",
-    price: 159,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/6ed76b8d-10f4-4a4b-9805-2ad0391c5da4.png",
     category: "Stationery",
     availableSizes: ["A5", "A4"],
@@ -64,7 +63,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "5",
     name: "MANCAVE Socks",
     description: "Stylish black socks with MANCAVE branding",
-    price: 99,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/7d1f1feb-0d52-45bb-bd4b-5a360c2c8116.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L"],
@@ -76,7 +75,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "6",
     name: "MANCAVE Bucket Hat",
     description: "Stylish black bucket hat with MANCAVE logo",
-    price: 219,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/3f81020a-c705-496f-af05-53425492fb41.png",
     category: "Accessories",
     availableSizes: ["S", "M", "L"],
@@ -88,8 +87,8 @@ const MERCHANDISE_DATA: Product[] = [
     id: "7",
     name: "MANCAVE Mug",
     description: "Ceramic mug with the MANCAVE logo",
-    price: 129,
-    image: "/lovable-uploads/24128ffb-5cf2-4301-a9ca-8bb45a98737f.png",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png", // Updated mug image
     category: "Accessories",
     availableSizes: ["One Size"],
     inStock: true,
@@ -100,8 +99,8 @@ const MERCHANDISE_DATA: Product[] = [
     id: "8",
     name: "MANCAVE Hoodie",
     description: "Stay warm with our comfortable MANCAVE hoodie",
-    price: 599,
-    image: "/lovable-uploads/a4a6aec3-9199-4694-8d4c-b9805ff69def.png",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png", // Updated hoodie image
     category: "Clothing",
     availableSizes: ["M", "L", "XL", "XXL"],
     inStock: true,
@@ -112,7 +111,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "9",
     name: "MANCAVE Golf Shirt",
     description: "Elegant polo shirt with embroidered MANCAVE logo",
-    price: 399,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/85015cb9-1247-41a3-b9fe-140d05a3b662.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL"],
@@ -124,7 +123,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "10",
     name: "MANCAVE Cap",
     description: "Premium quality cap featuring the MANCAVE logo",
-    price: 199,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/cdaa9501-0c24-44c0-8698-031ef73331b3.png",
     category: "Accessories",
     availableSizes: ["S", "M", "L"],
@@ -136,7 +135,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "11",
     name: "MANCAVE Winter Jacket",
     description: "Premium winter jacket with MANCAVE branding",
-    price: 1499,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/b8989981-ff7f-4b71-8cd4-5fb7224d0131.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -148,7 +147,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "12",
     name: "MANCAVE T-Shirt",
     description: "Official MANCAVE T-shirt with logo on front",
-    price: 349,
+    price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -189,7 +188,7 @@ const Merchandise = () => {
   return (
     <MainLayout>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Amatyma Merchandise</h1>
+        <h1 className="text-3xl font-bold">MANCAVE Merchandise</h1>
         <Button
           onClick={() => navigate('/cart')}
           className="flex items-center gap-2 bg-amatyma-red hover:bg-amatyma-red/80"
