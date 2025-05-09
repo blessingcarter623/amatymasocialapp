@@ -8,11 +8,12 @@ import {
   TabsList, 
   TabsTrigger 
 } from "@/components/ui/tabs";
-import { Building, User, Loader } from "lucide-react";
+import { Building, User, Loader, AlertCircle } from "lucide-react";
 import { Banner } from "@/components/ui/banner";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
 import { Business, SocialLinks } from "@/types";
+import { toast } from "sonner";
 
 // Type for the data returned directly from Supabase
 type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
@@ -65,6 +66,7 @@ const Dashboard = () => {
   const [supabaseBusiness, setSupabaseBusiness] = useState<BusinessWithSocialLinks | null>(null);
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     if (user) {
@@ -77,6 +79,8 @@ const Dashboard = () => {
   const fetchUserBusiness = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const { data, error } = await supabase
         .from('businesses')
         .select(`
@@ -86,8 +90,12 @@ const Dashboard = () => {
         .eq("user_id", user?.id || '')
         .single();
       
-      if (error && error.code !== "PGRST116") {
-        console.error("Error fetching business:", error);
+      if (error) {
+        if (error.code !== "PGRST116") {
+          console.error("Error fetching business:", error);
+          setError("Could not fetch business data. Please try again later.");
+          toast.error("Error loading business data");
+        }
       }
       
       // Store the raw Supabase data
@@ -98,6 +106,8 @@ const Dashboard = () => {
       setBusiness(mapSupabaseBusinessToBusiness(businessData));
     } catch (error) {
       console.error("Error in fetchUserBusiness:", error);
+      setError("An unexpected error occurred. Please try again later.");
+      toast.error("Error loading business data");
     } finally {
       setLoading(false);
     }
@@ -118,7 +128,20 @@ const Dashboard = () => {
       <div className="space-y-6 py-6">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         
-        {!business && (
+        {error && (
+          <Banner
+            title="Connection Error"
+            description={error}
+            ctaText="Try Again"
+            ctaAction={fetchUserBusiness}
+            variant="destructive"
+            className="mb-6"
+          >
+            <AlertCircle className="h-4 w-4 mr-2" />
+          </Banner>
+        )}
+        
+        {!business && !error && (
           <Banner
             title="Complete Your Business Profile"
             description="Add your business information to showcase your services to potential partners."

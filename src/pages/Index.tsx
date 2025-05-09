@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -18,7 +19,7 @@ const Index = () => {
   const featuredBusinesses = businesses.slice(0, 3);
   
   const handleProfileClick = () => {
-    window.open("https://jmp.sh/IZGXZwjE", "_blank");
+    window.open("https://mgxjqujcsajvogaoqccz.supabase.co/storage/v1/object/public/pdf//Amatyma%20Profile%202025%20(1).pdf", "_blank");
   };
   
   const handleWhatsAppClick = () => {
