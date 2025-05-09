@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -26,7 +25,7 @@ const Index = () => {
     window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
   };
   
-  // Featured merchandise items - using the newly uploaded images
+  // Featured merchandise items - using the updated T-shirt image
   const featuredMerchandise = [
     {
       id: "8", // Hoodie
@@ -44,7 +43,7 @@ const Index = () => {
       id: "12", // T-Shirt
       name: "MANCAVE T-Shirt",
       price: "Coming Soon",
-      image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png"
+      image: "/lovable-uploads/c91a9f23-ad10-45ef-8feb-7fd2bedf23b9.png" // Updated T-shirt image
     }
   ];
   

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { ProductCard } from "@/components/merchandise/ProductCard";
@@ -9,26 +10,26 @@ import { Product, ProductSize } from '@/types';
 import { Search, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-// Updated merchandise data with new images and "Coming Soon" for prices
+// Updated merchandise data with reordered products (boxer shorts moved from position 1 to later)
 const MERCHANDISE_DATA: Product[] = [
-  {
-    id: "1",
-    name: "MANCAVE Boxer Shorts",
-    description: "Comfortable boxer shorts with MANCAVE branding",
-    price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
-    category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL"],
-    inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
   {
     id: "2",
     name: "MANCAVE Blazer",
     description: "Elegant black blazer with MANCAVE logo on the pocket",
     price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
+    category: "Clothing",
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    inStock: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: "12",
+    name: "MANCAVE T-Shirt",
+    description: "Official MANCAVE T-shirt with logo on front",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/c91a9f23-ad10-45ef-8feb-7fd2bedf23b9.png", // Updated T-shirt image
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,
@@ -72,6 +73,18 @@ const MERCHANDISE_DATA: Product[] = [
     updatedAt: new Date().toISOString()
   },
   {
+    id: "1",
+    name: "MANCAVE Boxer Shorts",
+    description: "Comfortable boxer shorts with MANCAVE branding",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
+    category: "Clothing",
+    availableSizes: ["S", "M", "L", "XL"],
+    inStock: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
     id: "6",
     name: "MANCAVE Bucket Hat",
     description: "Stylish black bucket hat with MANCAVE logo",
@@ -88,7 +101,7 @@ const MERCHANDISE_DATA: Product[] = [
     name: "MANCAVE Mug",
     description: "Ceramic mug with the MANCAVE logo",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png", // Updated mug image
+    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png",
     category: "Accessories",
     availableSizes: ["One Size"],
     inStock: true,
@@ -100,7 +113,7 @@ const MERCHANDISE_DATA: Product[] = [
     name: "MANCAVE Hoodie",
     description: "Stay warm with our comfortable MANCAVE hoodie",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png", // Updated hoodie image
+    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png",
     category: "Clothing",
     availableSizes: ["M", "L", "XL", "XXL"],
     inStock: true,
@@ -137,18 +150,6 @@ const MERCHANDISE_DATA: Product[] = [
     description: "Premium winter jacket with MANCAVE branding",
     price: 0, // Set to 0 for "Coming Soon"
     image: "/lovable-uploads/b8989981-ff7f-4b71-8cd4-5fb7224d0131.png",
-    category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"],
-    inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: "12",
-    name: "MANCAVE T-Shirt",
-    description: "Official MANCAVE T-shirt with logo on front",
-    price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,

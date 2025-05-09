@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue 
 } from "@/components/ui/select";
-import { ArrowRight, Loader2, UserRound } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { UserType, EmploymentStatus } from "@/types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -23,7 +23,8 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState<UserType>("business");
   const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>("employed");
-  const [gender, setGender] = useState<string>("male");
+  // Gender is hidden but we'll keep the state with a default value
+  const [gender, setGender] = useState<string>("prefer-not-to-say");
   const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -135,32 +136,7 @@ export function RegisterForm() {
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              Gender
-            </label>
-            <RadioGroup 
-              defaultValue="male" 
-              value={gender}
-              onValueChange={(value) => setGender(value)}
-              className="flex flex-col space-y-2 mt-2"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" />
-                <Label htmlFor="male" className="flex items-center">
-                  <UserRound className="h-4 w-4 mr-2 text-blue-500" />
-                  Male
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" />
-                <Label htmlFor="female" className="flex items-center">
-                  <UserRound className="h-4 w-4 mr-2 text-pink-500" />
-                  Female
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
+          {/* Gender selection has been removed */}
 
           <div className="space-y-2">
             <label htmlFor="userType" className="text-sm font-medium">
