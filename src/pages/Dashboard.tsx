@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
@@ -134,7 +135,7 @@ const Dashboard = () => {
             description={error}
             ctaText="Try Again"
             ctaAction={fetchUserBusiness}
-            variant="destructive"
+            variant="dark"
             className="mb-6"
           >
             <AlertCircle className="h-4 w-4 mr-2" />
