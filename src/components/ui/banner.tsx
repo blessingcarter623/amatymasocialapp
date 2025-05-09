@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 
 interface BannerProps {
   title: string;
@@ -12,6 +12,7 @@ interface BannerProps {
   className?: string;
   variant?: "default" | "dark";
   dismissible?: boolean;
+  children?: ReactNode;
 }
 
 export function Banner({
@@ -22,6 +23,7 @@ export function Banner({
   className,
   variant = "default",
   dismissible = false,
+  children,
 }: BannerProps) {
   const [dismissed, setDismissed] = useState(false);
   
@@ -37,11 +39,14 @@ export function Banner({
         className
       )}
     >
-      <div>
-        <p className="font-medium">{title}</p>
-        {description && (
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        )}
+      <div className="flex items-center">
+        {children}
+        <div>
+          <p className="font-medium">{title}</p>
+          {description && (
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+          )}
+        </div>
       </div>
       
       <div className="mt-3 sm:mt-0 sm:ml-4 flex items-center">
