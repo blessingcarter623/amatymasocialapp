@@ -37,10 +37,11 @@ const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness | null): Business 
     email: data.email || "",
     logo: data.logo || undefined,
     images: data.images || [],
-    facebook: data.facebook as string | undefined,
-    instagram: data.instagram as string | undefined,
-    whatsapp: data.whatsapp as string | undefined,
-    website: data.website as string | undefined,
+    // Use type assertion for social media fields
+    facebook: (data as any).facebook || undefined,
+    instagram: (data as any).instagram || undefined,
+    whatsapp: (data as any).whatsapp || undefined,
+    website: (data as any).website || undefined,
     department: data.department || undefined,
     userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
