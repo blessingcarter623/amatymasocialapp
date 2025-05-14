@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, ListChecks, UserCircle, Building, ShieldCheck, Info, Download } from "lucide-react";
-import { BusinessList } from "@/components/business/BusinessList";
+import { ArrowRight, UserCircle, Building, ShieldCheck, Info, Download, Megaphone, Tag } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
+import { AdvertisementSection } from "@/components/business/AdvertisementSection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -185,18 +185,18 @@ const Index = () => {
       
       <section className="py-12">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Featured Businesses</h2>
+          <h2 className="text-3xl font-bold">Advertise Here</h2>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/businesses")}
+            onClick={() => navigate("/contact")}
             className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
           >
-            View All
+            Get Featured
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
         
-        <BusinessList businesses={featuredBusinesses} />
+        <AdvertisementSection />
 
         {/* Merchandise Section */}
         <div className="mt-16">
