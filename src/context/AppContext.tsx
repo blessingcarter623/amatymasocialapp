@@ -7,20 +7,9 @@ import { Database } from "@/integrations/supabase/types";
 
 // Type for the data returned directly from Supabase
 type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
-type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
-
-// Custom type combining business with its social links
-type BusinessWithSocialLinks = SupabaseBusiness & {
-  social_links: SupabaseSocialLink[] | null;
-  province?: string | null;
-  city?: string | null;
-};
 
 // Helper function to convert Supabase data to our application's Business type
-const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks): Business => {
-  // Extract the first social link (if any)
-  const socialLink = data.social_links && data.social_links.length > 0 ? data.social_links[0] : null;
-  
+const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness): Business => {
   return {
     id: data.id,
     name: data.name,
@@ -35,12 +24,10 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks): Business 
     email: data.email || "",
     logo: data.logo || undefined,
     images: data.images || [],
-    socialLinks: {
-      facebook: socialLink?.facebook || undefined,
-      whatsapp: socialLink?.whatsapp || undefined,
-      instagram: socialLink?.instagram || undefined,
-      website: socialLink?.website || undefined,
-    },
+    facebook: data.facebook || undefined,
+    instagram: data.instagram || undefined,
+    whatsapp: data.whatsapp || undefined,
+    website: data.website || undefined,
     department: data.department || undefined,
     userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
@@ -82,10 +69,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       
       const { data, error } = await supabase
         .from('businesses')
-        .select(`
-          *,
-          social_links(*)
-        `);
+        .select('*');
       
       if (error) {
         console.error("Error fetching businesses:", error);
@@ -96,7 +80,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.log("Fetched business data:", data);
       
       // Map Supabase data to our application's Business type
-      const businessData = (data as BusinessWithSocialLinks[]).map(item => 
+      const businessData = (data as SupabaseBusiness[]).map(item => 
         mapSupabaseBusinessToBusiness(item)
       );
       

@@ -1,4 +1,3 @@
-
 import { Business } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,11 +11,10 @@ interface BusinessDetailProps {
 }
 
 export function BusinessDetail({ business }: BusinessDetailProps) {
-  const hasSocialLinks = business.socialLinks &&
-    (business.socialLinks.facebook ||
-     business.socialLinks.instagram ||
-     business.socialLinks.whatsapp ||
-     business.socialLinks.website);
+  const hasSocialLinks = business.facebook ||
+    business.instagram ||
+    business.whatsapp ||
+    business.website;
   
   const locationDisplay = [
     business.location,
@@ -75,11 +73,11 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
             {hasSocialLinks && (
               <div className="flex gap-2 mt-4 md:mt-0">
                 <TooltipProvider>
-                  {business.socialLinks.facebook && (
+                  {business.facebook && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <a 
-                          href={business.socialLinks.facebook} 
+                          href={business.facebook} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700 transition-colors"
@@ -93,11 +91,11 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
                     </Tooltip>
                   )}
                   
-                  {business.socialLinks.instagram && (
+                  {business.instagram && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <a 
-                          href={business.socialLinks.instagram} 
+                          href={business.instagram} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 transition-opacity"
@@ -111,11 +109,11 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
                     </Tooltip>
                   )}
                   
-                  {business.socialLinks.whatsapp && (
+                  {business.whatsapp && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <a 
-                          href={business.socialLinks.whatsapp} 
+                          href={business.whatsapp} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="w-10 h-10 rounded-full flex items-center justify-center bg-green-600 text-white hover:bg-green-700 transition-colors"
@@ -129,11 +127,11 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
                     </Tooltip>
                   )}
                   
-                  {business.socialLinks.website && (
+                  {business.website && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <a 
-                          href={business.socialLinks.website} 
+                          href={business.website} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-700 text-white hover:bg-gray-800 transition-colors"
@@ -236,12 +234,12 @@ export function BusinessDetail({ business }: BusinessDetailProps) {
         </div>
         
         <div className="neumorphic p-6 space-y-4">
-          {business.socialLinks && business.socialLinks.website ? (
+          {business.website ? (
             <>
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">Website</h3>
                 <a 
-                  href={business.socialLinks.website} 
+                  href={business.website} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-amatyma-red hover:underline flex items-center text-sm"

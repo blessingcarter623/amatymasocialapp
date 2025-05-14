@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue 
 } from "@/components/ui/select";
-import { Business, SocialLinks } from "@/types";
+import { Business } from "@/types";
 import { Loader2, Save, Upload, X, Image } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -42,7 +43,10 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
     phone: string;
     email: string;
     department?: string;
-    socialLinks: SocialLinks;
+    facebook?: string;
+    instagram?: string;
+    whatsapp?: string;
+    website?: string;
     logo?: string;
     images: string[];
   }>(() => {
@@ -59,12 +63,10 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         phone: business.phone || "",
         email: business.email || "",
         department: business.department || "",
-        socialLinks: business.socialLinks || {
-          facebook: "",
-          whatsapp: "",
-          instagram: "",
-          website: "",
-        },
+        facebook: business.facebook || "",
+        whatsapp: business.whatsapp || "",
+        instagram: business.instagram || "",
+        website: business.website || "",
         logo: business.logo || "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
         images: business.images || [],
       };
@@ -91,12 +93,10 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
       phone: "",
       email: "",
       department: "",
-      socialLinks: {
-        facebook: "",
-        whatsapp: "",
-        instagram: "",
-        website: "",
-      },
+      facebook: "",
+      whatsapp: "",
+      instagram: "",
+      website: "",
       logo: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
       images: [],
     };
@@ -119,16 +119,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSocialChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      socialLinks: { ...formData.socialLinks, [name]: value },
-    });
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,6 +188,10 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         department: formData.department || null,
         logo: formData.logo,
         images: formData.images,
+        facebook: formData.facebook || null,
+        instagram: formData.instagram || null,
+        whatsapp: formData.whatsapp || null,
+        website: formData.website || null,
         user_id: user.id,
       };
       
@@ -216,20 +210,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         }
         
         console.log("Business updated successfully:", data);
-        
-        const { error: socialLinksError } = await supabase
-          .from('social_links')
-          .upsert({
-            business_id: businessId,
-            facebook: formData.socialLinks.facebook || null,
-            instagram: formData.socialLinks.instagram || null,
-            whatsapp: formData.socialLinks.whatsapp || null,
-            website: formData.socialLinks.website || null,
-          })
-          .eq('business_id', businessId);
-          
-        if (socialLinksError) throw socialLinksError;
-        
       } else {
         const { data: newBusiness, error: businessError } = await supabase
           .from('businesses')
@@ -240,18 +220,6 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
         if (businessError) throw businessError;
         
         businessId = newBusiness.id;
-        
-        const { error: socialLinksError } = await supabase
-          .from('social_links')
-          .insert({
-            business_id: businessId,
-            facebook: formData.socialLinks.facebook || null,
-            instagram: formData.socialLinks.instagram || null,
-            whatsapp: formData.socialLinks.whatsapp || null,
-            website: formData.socialLinks.website || null,
-          });
-          
-        if (socialLinksError) throw socialLinksError;
       }
       
       toast.success(businessId ? "Business updated successfully!" : "Business created successfully!");
@@ -548,8 +516,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
             <Input
               id="facebook"
               name="facebook"
-              value={formData.socialLinks.facebook}
-              onChange={handleSocialChange}
+              value={formData.facebook}
+              onChange={handleChange}
               placeholder="https://facebook.com/yourbusiness"
               className="bg-background border-amatyma-red/20"
             />
@@ -562,8 +530,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
             <Input
               id="instagram"
               name="instagram"
-              value={formData.socialLinks.instagram}
-              onChange={handleSocialChange}
+              value={formData.instagram}
+              onChange={handleChange}
               placeholder="https://instagram.com/yourbusiness"
               className="bg-background border-amatyma-red/20"
             />
@@ -576,8 +544,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
             <Input
               id="whatsapp"
               name="whatsapp"
-              value={formData.socialLinks.whatsapp}
-              onChange={handleSocialChange}
+              value={formData.whatsapp}
+              onChange={handleChange}
               placeholder="https://wa.me/yournumber"
               className="bg-background border-amatyma-red/20"
             />
@@ -590,8 +558,8 @@ export function BusinessForm({ business, onSuccess }: BusinessFormProps) {
             <Input
               id="website"
               name="website"
-              value={formData.socialLinks.website}
-              onChange={handleSocialChange}
+              value={formData.website}
+              onChange={handleChange}
               placeholder="https://yourbusiness.com"
               className="bg-background border-amatyma-red/20"
             />

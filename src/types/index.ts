@@ -1,3 +1,4 @@
+
 export type SocialLinks = {
   facebook?: string;
   whatsapp?: string;
@@ -33,7 +34,10 @@ export type Business = {
   email: string;
   logo?: string;
   images?: string[];
-  socialLinks: SocialLinks;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
+  website?: string;
   department?: string;
   userType: UserType;
   createdAt: string;

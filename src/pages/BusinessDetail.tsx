@@ -12,21 +12,10 @@ import { Database } from "@/integrations/supabase/types";
 
 // Type for the data returned directly from Supabase
 type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
-type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
-
-// Custom type combining business with its social links
-type BusinessWithSocialLinks = SupabaseBusiness & {
-  social_links: SupabaseSocialLink[] | null;
-  province?: string | null;
-  city?: string | null;
-};
 
 // Helper function to convert Supabase data to our application's Business type
-const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Business | null => {
+const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness | null): Business | null => {
   if (!data) return null;
-  
-  // Extract the first social link (if any)
-  const socialLink = data.social_links && data.social_links.length > 0 ? data.social_links[0] : null;
   
   return {
     id: data.id,
@@ -42,12 +31,10 @@ const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Bu
     email: data.email || "",
     logo: data.logo || undefined,
     images: data.images || [],
-    socialLinks: {
-      facebook: socialLink?.facebook || undefined,
-      whatsapp: socialLink?.whatsapp || undefined,
-      instagram: socialLink?.instagram || undefined,
-      website: socialLink?.website || undefined,
-    },
+    facebook: data.facebook || undefined,
+    instagram: data.instagram || undefined,
+    whatsapp: data.whatsapp || undefined,
+    website: data.website || undefined,
     department: data.department || undefined,
     userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
@@ -71,13 +58,10 @@ const BusinessDetail = () => {
     try {
       setLoading(true);
       
-      // Use the Supabase client to fetch the business data with social links
+      // Use the Supabase client to fetch the business data
       const { data, error } = await supabase
         .from('businesses')
-        .select(`
-          *,
-          social_links(*)
-        `)
+        .select('*')
         .eq('id', businessId)
         .single();
       
@@ -87,11 +71,11 @@ const BusinessDetail = () => {
         return;
       }
       
-      // Log the returned data to debug images array
+      // Log the returned data to debug
       console.log("Fetched business data:", data);
       
       // Map Supabase data to our application's Business type
-      const businessData = mapSupabaseBusinessToBusiness(data as BusinessWithSocialLinks);
+      const businessData = mapSupabaseBusinessToBusiness(data as SupabaseBusiness);
       
       if (businessData) {
         console.log("Mapped business data:", businessData);
