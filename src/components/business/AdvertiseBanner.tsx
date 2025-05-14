@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 export function AdvertiseBanner() {
   const navigate = useNavigate();
@@ -11,11 +11,11 @@ export function AdvertiseBanner() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Main Advertising Card */}
       <div className="neumorphic overflow-hidden transition-all duration-300 hover:translate-y-[-5px]">
-        <div className="relative aspect-video overflow-hidden">
+        <div className="relative aspect-video overflow-hidden bg-black flex items-center justify-center">
           <img
-            src="/lovable-uploads/bbc421c6-8651-44e6-b398-e3b56ea6973c.png"
+            src="/lovable-uploads/8bdfeaeb-4269-4875-8231-882ceeded3f2.png"
             alt="Advertise Here"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
         
