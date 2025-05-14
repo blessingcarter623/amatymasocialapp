@@ -1,1 +1,35 @@
+
 project_id = "mgxjqujcsajvogaoqccz"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://localhost"
+
+# For social links and proper relationships
+[[db.remote.tables]]
+name = "social_links"
+columns = [
+  { name = "id", type = "uuid" },
+  { name = "business_id", type = "uuid", foreign_key = { table = "businesses", column = "id" } },
+  { name = "facebook", type = "text", nullable = true },
+  { name = "instagram", type = "text", nullable = true },
+  { name = "whatsapp", type = "text", nullable = true },
+  { name = "website", type = "text", nullable = true },
+  { name = "created_at", type = "timestamp with time zone" },
+  { name = "updated_at", type = "timestamp with time zone" }
+]
+
+[[db.remote.tables]]
+name = "businesses" 
+columns = [
+  # Keep existing columns
+]
