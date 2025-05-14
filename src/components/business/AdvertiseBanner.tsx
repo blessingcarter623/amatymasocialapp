@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 
 export function AdvertiseBanner() {
-  const navigate = useNavigate();
+  const handleAdvertiseClick = () => {
+    window.open("https://chat.whatsapp.com/B4r7B9i6gdg3Uxs58hapbz", "_blank");
+  };
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -35,7 +36,7 @@ export function AdvertiseBanner() {
           
           <Button
             className="w-full bg-amatyma-red/80 hover:bg-amatyma-red"
-            onClick={() => navigate("/contact")}
+            onClick={handleAdvertiseClick}
           >
             <Info className="mr-2 h-4 w-4" />
             Click Here to Advertise!
