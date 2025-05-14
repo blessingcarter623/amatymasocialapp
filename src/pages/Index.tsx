@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -8,7 +7,7 @@ import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
 import { ArrowRight, UserCircle, Building, ShieldCheck, Info, Download, Megaphone, Tag, ListChecks } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
-import { AdvertisementSection } from "@/components/business/AdvertisementSection";
+import { AdvertiseBanner } from "@/components/business/AdvertiseBanner";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -186,7 +185,7 @@ const Index = () => {
       
       <section className="py-12">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Advertise Here</h2>
+          <h2 className="text-3xl font-bold">Advertise Your Business</h2>
           <Button 
             variant="outline" 
             onClick={() => navigate("/contact")}
@@ -197,7 +196,7 @@ const Index = () => {
           </Button>
         </div>
         
-        <AdvertisementSection />
+        <AdvertiseBanner />
 
         {/* Merchandise Section */}
         <div className="mt-16">
