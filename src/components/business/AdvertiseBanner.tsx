@@ -15,7 +15,7 @@ export function AdvertiseBanner() {
           <img
             src="/lovable-uploads/8bdfeaeb-4269-4875-8231-882ceeded3f2.png"
             alt="Advertise Here"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain scale-110" // Added scale-110 to zoom the image by 10%
           />
         </div>
         

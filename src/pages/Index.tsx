@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Banner } from "@/components/ui/banner";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
@@ -128,15 +127,6 @@ const Index = () => {
       </div>
       
       <section className="py-12">
-        <Banner
-          title="Join our growing network of businesses"
-          description="Create an account to showcase your business and connect with government departments."
-          ctaText="Register Now"
-          ctaAction={() => navigate("/register")}
-          dismissible
-          className="mb-12"
-        />
-        
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold">Why Join Amatyma?</h2>
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
