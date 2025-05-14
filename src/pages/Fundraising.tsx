@@ -19,7 +19,7 @@ export default function Fundraising() {
   return (
     <MainLayout>
       <div className="max-w-4xl mx-auto text-center py-12">
-        <h1 className="text-4xl font-bold mb-6 text-amatyma-red">Support Our Cause</h1>
+        <h1 className="text-4xl font-bold mb-6 text-amatyma-red">Back A Buddy</h1>
         
         <div className="bg-card rounded-lg shadow-lg p-8 mb-8">
           <HandHeart className="w-16 h-16 mx-auto mb-6 text-amatyma-red" />
@@ -38,7 +38,7 @@ export default function Fundraising() {
             className="bg-amatyma-red hover:bg-amatyma-red/80 text-white px-8 py-6 text-lg"
           >
             <HandHeart className="mr-2 h-5 w-5" />
-            Contribute Now
+            Back A Buddy
           </Button>
         </div>
 
