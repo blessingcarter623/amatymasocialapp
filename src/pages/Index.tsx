@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Banner } from "@/components/ui/banner";
@@ -5,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, UserCircle, Building, ShieldCheck, Info, Download, Megaphone, Tag } from "lucide-react";
+import { ArrowRight, UserCircle, Building, ShieldCheck, Info, Download, Megaphone, Tag, ListChecks } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { AdvertisementSection } from "@/components/business/AdvertisementSection";
 
