@@ -13,15 +13,26 @@ import { Building, User, Loader, AlertCircle } from "lucide-react";
 import { Banner } from "@/components/ui/banner";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
-import { Business } from "@/types";
+import { Business, SocialLinks } from "@/types";
 import { toast } from "sonner";
 
 // Type for the data returned directly from Supabase
 type SupabaseBusiness = Database['public']['Tables']['businesses']['Row'];
+type SupabaseSocialLink = Database['public']['Tables']['social_links']['Row'];
+
+// Custom type combining business with its social links
+type BusinessWithSocialLinks = SupabaseBusiness & {
+  social_links: SupabaseSocialLink[] | null;
+  province?: string | null;
+  city?: string | null;
+};
 
 // Helper function to convert Supabase data to our application's Business type
-const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness | null): Business | null => {
+const mapSupabaseBusinessToBusiness = (data: BusinessWithSocialLinks | null): Business | null => {
   if (!data) return null;
+  
+  // Extract the first social link (if any)
+  const socialLink = data.social_links && data.social_links.length > 0 ? data.social_links[0] : null;
   
   return {
     id: data.id,
@@ -37,11 +48,12 @@ const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness | null): Business 
     email: data.email || "",
     logo: data.logo || undefined,
     images: data.images || [],
-    // Use type assertion for social media fields
-    facebook: (data as any).facebook || undefined,
-    instagram: (data as any).instagram || undefined,
-    whatsapp: (data as any).whatsapp || undefined,
-    website: (data as any).website || undefined,
+    socialLinks: {
+      facebook: socialLink?.facebook || undefined,
+      whatsapp: socialLink?.whatsapp || undefined,
+      instagram: socialLink?.instagram || undefined,
+      website: socialLink?.website || undefined,
+    },
     department: data.department || undefined,
     userType: "business", // Default value since this isn't in the database
     createdAt: data.created_at,
@@ -52,6 +64,7 @@ const mapSupabaseBusinessToBusiness = (data: SupabaseBusiness | null): Business 
 const Dashboard = () => {
   const { user, profile } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
+  const [supabaseBusiness, setSupabaseBusiness] = useState<BusinessWithSocialLinks | null>(null);
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +84,10 @@ const Dashboard = () => {
       
       const { data, error } = await supabase
         .from('businesses')
-        .select('*')
+        .select(`
+          *,
+          social_links(*)
+        `)
         .eq("user_id", user?.id || '')
         .single();
       
@@ -83,8 +99,12 @@ const Dashboard = () => {
         }
       }
       
+      // Store the raw Supabase data
+      const businessData = data as BusinessWithSocialLinks | null;
+      setSupabaseBusiness(businessData);
+      
       // Map to our application's Business type
-      setBusiness(mapSupabaseBusinessToBusiness(data as SupabaseBusiness));
+      setBusiness(mapSupabaseBusinessToBusiness(businessData));
     } catch (error) {
       console.error("Error in fetchUserBusiness:", error);
       setError("An unexpected error occurred. Please try again later.");
