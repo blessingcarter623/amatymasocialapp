@@ -58,6 +58,7 @@ export default function Fundraising() {
               <li>Business incubation programs</li>
               <li>Educational workshops</li>
               <li>Support for small businesses</li>
+              <li>Mental wellness, physical wellness, and financial wellness initiatives working together to develop sustainable communities</li>
             </ul>
           </div>
         </div>
