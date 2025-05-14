@@ -54,11 +54,11 @@ export default function Fundraising() {
           <div>
             <h3 className="text-xl font-medium mb-2">How We Use Your Contributions</h3>
             <ul className="list-disc pl-5 text-muted-foreground">
+              <li>Mental wellness, physical wellness, and financial wellness initiatives</li>
               <li>Community development projects</li>
               <li>Business incubation programs</li>
               <li>Educational workshops</li>
               <li>Support for small businesses</li>
-              <li>Mental wellness, physical wellness, and financial wellness initiatives working together to develop sustainable communities</li>
             </ul>
           </div>
         </div>
