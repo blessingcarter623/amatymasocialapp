@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import Merchandise from "./pages/Merchandise";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import Fundraising from "./pages/Fundraising";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,9 @@ const App = () => (
                   <Route path="/merchandise" element={<Merchandise />} />
                   <Route path="/merchandise/:id" element={<ProductDetail />} />
                   <Route path="/cart" element={<Cart />} />
+                  
+                  {/* Fundraising Route */}
+                  <Route path="/fundraising" element={<Fundraising />} />
                   
                   {/* Protected Routes */}
                   <Route element={<ProtectedRoute />}>
