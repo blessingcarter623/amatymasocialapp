@@ -6,9 +6,9 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface CartContextType {
   cart: Cart;
-  addToCart: (product: Product, quantity: number, size: ProductSize) => void;
-  removeFromCart: (productId: string, size: ProductSize) => void;
-  updateQuantity: (productId: string, size: ProductSize, quantity: number) => void;
+  addToCart: (product: Product, quantity: number, size: ProductSize, color?: string) => void;
+  removeFromCart: (productId: string, size: ProductSize, color?: string) => void;
+  updateQuantity: (productId: string, size: ProductSize, quantity: number, color?: string) => void;
   clearCart: () => void;
   isLoading: boolean;
 }
@@ -50,11 +50,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   };
 
-  const addToCart = (product: Product, quantity: number, size: ProductSize) => {
+  const addToCart = (product: Product, quantity: number, size: ProductSize, color?: string) => {
     setCart(prevCart => {
-      // Check if product with the same size already exists in the cart
+      // Check if product with the same size and color already exists in the cart
       const existingItemIndex = prevCart.items.findIndex(
-        item => item.productId === product.id && item.size === size
+        item => item.productId === product.id && item.size === size && item.color === color
       );
 
       let newItems;
@@ -74,22 +74,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             productId: product.id,
             quantity,
             size,
+            color,
             product
           }
         ];
       }
 
-      toast.success(`${product.name} (${size}) added to cart`);
+      const colorText = color ? ` - ${color}` : '';
+      toast.success(`${product.name}${colorText} (${size}) added to cart`);
       
       // Return updated cart with new totals
       return calculateTotals(newItems);
     });
   };
 
-  const removeFromCart = (productId: string, size: ProductSize) => {
+  const removeFromCart = (productId: string, size: ProductSize, color?: string) => {
     setCart(prevCart => {
       const newItems = prevCart.items.filter(
-        item => !(item.productId === productId && item.size === size)
+        item => !(item.productId === productId && item.size === size && item.color === color)
       );
       
       toast.info("Item removed from cart");
@@ -98,10 +100,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  const updateQuantity = (productId: string, size: ProductSize, quantity: number) => {
+  const updateQuantity = (productId: string, size: ProductSize, quantity: number, color?: string) => {
     setCart(prevCart => {
       const newItems = prevCart.items.map(item => {
-        if (item.productId === productId && item.size === size) {
+        if (item.productId === productId && item.size === size && item.color === color) {
           return { ...item, quantity };
         }
         return item;

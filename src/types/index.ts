@@ -1,3 +1,4 @@
+
 export type SocialLinks = {
   facebook?: string;
   whatsapp?: string;
@@ -51,6 +52,11 @@ export type User = {
 
 export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size" | "A4" | "A5";
 
+export type ProductVariant = {
+  color: string;
+  image: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -60,6 +66,7 @@ export type Product = {
   category: string;
   availableSizes: ProductSize[];
   inStock: boolean;
+  variants?: ProductVariant[];
   createdAt: string;
   updatedAt: string;
 };
@@ -68,6 +75,7 @@ export type CartItem = {
   productId: string;
   quantity: number;
   size: ProductSize;
+  color?: string;
   product: Product;
 };
 

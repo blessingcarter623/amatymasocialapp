@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -7,18 +8,25 @@ import {
   CardContent 
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
 import { Product, ProductSize } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Updated merchandise data with new T-shirt variants
+// Updated merchandise data with T-shirt variants
 const MERCHANDISE_DATA: Product[] = [
   {
     id: "1",
     name: "MANCAVE Boxer Shorts",
     description: "Comfortable boxer shorts with MANCAVE branding. Made from premium quality cotton for maximum comfort and durability. These boxer shorts feature the iconic MANCAVE logo on the waistband. Perfect for everyday comfort and style.",
-    price: 0, // Set to 0 for "Coming Soon"
+    price: 0,
     image: "/lovable-uploads/99e072e9-3c20-4f08-8d50-912e8d987e03.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL"],
@@ -30,7 +38,7 @@ const MERCHANDISE_DATA: Product[] = [
     id: "2",
     name: "MANCAVE Blazer",
     description: "Elegant black blazer with MANCAVE logo on the pocket. Crafted from high-quality fabric for a sophisticated look, this blazer is perfect for formal and semi-formal occasions. The subtle logo on the pocket adds an exclusive touch to this classic piece.",
-    price: 0, // Set to 0 for "Coming Soon"
+    price: 0,
     image: "/lovable-uploads/19df1a0c-69d1-4c41-83b8-94645960f208.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
@@ -148,25 +156,23 @@ const MERCHANDISE_DATA: Product[] = [
   },
   {
     id: "12",
-    name: "MANCAVE T-Shirt - Black",
-    description: "Official MANCAVE T-shirt in black with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
-    price: 0, // Set to 0 for "Coming Soon"
+    name: "MANCAVE T-Shirt",
+    description: "Official MANCAVE T-shirt available in black and white with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
+    price: 0,
     image: "/lovable-uploads/5e3ce7f4-c671-4702-abca-3425d6416308.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: "13",
-    name: "MANCAVE T-Shirt - White",
-    description: "Official MANCAVE T-shirt in white with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
-    price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/6ac85ce4-8f1b-41b3-a4bf-cde5f462299f.png",
-    category: "Clothing",
-    availableSizes: ["S", "M", "L", "XL", "XXL"],
-    inStock: true,
+    variants: [
+      {
+        color: "Black",
+        image: "/lovable-uploads/5e3ce7f4-c671-4702-abca-3425d6416308.png"
+      },
+      {
+        color: "White",
+        image: "/lovable-uploads/6ac85ce4-8f1b-41b3-a4bf-cde5f462299f.png"
+      }
+    ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }
@@ -179,6 +185,8 @@ const ProductDetail = () => {
   
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<ProductSize | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
   
   // Find the product based on the ID
@@ -187,9 +195,16 @@ const ProductDetail = () => {
     
     if (foundProduct) {
       setProduct(foundProduct);
+      setSelectedImage(foundProduct.image);
+      
       // Set default selected size if available
       if (foundProduct.availableSizes.length > 0) {
         setSelectedSize(foundProduct.availableSizes[0]);
+      }
+      
+      // Set default selected color if variants exist
+      if (foundProduct.variants && foundProduct.variants.length > 0) {
+        setSelectedColor(foundProduct.variants[0].color);
       }
     } else {
       toast.error("Product not found");
@@ -197,16 +212,33 @@ const ProductDetail = () => {
     }
   }, [id, navigate]);
   
+  const handleColorChange = (color: string, image: string) => {
+    setSelectedColor(color);
+    setSelectedImage(image);
+  };
+  
   const handleAddToCart = () => {
     if (!product || !selectedSize) {
       toast.error("Please select a size");
       return;
     }
     
-    addToCart(product, quantity, selectedSize);
+    // For products with variants, ensure color is selected
+    if (product.variants && product.variants.length > 0 && !selectedColor) {
+      toast.error("Please select a color");
+      return;
+    }
     
-    // Optional: Navigate to cart or stay on page
-    // navigate('/cart');
+    // Create a modified product for the cart with the selected variant
+    const cartProduct = { ...product };
+    if (selectedColor && product.variants) {
+      const selectedVariant = product.variants.find(v => v.color === selectedColor);
+      if (selectedVariant) {
+        cartProduct.image = selectedVariant.image;
+      }
+    }
+    
+    addToCart(cartProduct, quantity, selectedSize, selectedColor);
   };
 
   if (!product) {
@@ -234,11 +266,29 @@ const ProductDetail = () => {
         {/* Product Image */}
         <Card className="overflow-hidden">
           <div className="aspect-square overflow-hidden bg-muted">
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="h-full w-full object-cover"
-            />
+            {product.variants && product.variants.length > 1 ? (
+              <Carousel className="w-full h-full">
+                <CarouselContent>
+                  {product.variants.map((variant, index) => (
+                    <CarouselItem key={index}>
+                      <img 
+                        src={variant.image} 
+                        alt={`${product.name} - ${variant.color}`} 
+                        className="h-full w-full object-cover"
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-4" />
+                <CarouselNext className="right-4" />
+              </Carousel>
+            ) : (
+              <img 
+                src={selectedImage} 
+                alt={product.name} 
+                className="h-full w-full object-cover"
+              />
+            )}
           </div>
         </Card>
         
@@ -257,6 +307,25 @@ const ProductDetail = () => {
             <h3 className="text-lg font-medium mb-2">Description</h3>
             <p className="text-muted-foreground">{product.description}</p>
           </div>
+          
+          {/* Color Selection for variants */}
+          {product.variants && product.variants.length > 0 && (
+            <div>
+              <h3 className="text-lg font-medium mb-2">Color</h3>
+              <div className="flex flex-wrap gap-2">
+                {product.variants.map((variant) => (
+                  <Button
+                    key={variant.color}
+                    variant={selectedColor === variant.color ? "default" : "outline"}
+                    className={selectedColor === variant.color ? "bg-amatyma-red hover:bg-amatyma-red/80" : ""}
+                    onClick={() => handleColorChange(variant.color, variant.image)}
+                  >
+                    {variant.color}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Size Selection */}
           <div>
