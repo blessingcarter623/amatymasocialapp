@@ -265,7 +265,7 @@ const ProductDetail = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Product Image */}
         <Card className="overflow-hidden">
-          <div className="h-80 overflow-hidden bg-muted flex items-center justify-center p-8">
+          <div className="h-80 overflow-hidden bg-muted flex items-center justify-center">
             {product.variants && product.variants.length > 1 ? (
               <Carousel className="w-full h-full">
                 <CarouselContent>
@@ -275,7 +275,7 @@ const ProductDetail = () => {
                         <img 
                           src={variant.image} 
                           alt={`${product.name} - ${variant.color}`} 
-                          className="max-h-64 max-w-64 object-contain"
+                          className="w-full h-full object-cover"
                         />
                       </div>
                     </CarouselItem>
@@ -288,7 +288,7 @@ const ProductDetail = () => {
               <img 
                 src={selectedImage} 
                 alt={product.name} 
-                className="max-h-64 max-w-64 object-contain"
+                className="w-full h-full object-cover"
               />
             )}
           </div>
