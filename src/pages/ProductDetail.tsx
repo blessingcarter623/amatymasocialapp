@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ import { useCart } from '@/context/CartContext';
 import { ShoppingCart, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Updated merchandise data with new images and "Coming Soon" for prices
+// Updated merchandise data with new T-shirt variants
 const MERCHANDISE_DATA: Product[] = [
   {
     id: "1",
@@ -92,7 +91,7 @@ const MERCHANDISE_DATA: Product[] = [
     name: "MANCAVE Mug",
     description: "Ceramic mug with the MANCAVE logo. This high-quality ceramic mug is perfect for your morning coffee or tea. Dishwasher and microwave safe, featuring the iconic logo that won't fade with use. The perfect gift for members or supporters.",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png", // Updated mug image
+    image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png",
     category: "Accessories",
     availableSizes: ["One Size"],
     inStock: true,
@@ -104,7 +103,7 @@ const MERCHANDISE_DATA: Product[] = [
     name: "MANCAVE Hoodie",
     description: "Stay warm with our comfortable MANCAVE hoodie. Made from premium quality material with a soft inner lining for maximum comfort. Features the MANCAVE logo on the front. Perfect for casual wear and colder weather.",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png", // Updated hoodie image
+    image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png",
     category: "Clothing",
     availableSizes: ["M", "L", "XL", "XXL"],
     inStock: true,
@@ -149,10 +148,22 @@ const MERCHANDISE_DATA: Product[] = [
   },
   {
     id: "12",
-    name: "MANCAVE T-Shirt",
-    description: "Official MANCAVE T-shirt with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
+    name: "MANCAVE T-Shirt - Black",
+    description: "Official MANCAVE T-shirt in black with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/4d8cf362-9bf7-4e02-95d0-3a874e7bfd8d.png",
+    image: "/lovable-uploads/5e3ce7f4-c671-4702-abca-3425d6416308.png",
+    category: "Clothing",
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    inStock: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: "13",
+    name: "MANCAVE T-Shirt - White",
+    description: "Official MANCAVE T-shirt in white with logo on front. Made from premium quality cotton for maximum comfort and durability. This T-shirt features the iconic logo on the front chest area. Perfect for casual wear and showing your support.",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/6ac85ce4-8f1b-41b3-a4bf-cde5f462299f.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,

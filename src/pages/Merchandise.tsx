@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { ProductCard } from "@/components/merchandise/ProductCard";
@@ -10,7 +9,7 @@ import { Product, ProductSize } from '@/types';
 import { Search, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-// Updated merchandise data with reordered products (boxer shorts moved from position 1 to later)
+// Updated merchandise data with new T-shirt variants
 const MERCHANDISE_DATA: Product[] = [
   {
     id: "2",
@@ -26,10 +25,22 @@ const MERCHANDISE_DATA: Product[] = [
   },
   {
     id: "12",
-    name: "MANCAVE T-Shirt",
-    description: "Official MANCAVE T-shirt with logo on front",
+    name: "MANCAVE T-Shirt - Black",
+    description: "Official MANCAVE T-shirt in black with logo on front",
     price: 0, // Set to 0 for "Coming Soon"
-    image: "/lovable-uploads/c91a9f23-ad10-45ef-8feb-7fd2bedf23b9.png", // Updated T-shirt image
+    image: "/lovable-uploads/5e3ce7f4-c671-4702-abca-3425d6416308.png",
+    category: "Clothing",
+    availableSizes: ["S", "M", "L", "XL", "XXL"],
+    inStock: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: "13",
+    name: "MANCAVE T-Shirt - White",
+    description: "Official MANCAVE T-shirt in white with logo on front",
+    price: 0, // Set to 0 for "Coming Soon"
+    image: "/lovable-uploads/6ac85ce4-8f1b-41b3-a4bf-cde5f462299f.png",
     category: "Clothing",
     availableSizes: ["S", "M", "L", "XL", "XXL"],
     inStock: true,
