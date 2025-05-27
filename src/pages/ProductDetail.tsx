@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -265,17 +264,19 @@ const ProductDetail = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Product Image */}
         <Card className="overflow-hidden">
-          <div className="aspect-square overflow-hidden bg-muted">
+          <div className="h-96 overflow-hidden bg-muted flex items-center justify-center p-4">
             {product.variants && product.variants.length > 1 ? (
               <Carousel className="w-full h-full">
                 <CarouselContent>
                   {product.variants.map((variant, index) => (
                     <CarouselItem key={index}>
-                      <img 
-                        src={variant.image} 
-                        alt={`${product.name} - ${variant.color}`} 
-                        className="h-full w-full object-cover"
-                      />
+                      <div className="h-full flex items-center justify-center">
+                        <img 
+                          src={variant.image} 
+                          alt={`${product.name} - ${variant.color}`} 
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -286,7 +287,7 @@ const ProductDetail = () => {
               <img 
                 src={selectedImage} 
                 alt={product.name} 
-                className="h-full w-full object-cover"
+                className="max-h-full max-w-full object-contain"
               />
             )}
           </div>
