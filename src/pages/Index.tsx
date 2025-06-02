@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, UserCircle, Building, ShieldCheck, Download, Megaphone, Tag, ListChecks } from "lucide-react";
+import { ArrowRight, UserCircle, Building, ShieldCheck, Tag } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { AdvertiseBanner } from "@/components/business/AdvertiseBanner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const navigate = useNavigate();
   const { businesses } = useApp();
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
@@ -32,7 +34,7 @@ const Index = () => {
     {
       id: "7",
       name: "MANCAVE Mug",
-      price: "Coming Soon",
+      price: "Coming Soon", 
       image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png"
     },
     {
@@ -45,39 +47,81 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <section className="py-6 md:py-12">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6 md:pr-8 animate-fade-in">
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-              Welcome to <span className="text-amatyma-red">Amatyma</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Connect with the brotherhood, discover local businesses, and access exclusive merchandise.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-2">
-              <Button 
-                className="bg-amatyma-red hover:bg-amatyma-red/80 text-lg px-6 py-6"
-                onClick={() => navigate("/register")}
-              >
-                Join the Brotherhood
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button 
-                variant="outline" 
-                className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white text-lg px-6 py-6"
-                onClick={() => navigate("/businesses")}
-              >
-                Discover Businesses
-                <Building className="ml-2 h-5 w-5" />
-              </Button>
+      {/* Hero Section - Mobile Optimized */}
+      <section className={`${isMobile ? 'px-4 py-8' : 'py-6 md:py-12'}`}>
+        <div className={`${isMobile ? 'space-y-8' : 'grid md:grid-cols-2 gap-8 items-center'}`}>
+          {/* Mobile: Logo and Branding First */}
+          {isMobile && (
+            <div className="text-center animate-fade-in">
+              <div className="mb-6">
+                <img 
+                  src={theme === "dark" ? "/lovable-uploads/68d1115e-2772-4423-97a7-0314869d7169.png" : "/lovable-uploads/f74a0cf6-4b5a-440b-8f7d-6143716f4c8a.png"}
+                  alt="Amatyma Brotherhood Circle"
+                  className="w-32 h-32 object-contain mx-auto rounded-xl"
+                />
+              </div>
+              <h1 className="text-3xl font-bold leading-tight mb-4">
+                Welcome to <span className="text-amatyma-red">Amatyma</span>
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Connect with the brotherhood, discover local businesses, and access exclusive merchandise.
+              </p>
             </div>
+          )}
 
-            {/* WhatsApp Join Button */}
+          {/* Desktop Layout */}
+          {!isMobile && (
+            <>
+              <div className="space-y-6 md:pr-8 animate-fade-in">
+                <h1 className="text-4xl font-bold leading-tight md:text-5xl">
+                  Welcome to <span className="text-amatyma-red">Amatyma</span>
+                </h1>
+                <p className="text-xl text-muted-foreground">
+                  Connect with the brotherhood, discover local businesses, and access exclusive merchandise.
+                </p>
+              </div>
+              
+              <div className="relative">
+                <div 
+                  className="neumorphic p-8 animate-fade-in flex items-center justify-center" 
+                  style={{ animationDelay: "0.3s", minHeight: "260px" }}
+                >
+                  <div className="relative flex items-center justify-center w-full h-full">
+                    <img 
+                      src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png"
+                      alt="Amatyma Brotherhood Circle"
+                      className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Action Buttons - Mobile Optimized */}
+          <div className={`${isMobile ? 'space-y-4' : 'flex flex-wrap gap-4 pt-2'}`}>
+            <Button 
+              className={`${isMobile ? 'w-full' : ''} bg-amatyma-red hover:bg-amatyma-red/80 ${isMobile ? 'py-4 text-lg' : 'text-lg px-6 py-6'}`}
+              onClick={() => navigate("/register")}
+            >
+              Join the Brotherhood
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button 
+              variant="outline" 
+              className={`${isMobile ? 'w-full' : ''} border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white ${isMobile ? 'py-4 text-lg' : 'text-lg px-6 py-6'}`}
+              onClick={() => navigate("/businesses")}
+            >
+              Discover Businesses
+              <Building className="ml-2 h-5 w-5" />
+            </Button>
+
+            {/* WhatsApp Join Button - Mobile Optimized */}
             <button 
               onClick={handleWhatsAppClick}
-              className="group flex items-center gap-3 px-6 py-4 text-lg font-medium text-white bg-green-500 rounded-xl shadow-lg 
+              className={`${isMobile ? 'w-full' : ''} group flex items-center justify-center gap-3 px-6 py-4 text-lg font-medium text-white bg-green-500 rounded-xl shadow-lg 
                          hover:bg-green-600 transition-all duration-300 
-                         relative overflow-hidden"
+                         relative overflow-hidden`}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               <span className="relative z-10 flex items-center">
@@ -86,46 +130,34 @@ const Index = () => {
               </span>
             </button>
           </div>
-          
-          <div className="relative">
-            <div 
-              className="neumorphic p-8 animate-fade-in flex items-center justify-center" 
-              style={{ animationDelay: "0.3s", minHeight: "260px" }}
-            >
-              <div className="relative flex items-center justify-center w-full h-full">
-                <img 
-                  src="/lovable-uploads/443b5d39-f791-45ba-822d-732d578e98e8.png"
-                  alt="Amatyma Brotherhood Circle"
-                  className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       
-      {/* WhatsApp floating button */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <button 
-          onClick={handleWhatsAppClick}
-          className="group flex items-center justify-center p-4 bg-green-500 rounded-full shadow-xl 
-                    hover:bg-green-600 transition-all duration-300 
-                    relative"
-          aria-label="Join WhatsApp Group"
-        >
-          <WhatsappIcon size={36} className="text-white" />
-        </button>
-      </div>
+      {/* WhatsApp floating button - Hidden on mobile since we have the main button */}
+      {!isMobile && (
+        <div className="fixed bottom-8 right-8 z-50">
+          <button 
+            onClick={handleWhatsAppClick}
+            className="group flex items-center justify-center p-4 bg-green-500 rounded-full shadow-xl 
+                      hover:bg-green-600 transition-all duration-300 
+                      relative"
+            aria-label="Join WhatsApp Group"
+          >
+            <WhatsappIcon size={36} className="text-white" />
+          </button>
+        </div>
+      )}
       
-      <section className="py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold">Why Join Amatyma?</h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
+      {/* Features Section - Mobile Optimized */}
+      <section className={`${isMobile ? 'px-4 py-8' : 'py-12'}`}>
+        <div className={`text-center ${isMobile ? 'mb-8' : 'mb-12'}`}>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold`}>Why Join Amatyma?</h2>
+          <p className={`text-muted-foreground mt-3 ${isMobile ? 'text-base' : ''} max-w-2xl mx-auto`}>
             Connect with a community of like-minded men, discover local businesses, and access exclusive content and merchandise.
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'md:grid-cols-2 lg:grid-cols-4 gap-6'}`}>
           {[
             {
               icon: <UserCircle />,
@@ -150,27 +182,28 @@ const Index = () => {
           ].map((feature, index) => (
             <div 
               key={index} 
-              className="neumorphic p-6 text-center space-y-4 transition-all duration-300 hover:translate-y-[-5px]"
+              className={`neumorphic ${isMobile ? 'p-4' : 'p-6'} text-center space-y-4 transition-all duration-300 hover:translate-y-[-5px]`}
             >
               <div className="bg-amatyma-red/10 rounded-full p-3 inline-flex">
                 <div className="bg-amatyma-red rounded-full p-2 text-white">
                   {feature.icon}
                 </div>
               </div>
-              <h3 className="text-xl font-medium">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm">{feature.description}</p>
+              <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-medium`}>{feature.title}</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-sm' : 'text-sm'}`}>{feature.description}</p>
             </div>
           ))}
         </div>
       </section>
       
-      <section className="py-12">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Featured Businesses</h2>
+      {/* Featured Businesses Section - Mobile Optimized */}
+      <section className={`${isMobile ? 'px-4 py-8' : 'py-12'}`}>
+        <div className={`flex ${isMobile ? 'flex-col gap-4' : 'justify-between items-center'} mb-8`}>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold`}>Featured Businesses</h2>
           <Button 
             variant="outline" 
             onClick={() => navigate("/businesses")}
-            className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
+            className={`${isMobile ? 'w-full' : ''} border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white`}
           >
             View All
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -179,28 +212,28 @@ const Index = () => {
         
         <AdvertiseBanner />
 
-        {/* Merchandise Section */}
-        <div className="mt-16">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Featured Merchandise</h2>
+        {/* Merchandise Section - Mobile Optimized */}
+        <div className={`${isMobile ? 'mt-12' : 'mt-16'}`}>
+          <div className={`flex ${isMobile ? 'flex-col gap-4' : 'justify-between items-center'} mb-8`}>
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold`}>Featured Merchandise</h2>
             <Button 
               variant="outline" 
               onClick={() => navigate("/merchandise")}
-              className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
+              className={`${isMobile ? 'w-full' : ''} border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white`}
             >
               Shop Now
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
             {featuredMerchandise.map((item) => (
               <div key={item.id} className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 bg-muted flex items-center justify-center">
+                <div className={`${isMobile ? 'h-40' : 'h-48'} bg-muted flex items-center justify-center`}>
                   <img src={item.image} alt={item.name} className="h-full object-cover" />
                 </div>
-                <div className="p-4">
-                  <h3 className="font-medium text-lg mb-1">{item.name}</h3>
+                <div className={`${isMobile ? 'p-3' : 'p-4'}`}>
+                  <h3 className={`font-medium ${isMobile ? 'text-base' : 'text-lg'} mb-1`}>{item.name}</h3>
                   <p className="text-sm text-muted-foreground mb-2">Limited Edition Brotherhood Circle Merchandise</p>
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-amatyma-red">{item.price}</span>
