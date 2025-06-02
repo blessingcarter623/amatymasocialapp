@@ -6,7 +6,6 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
 import { ArrowRight, UserCircle, Building, ShieldCheck, Tag } from "lucide-react";
-import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { AdvertiseBanner } from "@/components/business/AdvertiseBanner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -18,10 +17,6 @@ const Index = () => {
   
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
-  
-  const handleWhatsAppClick = () => {
-    window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
-  };
   
   // Featured merchandise items
   const featuredMerchandise = [
@@ -115,38 +110,9 @@ const Index = () => {
               Discover Businesses
               <Building className="ml-2 h-5 w-5" />
             </Button>
-
-            {/* WhatsApp Join Button - Mobile Optimized */}
-            <button 
-              onClick={handleWhatsAppClick}
-              className={`${isMobile ? 'w-full' : ''} group flex items-center justify-center gap-3 px-6 py-4 text-lg font-medium text-white bg-green-500 rounded-xl shadow-lg 
-                         hover:bg-green-600 transition-all duration-300 
-                         relative overflow-hidden`}
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <span className="relative z-10 flex items-center">
-                <WhatsappIcon size={28} className="mr-2" />
-                Join Our WhatsApp Group
-              </span>
-            </button>
           </div>
         </div>
       </section>
-      
-      {/* WhatsApp floating button - Hidden on mobile since we have the main button */}
-      {!isMobile && (
-        <div className="fixed bottom-8 right-8 z-50">
-          <button 
-            onClick={handleWhatsAppClick}
-            className="group flex items-center justify-center p-4 bg-green-500 rounded-full shadow-xl 
-                      hover:bg-green-600 transition-all duration-300 
-                      relative"
-            aria-label="Join WhatsApp Group"
-          >
-            <WhatsappIcon size={36} className="text-white" />
-          </button>
-        </div>
-      )}
       
       {/* Features Section - Mobile Optimized */}
       <section className={`${isMobile ? 'px-4 py-8' : 'py-12'}`}>

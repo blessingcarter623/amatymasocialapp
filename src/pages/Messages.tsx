@@ -17,43 +17,43 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Mock data for conversations
+// Mock data for conversations with TTMBAH and Ofenste Tabane SG conversation
 const conversations = [
   {
     id: "1",
-    name: "Business Network Group",
-    type: "group",
-    lastMessage: "Let's schedule the next meeting",
-    timestamp: "2 min ago",
-    unreadCount: 3,
-    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
-    participants: 12
-  },
-  {
-    id: "2",
-    name: "John Doe",
+    name: "Ofenste Tabane SG",
     type: "individual",
-    lastMessage: "Thanks for the business referral!",
-    timestamp: "1 hour ago",
-    unreadCount: 1,
+    lastMessage: "The Department proposal looks promising. When can we schedule the ministerial presentation?",
+    timestamp: "5 min ago",
+    unreadCount: 2,
     avatar: null,
     isOnline: true
   },
   {
-    id: "3",
-    name: "Marketing Team",
+    id: "2",
+    name: "TTMBAH Leadership",
     type: "group",
-    lastMessage: "New merchandise designs are ready",
-    timestamp: "3 hours ago",
-    unreadCount: 0,
+    lastMessage: "Government partnership meeting scheduled for next week",
+    timestamp: "1 hour ago",
+    unreadCount: 1,
     avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
     participants: 8
   },
   {
+    id: "3",
+    name: "Business Network Group",
+    type: "group",
+    lastMessage: "Let's schedule the next meeting",
+    timestamp: "3 hours ago",
+    unreadCount: 0,
+    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    participants: 12
+  },
+  {
     id: "4",
-    name: "Sarah Wilson",
+    name: "John Doe",
     type: "individual",
-    lastMessage: "Great meeting today!",
+    lastMessage: "Thanks for the business referral!",
     timestamp: "Yesterday",
     unreadCount: 0,
     avatar: null,

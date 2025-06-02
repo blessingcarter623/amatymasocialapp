@@ -18,55 +18,129 @@ import {
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-// Mock messages data
-const mockMessages = [
-  {
-    id: "1",
-    senderId: "user1",
-    senderName: "John Doe",
-    message: "Hey! How's the new business going?",
-    timestamp: "10:30 AM",
-    isOwn: false
+// Mock conversations data
+const conversationsData = {
+  "1": {
+    name: "Ofenste Tabane SG",
+    type: "individual",
+    isOnline: true,
+    avatar: null,
+    messages: [
+      {
+        id: "1",
+        senderId: "ofenste",
+        senderName: "Ofenste Tabane SG",
+        message: "Good morning TTMBAH team. I've reviewed the proposal for The Department of Men's Mental Health and Wellness.",
+        timestamp: "9:15 AM",
+        isOwn: false
+      },
+      {
+        id: "2",
+        senderId: "current",
+        senderName: "TTMBAH",
+        message: "Good morning Secretary-General. Thank you for taking the time to review our comprehensive proposal.",
+        timestamp: "9:17 AM",
+        isOwn: true
+      },
+      {
+        id: "3",
+        senderId: "ofenste",
+        senderName: "Ofenste Tabane SG",
+        message: "The framework is impressive. The statistics on men's mental health crisis are concerning and your proposed solutions are well-structured.",
+        timestamp: "9:20 AM",
+        isOwn: false
+      },
+      {
+        id: "4",
+        senderId: "current",
+        senderName: "TTMBAH",
+        message: "We believe formalizing this department under government oversight will provide the resources and reach needed to address this crisis effectively.",
+        timestamp: "9:22 AM",
+        isOwn: true
+      },
+      {
+        id: "5",
+        senderId: "ofenste",
+        senderName: "Ofenste Tabane SG",
+        message: "I agree. The integration with existing health departments while maintaining specialized focus is key. What's your timeline for implementation?",
+        timestamp: "9:25 AM",
+        isOwn: false
+      },
+      {
+        id: "6",
+        senderId: "current",
+        senderName: "TTMBAH",
+        message: "We're proposing a phased approach: 6 months for pilot programs, 12 months for full rollout. We have identified key personnel and infrastructure requirements.",
+        timestamp: "9:28 AM",
+        isOwn: true
+      },
+      {
+        id: "7",
+        senderId: "ofenste",
+        senderName: "Ofenste Tabane SG",
+        message: "Excellent. I'll need to present this to the Cabinet. Can we schedule a formal presentation for next week?",
+        timestamp: "9:30 AM",
+        isOwn: false
+      },
+      {
+        id: "8",
+        senderId: "current",
+        senderName: "TTMBAH",
+        message: "Absolutely. We'll prepare the full presentation with budget allocations and expected outcomes. Tuesday or Wednesday work best for us.",
+        timestamp: "9:32 AM",
+        isOwn: true
+      },
+      {
+        id: "9",
+        senderId: "ofenste",
+        senderName: "Ofenste Tabane SG",
+        message: "Let's go with Wednesday at 2 PM. This could be transformative for men's mental health in our country.",
+        timestamp: "9:35 AM",
+        isOwn: false
+      },
+      {
+        id: "10",
+        senderId: "current",
+        senderName: "TTMBAH",
+        message: "Wednesday at 2 PM confirmed. We're excited about this opportunity to make a real difference. Thank you for your support, Secretary-General.",
+        timestamp: "9:37 AM",
+        isOwn: true
+      }
+    ]
   },
-  {
-    id: "2",
-    senderId: "current",
-    senderName: "You",
-    message: "It's going great! Thanks for asking. The community support has been amazing.",
-    timestamp: "10:32 AM",
-    isOwn: true
-  },
-  {
-    id: "3",
-    senderId: "user1",
-    senderName: "John Doe",
-    message: "That's fantastic! I'd love to collaborate on some projects.",
-    timestamp: "10:35 AM",
-    isOwn: false
-  },
-  {
-    id: "4",
-    senderId: "current",
-    senderName: "You",
-    message: "Absolutely! Let's set up a meeting this week.",
-    timestamp: "10:36 AM",
-    isOwn: true
+  "2": {
+    name: "TTMBAH Leadership",
+    type: "group",
+    isOnline: true,
+    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    messages: [
+      {
+        id: "1",
+        senderId: "leader1",
+        senderName: "Leadership Team",
+        message: "The government partnership meeting is confirmed for Wednesday.",
+        timestamp: "10:30 AM",
+        isOwn: false
+      }
+    ]
   }
-];
+};
 
 const ChatRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState(mockMessages);
 
-  // Mock conversation data
-  const conversation = {
-    name: "John Doe",
+  // Get conversation data or default
+  const conversationData = conversationsData[id as keyof typeof conversationsData] || {
+    name: "Unknown Contact",
     type: "individual",
-    isOnline: true,
-    avatar: null
+    isOnline: false,
+    avatar: null,
+    messages: []
   };
+
+  const [messages, setMessages] = useState(conversationData.messages);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -108,24 +182,24 @@ const ChatRoom = () => {
 
               <div className="relative">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={conversation.avatar || undefined} />
+                  <AvatarImage src={conversationData.avatar || undefined} />
                   <AvatarFallback>
-                    {conversation.type === 'group' ? (
+                    {conversationData.type === 'group' ? (
                       <Users className="h-5 w-5" />
                     ) : (
-                      conversation.name.charAt(0).toUpperCase()
+                      conversationData.name.charAt(0).toUpperCase()
                     )}
                   </AvatarFallback>
                 </Avatar>
-                {conversation.type === 'individual' && conversation.isOnline && (
+                {conversationData.type === 'individual' && conversationData.isOnline && (
                   <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-background" />
                 )}
               </div>
 
               <div className="flex-1">
-                <h3 className="font-medium">{conversation.name}</h3>
+                <h3 className="font-medium">{conversationData.name}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {conversation.isOnline ? 'Active now' : 'Last seen recently'}
+                  {conversationData.isOnline ? 'Active now' : 'Last seen recently'}
                 </p>
               </div>
 
