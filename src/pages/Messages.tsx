@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Mock data for conversations with TTMBAH and Ofenste Tabane SG conversation
+// Updated conversations with new group chats
 const conversations = [
   {
     id: "1",
@@ -40,11 +40,41 @@ const conversations = [
     participants: 8
   },
   {
+    id: "5",
+    name: "Amatyma Personal Group Chat",
+    type: "group",
+    lastMessage: "Welcome to our personal brotherhood chat!",
+    timestamp: "2 hours ago",
+    unreadCount: 3,
+    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    participants: 25
+  },
+  {
+    id: "6",
+    name: "The Amatyma Business Group",
+    type: "group",
+    lastMessage: "New business opportunities this week",
+    timestamp: "3 hours ago",
+    unreadCount: 5,
+    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    participants: 42
+  },
+  {
+    id: "7",
+    name: "Sports and Recreational Group",
+    type: "group",
+    lastMessage: "Football match this Saturday at 2 PM",
+    timestamp: "4 hours ago",
+    unreadCount: 2,
+    avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
+    participants: 18
+  },
+  {
     id: "3",
     name: "Business Network Group",
     type: "group",
     lastMessage: "Let's schedule the next meeting",
-    timestamp: "3 hours ago",
+    timestamp: "Yesterday",
     unreadCount: 0,
     avatar: "/lovable-uploads/5e2c4b38-6218-4832-b605-0d4fe61c5b4d.png",
     participants: 12

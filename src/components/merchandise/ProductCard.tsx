@@ -13,7 +13,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
   
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
+    <Card className="overflow-hidden transition-all hover:shadow-lg h-full">
       <div className="aspect-square overflow-hidden bg-muted">
         <img 
           src={product.image} 
@@ -21,30 +21,31 @@ export function ProductCard({ product }: ProductCardProps) {
           className="h-full w-full object-cover transition-transform hover:scale-105"
         />
       </div>
-      <CardContent className="p-4">
-        <h3 className="text-lg font-bold">{product.name}</h3>
-        <div className="mt-1 flex items-center justify-between">
-          <span className="text-lg font-bold">
+      <CardContent className="p-3">
+        <h3 className="font-semibold text-sm line-clamp-2 mb-2">{product.name}</h3>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-bold">
             {product.price > 0 ? `R${product.price.toFixed(2)}` : "Coming Soon"}
           </span>
-          <div className="flex gap-1">
-            {product.availableSizes.slice(0, 3).map((size) => (
-              <span key={size} className="inline-block px-2 py-1 text-xs bg-muted rounded">
-                {size}
-              </span>
-            ))}
-            {product.availableSizes.length > 3 && (
-              <span className="inline-block px-2 py-1 text-xs bg-muted rounded">
-                +{product.availableSizes.length - 3}
-              </span>
-            )}
-          </div>
+        </div>
+        <div className="flex gap-1 flex-wrap">
+          {product.availableSizes.slice(0, 2).map((size) => (
+            <span key={size} className="inline-block px-1.5 py-0.5 text-xs bg-muted rounded">
+              {size}
+            </span>
+          ))}
+          {product.availableSizes.length > 2 && (
+            <span className="inline-block px-1.5 py-0.5 text-xs bg-muted rounded">
+              +{product.availableSizes.length - 2}
+            </span>
+          )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-3 pt-0">
         <Button 
-          className="w-full bg-amatyma-red hover:bg-amatyma-red/80"
+          className="w-full bg-amatyma-red hover:bg-amatyma-red/80 text-xs"
           onClick={() => navigate(`/merchandise/${product.id}`)}
+          size="sm"
         >
           View Details
         </Button>

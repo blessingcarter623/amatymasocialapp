@@ -57,6 +57,9 @@ const Profile = () => {
     }
   ];
 
+  // Display name logic: prioritize profile name, then fallback to email username
+  const displayName = profile?.name || user?.email?.split('@')[0] || 'User';
+
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -77,8 +80,7 @@ const Profile = () => {
               </div>
               
               <div className="flex-1">
-                <h2 className="text-xl font-semibold">{profile?.name || user?.email}</h2>
-                <p className="text-muted-foreground">{user?.email}</p>
+                <h2 className="text-xl font-semibold">{displayName}</h2>
                 <div className="flex gap-2 mt-2">
                   <Badge variant="outline" className="text-xs">
                     {profile?.gender || "Member"}

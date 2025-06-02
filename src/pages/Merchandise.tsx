@@ -3,7 +3,6 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { ProductCard } from "@/components/merchandise/ProductCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useNavigate } from 'react-router-dom';
 import { Product, ProductSize } from '@/types';
 import { Search, ShoppingCart } from 'lucide-react';
@@ -174,10 +173,8 @@ const Merchandise = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
 
-  // Categories extracted from products
   const categories = Array.from(new Set(MERCHANDISE_DATA.map(product => product.category)));
 
-  // Filter products based on search query and category
   useEffect(() => {
     let filtered = MERCHANDISE_DATA;
     
@@ -197,70 +194,68 @@ const Merchandise = () => {
 
   return (
     <MainLayout>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">MANCAVE Merchandise</h1>
-        <Button
-          onClick={() => navigate('/cart')}
-          className="flex items-center gap-2 bg-amatyma-red hover:bg-amatyma-red/80"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          <span>Cart ({cart.totalItems})</span>
-        </Button>
-      </div>
+      <div className="space-y-4 px-4">
+        {/* Header with cart */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">MANCAVE Merchandise</h1>
+          <Button
+            onClick={() => navigate('/cart')}
+            className="flex items-center gap-2 bg-amatyma-red hover:bg-amatyma-red/80"
+            size="sm"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            <span>{cart.totalItems}</span>
+          </Button>
+        </div>
 
-      <div className="flex flex-col md:flex-row gap-6 mb-8">
-        {/* Search and filters */}
-        <div className="w-full md:w-64 space-y-4">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search merchandise..."
-              className="pl-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          
-          <div>
-            <h3 className="font-medium mb-2">Categories</h3>
-            <div className="space-y-2">
-              <Button
-                variant={category === null ? "default" : "outline"}
-                className={category === null ? "bg-amatyma-red hover:bg-amatyma-red/80 w-full justify-start" : "w-full justify-start"}
-                onClick={() => setCategory(null)}
-              >
-                All Categories
-              </Button>
-              
-              {categories.map((cat) => (
-                <Button
-                  key={cat}
-                  variant={category === cat ? "default" : "outline"}
-                  className={category === cat ? "bg-amatyma-red hover:bg-amatyma-red/80 w-full justify-start" : "w-full justify-start"}
-                  onClick={() => setCategory(cat)}
-                >
-                  {cat}
-                </Button>
-              ))}
-            </div>
-          </div>
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search merchandise..."
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         
-        {/* Products grid */}
-        <div className="flex-1">
-          {products.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No products found matching your criteria.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          )}
+        {/* Category filters - horizontal scroll on mobile */}
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          <Button
+            variant={category === null ? "default" : "outline"}
+            className={category === null ? "bg-amatyma-red hover:bg-amatyma-red/80 whitespace-nowrap" : "whitespace-nowrap"}
+            onClick={() => setCategory(null)}
+            size="sm"
+          >
+            All
+          </Button>
+          
+          {categories.map((cat) => (
+            <Button
+              key={cat}
+              variant={category === cat ? "default" : "outline"}
+              className={category === cat ? "bg-amatyma-red hover:bg-amatyma-red/80 whitespace-nowrap" : "whitespace-nowrap"}
+              onClick={() => setCategory(cat)}
+              size="sm"
+            >
+              {cat}
+            </Button>
+          ))}
         </div>
+        
+        {/* Products grid - optimized for mobile */}
+        {products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No products found matching your criteria.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 pb-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </MainLayout>
   );
