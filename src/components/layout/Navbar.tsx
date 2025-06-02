@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Menu, ShoppingCart } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, MessageCircle, Video, Bell } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -30,7 +30,7 @@ export function Navbar() {
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
 
-  // For mobile, use original layout. For desktop, position on the right
+  // For mobile, use original layout. For desktop, position on the top with right sidebar for messages
   if (isMobile) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-amatyma-red/10 bg-background backdrop-blur-lg">
@@ -162,10 +162,10 @@ export function Navbar() {
     );
   }
 
-  // Desktop layout - positioned on the right side
+  // Desktop layout - navigation on top with messages sidebar on the right
   return (
     <>
-      {/* Main content area with logo */}
+      {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-amatyma-red/10 bg-background backdrop-blur-lg">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -199,88 +199,110 @@ export function Navbar() {
               AMATYMA
             </span>
           </div>
-        </div>
-      </header>
 
-      {/* Right sidebar navigation */}
-      <div className="fixed top-0 right-0 h-full w-64 bg-background border-l border-amatyma-red/10 backdrop-blur-lg z-50 flex flex-col">
-        <div className="p-6 border-b border-amatyma-red/10">
-          <h2 className="font-bold text-lg text-amatyma-red">Navigation</h2>
-        </div>
-        
-        <nav className="flex-1 p-6 space-y-2">
-          {navItems.map((item) => 
-            item && (
-              <Button 
-                key={item.name} 
-                variant="ghost" 
-                className="w-full justify-start text-foreground hover:text-amatyma-red hover:bg-amatyma-red/10"
-                onClick={() => navigate(item.path)}
-              >
-                {item.name}
-              </Button>
-            )
-          )}
-          
-          <div className="pt-4 border-t border-amatyma-red/10">
+          {/* Top Navigation Items */}
+          <nav className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => 
+              item && (
+                <Button 
+                  key={item.name} 
+                  variant="ghost" 
+                  className="text-foreground hover:text-amatyma-red"
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.name}
+                </Button>
+              )
+            )}
+          </nav>
+
+          {/* Right side items */}
+          <div className="hidden md:flex items-center gap-4">
             <Button
               variant="ghost"
-              className="w-full justify-start relative mb-2"
+              className="relative"
               onClick={() => navigate('/cart')}
             >
-              <ShoppingCart className="h-5 w-5 mr-2" />
-              Cart
+              <ShoppingCart className="h-5 w-5" />
               {cart.totalItems > 0 && (
-                <span className="absolute right-2 bg-amatyma-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-amatyma-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cart.totalItems}
                 </span>
               )}
             </Button>
             
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm text-muted-foreground">Theme</span>
-              <ThemeToggle />
-            </div>
-          </div>
-        </nav>
-        
-        <div className="p-6 border-t border-amatyma-red/10">
-          {!user ? (
-            <div className="space-y-2">
-              <Button 
-                variant="ghost" 
-                className="w-full"
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </Button>
-              <Button 
-                className="w-full bg-amatyma-red text-white hover:bg-amatyma-red/80"
-                onClick={() => navigate("/register")}
-              >
-                Register
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="text-sm text-muted-foreground">
-                Hello, {profile?.name || user.email}
+            <ThemeToggle />
+            
+            {!user ? (
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </Button>
+                <Button 
+                  className="bg-amatyma-red text-white hover:bg-amatyma-red/80"
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </Button>
               </div>
-              <Button 
-                variant="ghost" 
-                className="w-full justify-start"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          )}
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">
+                  Hello, {profile?.name || user.email}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Content spacer for right sidebar */}
-      <div className="w-64"></div>
+      {/* Right sidebar for messages/communications */}
+      <div className="fixed top-16 right-0 h-[calc(100vh-4rem)] w-64 bg-background border-l border-amatyma-red/10 backdrop-blur-lg z-30 hidden md:flex flex-col">
+        <div className="p-4 border-b border-amatyma-red/10">
+          <h2 className="font-bold text-lg text-amatyma-red">Messages</h2>
+        </div>
+        
+        <nav className="flex-1 p-4 space-y-2">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-foreground hover:text-amatyma-red hover:bg-amatyma-red/10"
+            onClick={() => navigate('/messages')}
+          >
+            <MessageCircle className="h-5 w-5 mr-2" />
+            Messages
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-foreground hover:text-amatyma-red hover:bg-amatyma-red/10"
+            onClick={() => navigate('/video-calls')}
+          >
+            <Video className="h-5 w-5 mr-2" />
+            Video Calls
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-foreground hover:text-amatyma-red hover:bg-amatyma-red/10"
+            onClick={() => navigate('/notifications')}
+          >
+            <Bell className="h-5 w-5 mr-2" />
+            Notifications
+          </Button>
+        </nav>
+      </div>
     </>
   );
 }

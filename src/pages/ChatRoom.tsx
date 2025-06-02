@@ -167,9 +167,9 @@ const ChatRoom = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-md mx-auto h-[calc(100vh-200px)] flex flex-col">
+      <div className="max-w-md mx-auto h-[100vh] flex flex-col">
         {/* Chat Header */}
-        <Card className="rounded-b-none border-b-0">
+        <Card className="rounded-none border-b border-t-0">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Button
@@ -222,8 +222,8 @@ const ChatRoom = () => {
           </CardContent>
         </Card>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/20">
+        {/* Messages Area - Updated to fill remaining space */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/20 min-h-0">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -253,7 +253,7 @@ const ChatRoom = () => {
         </div>
 
         {/* Message Input */}
-        <Card className="rounded-t-none border-t-0">
+        <Card className="rounded-none border-t">
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="icon">

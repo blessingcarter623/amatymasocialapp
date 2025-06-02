@@ -15,7 +15,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {isMobile ? <MobileNavbar /> : <Navbar />}
-      <main className={`flex-1 ${isMobile ? 'pb-20' : 'container py-6'}`}>
+      <main className={`flex-1 ${isMobile ? 'pb-20' : 'container py-6 pr-72'}`}>
         {children}
       </main>
       {!isMobile && <Footer />}

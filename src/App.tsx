@@ -27,6 +27,7 @@ import ChatRoom from "./pages/ChatRoom";
 import VideoCalls from "./pages/VideoCalls";
 import Profile from "./pages/Profile";
 import AboutOrganization from "./pages/AboutOrganization";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
                   <Route path="/messages" element={<Messages />} />
                   <Route path="/messages/:id" element={<ChatRoom />} />
                   <Route path="/video-calls" element={<VideoCalls />} />
+                  <Route path="/notifications" element={<Notifications />} />
                   <Route path="/businesses" element={<Businesses />} />
                   <Route path="/businesses/:id" element={<BusinessDetail />} />
                   <Route path="/profile" element={<Profile />} />
