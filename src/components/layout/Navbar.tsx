@@ -25,7 +25,6 @@ export function Navbar() {
     { name: "Businesses", path: "/businesses" },
     { name: "Merchandise", path: "/merchandise" },
     { name: "Back A Buddy", path: "/fundraising" },
-    { name: "About Us", path: "/about" },
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
 

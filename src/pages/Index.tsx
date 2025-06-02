@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowRight, UserCircle, Building, ShieldCheck, Info, Download, Megaphone, Tag, ListChecks } from "lucide-react";
+import { ArrowRight, UserCircle, Building, ShieldCheck, Download, Megaphone, Tag, ListChecks } from "lucide-react";
 import { WhatsappIcon } from "@/components/icons/WhatsappIcon";
 import { AdvertiseBanner } from "@/components/business/AdvertiseBanner";
 
@@ -16,33 +17,29 @@ const Index = () => {
   // Display only 3 businesses on the homepage
   const featuredBusinesses = businesses.slice(0, 3);
   
-  const handleProfileClick = () => {
-    window.open("https://mgxjqujcsajvogaoqccz.supabase.co/storage/v1/object/public/pdf//Amatyma%20Profile%202025%20(1).pdf", "_blank");
-  };
-  
   const handleWhatsAppClick = () => {
     window.open("https://chat.whatsapp.com/E6RWhzKhGSnF7JvMphAs4O", "_blank");
   };
   
-  // Featured merchandise items - using the updated T-shirt image
+  // Featured merchandise items
   const featuredMerchandise = [
     {
-      id: "8", // Hoodie
+      id: "8",
       name: "MANCAVE Hoodie",
       price: "Coming Soon",
       image: "/lovable-uploads/997c51e1-52ef-4d03-b735-b857bdc68cef.png"
     },
     {
-      id: "7", // Mug
+      id: "7",
       name: "MANCAVE Mug",
       price: "Coming Soon",
       image: "/lovable-uploads/c2bb04af-8b76-4043-9ca8-6b92f20aaa45.png"
     },
     {
-      id: "12", // T-Shirt
+      id: "12",
       name: "MANCAVE T-Shirt",
       price: "Coming Soon",
-      image: "/lovable-uploads/c91a9f23-ad10-45ef-8feb-7fd2bedf23b9.png" // Updated T-shirt image
+      image: "/lovable-uploads/c91a9f23-ad10-45ef-8feb-7fd2bedf23b9.png"
     }
   ];
   
@@ -52,26 +49,26 @@ const Index = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6 md:pr-8 animate-fade-in">
             <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-              <span className="text-amatyma-red">Amatyma</span> Brotherhood Circle
+              Welcome to <span className="text-amatyma-red">Amatyma</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              A community-focused organization dedicated to empowering men and addressing critical social issues in South Africa.
+              Connect with the brotherhood, discover local businesses, and access exclusive merchandise.
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
               <Button 
                 className="bg-amatyma-red hover:bg-amatyma-red/80 text-lg px-6 py-6"
                 onClick={() => navigate("/register")}
               >
-                Register Your Business
+                Join the Brotherhood
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 variant="outline" 
                 className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white text-lg px-6 py-6"
-                onClick={() => navigate("/about")}
+                onClick={() => navigate("/businesses")}
               >
-                About Us
-                <Info className="ml-2 h-5 w-5" />
+                Discover Businesses
+                <Building className="ml-2 h-5 w-5" />
               </Button>
             </div>
 
@@ -92,10 +89,8 @@ const Index = () => {
           
           <div className="relative">
             <div 
-              className="neumorphic p-8 animate-fade-in cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
+              className="neumorphic p-8 animate-fade-in flex items-center justify-center" 
               style={{ animationDelay: "0.3s", minHeight: "260px" }}
-              onClick={handleProfileClick}
-              title="Download Amatyma Profile"
             >
               <div className="relative flex items-center justify-center w-full h-full">
                 <img 
@@ -104,10 +99,6 @@ const Index = () => {
                   className="w-44 h-44 md:w-56 md:h-56 object-contain rounded-xl dark:opacity-90 dark:contrast-125 dark:brightness-90 transition-all duration-300"
                 />
               </div>
-            </div>
-            <div className="text-center mt-2 text-sm text-muted-foreground flex items-center justify-center">
-              <Download size={16} className="mr-1" />
-              Click to download our profile
             </div>
           </div>
         </div>
@@ -130,31 +121,31 @@ const Index = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold">Why Join Amatyma?</h2>
           <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
-            Our platform connects businesses with government departments, creating opportunities for collaboration and growth.
+            Connect with a community of like-minded men, discover local businesses, and access exclusive content and merchandise.
           </p>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
-              icon: <Building />,
-              title: "Business Visibility",
-              description: "Showcase your business on a dedicated platform for government-focused opportunities",
-            },
-            {
-              icon: <ListChecks />,
-              title: "Department Liaison",
-              description: "Access skilled intermediaries who connect your business with relevant government departments",
-            },
-            {
               icon: <UserCircle />,
-              title: "Professional Network",
-              description: "Build a network of contacts in both private and public sectors",
+              title: "Brotherhood Network",
+              description: "Connect with men who share your values and aspirations",
+            },
+            {
+              icon: <Building />,
+              title: "Local Businesses",
+              description: "Discover and support businesses within our community",
+            },
+            {
+              icon: <Tag />,
+              title: "Exclusive Merchandise",
+              description: "Access limited edition Amatyma Brotherhood merchandise",
             },
             {
               icon: <ShieldCheck />,
               title: "Trusted Platform",
-              description: "Join a secure and trusted business community focused on collaboration",
+              description: "Join a secure community focused on positive impact",
             },
           ].map((feature, index) => (
             <div 
@@ -175,13 +166,13 @@ const Index = () => {
       
       <section className="py-12">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Advertise Your Business</h2>
+          <h2 className="text-3xl font-bold">Featured Businesses</h2>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/contact")}
+            onClick={() => navigate("/businesses")}
             className="border-amatyma-red/20 text-amatyma-red hover:bg-amatyma-red hover:text-white"
           >
-            Get Featured
+            View All
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

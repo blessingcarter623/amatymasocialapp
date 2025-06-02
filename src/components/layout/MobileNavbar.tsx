@@ -10,12 +10,11 @@ import {
   MessageCircle, 
   Video,
   Bell,
-  Menu,
-  Search
+  Search,
+  User
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -93,9 +92,9 @@ export function MobileNavbar() {
             variant="ghost"
             size="icon"
             className="rounded-full"
-            onClick={() => navigate('/menu')}
+            onClick={() => user ? navigate('/profile') : navigate('/login')}
           >
-            <Menu className="h-5 w-5" />
+            <User className="h-5 w-5" />
           </Button>
         </div>
       </div>
