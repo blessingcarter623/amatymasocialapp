@@ -1,20 +1,24 @@
 
 import { Navbar } from "./Navbar";
+import { MobileNavbar } from "./MobileNavbar";
 import { Footer } from "./Footer";
 import { Toaster } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const isMobile = useIsMobile();
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
-      <main className="flex-1 container py-6">
+      {isMobile ? <MobileNavbar /> : <Navbar />}
+      <main className={`flex-1 ${isMobile ? 'pb-safe' : 'container py-6'}`}>
         {children}
       </main>
-      <Footer />
+      {!isMobile && <Footer />}
       <Toaster position="top-right" theme="dark" />
     </div>
   );
