@@ -1,7 +1,6 @@
 
 import { Navbar } from "./Navbar";
 import { MobileNavbar } from "./MobileNavbar";
-import { DesktopSidebar } from "./DesktopSidebar";
 import { Footer } from "./Footer";
 import { Toaster } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -13,27 +12,13 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
   const isMobile = useIsMobile();
 
-  if (isMobile) {
-    return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <MobileNavbar />
-        <main className="flex-1 pb-20 px-4">
-          {children}
-        </main>
-        <Toaster position="top-center" theme="dark" />
-      </div>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen bg-background">
-      <DesktopSidebar />
-      <main className="flex-1 ml-64">
-        <div className="container py-6">
-          {children}
-        </div>
-        <Footer />
+    <div className="flex min-h-screen flex-col bg-background">
+      {isMobile ? <MobileNavbar /> : <Navbar />}
+      <main className={`flex-1 ${isMobile ? 'pb-20' : 'container py-6 pr-72'}`}>
+        {children}
       </main>
+      {!isMobile && <Footer />}
       <Toaster position="top-right" theme="dark" />
     </div>
   );

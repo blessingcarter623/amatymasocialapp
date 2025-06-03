@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   Home, 
   Users, 
@@ -10,9 +11,7 @@ import {
   Video,
   Bell,
   Search,
-  User,
-  ShoppingBag,
-  Heart
+  User
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -20,9 +19,10 @@ import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
 
 export function MobileNavbar() {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { cart } = useCart();
   const { theme } = useTheme();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -35,16 +35,11 @@ export function MobileNavbar() {
 
   const mainNavItems = [
     { icon: Home, path: "/", label: "Home" },
-    { icon: Users, path: "/businesses", label: "Business" },
-    { icon: ShoppingBag, path: "/merchandise", label: "Shop" },
-    { icon: Heart, path: "/fundraising", label: "Funding" },
+    { icon: MessageCircle, path: "/messages", label: "Messages" },
+    { icon: Video, path: "/video-calls", label: "Video" },
+    { icon: Bell, path: "/notifications", label: "Notifications" },
     { icon: User, path: user ? "/profile" : "/login", label: "Profile" },
   ];
-
-  const isActivePath = (path: string) => {
-    return location.pathname === path || 
-           (path !== "/" && location.pathname.startsWith(path));
-  };
 
   return (
     <>
@@ -97,9 +92,9 @@ export function MobileNavbar() {
                 variant="ghost"
                 size="icon"
                 className="rounded-full"
-                onClick={() => navigate('/messages')}
+                onClick={() => navigate('/businesses')}
               >
-                <MessageCircle className="h-5 w-5" />
+                <Users className="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -123,20 +118,18 @@ export function MobileNavbar() {
 
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border safe-area-bottom">
-        <div className="flex justify-around items-center px-2 py-2">
+        <div className="flex justify-around items-center px-2 py-3">
           {mainNavItems.map((item) => (
             <Button
               key={item.path}
               variant="ghost"
               className={cn(
-                "flex-1 flex flex-col items-center gap-1 py-3 px-1 h-auto rounded-lg transition-colors",
-                isActivePath(item.path) 
-                  ? "text-amatyma-red bg-amatyma-red/10" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                "flex-1 flex flex-col items-center gap-1 py-2 px-1 h-auto",
+                "hover:bg-accent/50 rounded-lg transition-colors"
               )}
               onClick={() => navigate(item.path)}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className="h-6 w-6" />
               <span className="text-xs font-medium">{item.label}</span>
             </Button>
           ))}
