@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Menu, ShoppingCart, MessageCircle, Video, Bell } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, MessageCircle, Video, Bell, User } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -30,7 +30,7 @@ export function Navbar() {
     user ? { name: "Dashboard", path: "/dashboard" } : null,
   ].filter(Boolean);
 
-  // For mobile, use original layout. For desktop, position on the top with right sidebar for messages
+  // For mobile, use original layout. For desktop, position on the top with left sidebar for navigation
   if (isMobile) {
     return (
       <header className="sticky top-0 z-50 w-full border-b border-amatyma-red/10 bg-background backdrop-blur-lg">
@@ -162,12 +162,12 @@ export function Navbar() {
     );
   }
 
-  // Desktop layout - navigation on top with messages sidebar on the right
+  // Desktop layout - navigation on top with left sidebar for navigation
   return (
     <>
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-amatyma-red/10 bg-background backdrop-blur-lg">
-        <div className="container flex h-16 items-center justify-between">
+        <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-2">
             {theme === "dark" ? (
               <img
@@ -268,10 +268,10 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Right sidebar for messages/communications */}
-      <div className="fixed top-16 right-0 h-[calc(100vh-4rem)] w-64 bg-background border-l border-amatyma-red/10 backdrop-blur-lg z-30 hidden md:flex flex-col">
+      {/* Left sidebar for navigation */}
+      <div className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-background border-r border-amatyma-red/10 backdrop-blur-lg z-30 hidden md:flex flex-col">
         <div className="p-4 border-b border-amatyma-red/10">
-          <h2 className="font-bold text-lg text-amatyma-red">Messages</h2>
+          <h2 className="font-bold text-lg text-amatyma-red">Navigation</h2>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
@@ -300,6 +300,15 @@ export function Navbar() {
           >
             <Bell className="h-5 w-5 mr-2" />
             Notifications
+          </Button>
+
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-foreground hover:text-amatyma-red hover:bg-amatyma-red/10"
+            onClick={() => navigate('/profile')}
+          >
+            <User className="h-5 w-5 mr-2" />
+            Profile
           </Button>
         </nav>
       </div>
