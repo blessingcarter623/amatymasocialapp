@@ -13,26 +13,27 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
   const isMobile = useIsMobile();
 
+  if (isMobile) {
+    return (
+      <div className="flex min-h-screen flex-col bg-background">
+        <MobileNavbar />
+        <main className="flex-1 pb-20 px-4">
+          {children}
+        </main>
+        <Toaster position="top-center" theme="dark" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-background">
-      {isMobile ? (
-        <>
-          <MobileNavbar />
-          <main className="flex-1 pb-20">
-            {children}
-          </main>
-        </>
-      ) : (
-        <>
-          <DesktopSidebar />
-          <main className="flex-1 ml-64">
-            <div className="container py-6">
-              {children}
-            </div>
-            <Footer />
-          </main>
-        </>
-      )}
+      <DesktopSidebar />
+      <main className="flex-1 ml-64">
+        <div className="container py-6">
+          {children}
+        </div>
+        <Footer />
+      </main>
       <Toaster position="top-right" theme="dark" />
     </div>
   );
