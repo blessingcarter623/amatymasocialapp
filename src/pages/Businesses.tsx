@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useApp } from "@/context/AppContext";
 import { useState, useEffect } from "react";
@@ -17,6 +16,7 @@ import { Business, Department } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { southAfricanProvinces, getCitiesForProvince } from "@/utils/locationData";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 const Businesses = () => {
   const { businesses, departments, isLoading, fetchBusinesses } = useApp();
